@@ -1,16 +1,21 @@
 <template>
 	<view class="content">
 		<image class="logo" src="/static/images/logo.png"></image>
-		<view>
+		<view class="title">
 			<text class="title">{{ result }}</text>
 		</view>
 	</view>
 </template>
 
 <script>
+/**
+ * author	bugdr
+ * time     2021-9-23 5:15:06 ?F10: PM?
+ * description
+ */
 import { getPlaylistCatlist } from '../../api/service/user.js';
-
 export default {
+	name: 'Lndex',
 	data() {
 		return {
 			title: 'Hello',
@@ -18,11 +23,9 @@ export default {
 			uid: '5145505596'
 		};
 	},
-	onLoad() {
-
-	},
+	component: {},
 	mounted() {
-		this.getPlaylistCatlist()
+		this.getPlaylistCatlist();
 	},
 	methods: {
 		// 获取用户歌单
@@ -38,8 +41,7 @@ export default {
 };
 </script>
 
-<style  scoped>
-	/* // @import url('../../static/style/variable.less') */
+<style scoped>
 .content {
 	display: flex;
 	flex-direction: column;
@@ -60,6 +62,6 @@ export default {
 
 .title {
 	font-size: 36rpx;
-	/* color: @color-bar; */
+	color: #000000;
 }
 </style>
