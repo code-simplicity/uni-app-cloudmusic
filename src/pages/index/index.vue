@@ -4,6 +4,11 @@
 		<view class="title">
 			<text class="title">{{ result }}</text>
 		</view>
+		<u-action-sheet :list="list" v-model="show"></u-action-sheet>
+		<view>
+			<u-field v-model="mobile" label="手机号" placeholder="请填写手机号"></u-field>
+			<u-field v-model="code" label="验证码" placeholder="请填写验证码"></u-field>
+		</view>
 	</view>
 </template>
 
@@ -20,7 +25,23 @@ export default {
 		return {
 			title: 'Hello',
 			result: {},
-			uid: '5145505596'
+			uid: '5145505596',
+			list: [
+				{
+					text: '点赞',
+					color: 'blue',
+					fontSize: 28
+				},
+				{
+					text: '分享'
+				},
+				{
+					text: '评论'
+				}
+			],
+			show: true,
+			mobile: '',
+			code: ''
 		};
 	},
 	component: {},
