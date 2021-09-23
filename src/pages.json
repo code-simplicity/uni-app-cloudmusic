@@ -12,5 +12,12 @@
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
+	},
+	// 自动引入comments文件夹下的组件，根目录
+	"easycom": {
+	  "autoscan": true,
+	  "^sq-(.*)": "@/components/sq/sq-$1.vue", // 匹配components目录内的vue文件
+	  "^q-(.*)": "@/components/q/$1/q-$1.vue", // 匹配components目录内的vue文件
+	  "^u-(.*)": "uview-ui/components/u-$1/u-$1.vue" //匹配uview组件
 	}
 }
