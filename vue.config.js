@@ -12,5 +12,7 @@ module.exports = {
 					process.env.UNI_PLATFORM, 'images')
 			}])
 		]
-	}
+	},
+	// 配置网络请求
+	transpileDependencies: ['luch-request']
 }
