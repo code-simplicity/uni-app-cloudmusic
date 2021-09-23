@@ -2,48 +2,64 @@
 	<view class="content">
 		<image class="logo" src="/static/images/logo.png"></image>
 		<view>
-			<text class="title">{{title}}</text>
+			<text class="title">{{ result }}</text>
 		</view>
 	</view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
+import { getPlaylistCatlist } from '../../api/service/user.js';
 
-		},
-		methods: {
+export default {
+	data() {
+		return {
+			title: 'Hello',
+			result: {},
+			uid: '5145505596'
+		};
+	},
+	onLoad() {
 
+	},
+	mounted() {
+		this.getPlaylistCatlist()
+	},
+	methods: {
+		// 获取用户歌单
+		getPlaylistCatlist() {
+			getPlaylistCatlist().then(res => {
+				if (res.code === 200) {
+					this.result = res.categories;
+					console.log('res', this.result);
+				}
+			});
 		}
 	}
+};
 </script>
 
-<style>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
+<style  scoped>
+	/* // @import url('../../static/style/variable.less') */
+.content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
 
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin: 200rpx auto 50rpx auto;
-	}
+.logo {
+	height: 200rpx;
+	width: 200rpx;
+	margin: 200rpx auto 50rpx auto;
+}
 
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
+.text-area {
+	display: flex;
+	justify-content: center;
+}
 
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
+.title {
+	font-size: 36rpx;
+	/* color: @color-bar; */
+}
 </style>
