@@ -1,15 +1,19 @@
 // 引入接口
-// import api from './instance.js'
-// import api from '../../common/requers.js'
 import api from '@/common/luch-request.js'
 
-// 用户登录
-export const loginWithPhone = (params) => api.get({
-	url: `/login/cellphone`,
+/**
+ * 手机登录接口
+ * @param {*} params phone 手机号码
+ * @param {*} params md5_password md5加密密码
+ * @returns
+ */
+export const loginWithPhone = params => api.get(`/login/cellphone`, {
 	params,
 	withCredentials: true
 })
 
-// 获取歌单分类
-export const getPlaylistCatlist = () => api.get(`/playlist/catlist`, {})
-
+/**
+ * 获取用户信息
+ * @param {*} uid 用户id
+ */
+export const getUserInfo = (uid) => api.get(`/user/detail?uid=${uid}`, {})
