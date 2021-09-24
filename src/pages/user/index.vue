@@ -1,5 +1,7 @@
 <template>
-	<view class=""></view>
+	<view class="">
+		我的
+	</view>
 </template>
 
 <script>
