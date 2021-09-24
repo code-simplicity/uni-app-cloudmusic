@@ -1,6 +1,8 @@
 
 <template>
-	
+	<view class="home-box">
+		首页
+	</view>
 </template>
  
 <script>
