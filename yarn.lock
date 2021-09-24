@@ -2719,6 +2719,13 @@
   "resolved" "https://registry.nlark.com/binary-extensions/download/binary-extensions-2.2.0.tgz"
   "version" "2.2.0"
 
+"bindings@^1.5.0":
+  "integrity" "sha1-EDU8npRTNLwFEabZCzj7x8nFBN8="
+  "resolved" "https://registry.nlark.com/bindings/download/bindings-1.5.0.tgz"
+  "version" "1.5.0"
+  dependencies:
+    "file-uri-to-path" "1.0.0"
+
 "blob@0.0.5":
   "integrity" "sha1-1oDu7yX4zZGtUz9bAe7UjmTK9oM="
   "resolved" "https://registry.nlark.com/blob/download/blob-0.0.5.tgz"
@@ -5041,7 +5048,15 @@
   "resolved" "https://registry.nlark.com/fs.realpath/download/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
 
-"fsevents@^1.2.7", "fsevents@^2.1.2", "fsevents@~2.3.2":
+"fsevents@^1.2.7":
+  "integrity" "sha1-8yXLBFVZJCi88Rs4M3DvcOO/zDg="
+  "resolved" "https://registry.nlark.com/fsevents/download/fsevents-1.2.13.tgz"
+  "version" "1.2.13"
+  dependencies:
+    "bindings" "^1.5.0"
+    "nan" "^2.12.1"
+
+"fsevents@^2.1.2", "fsevents@~2.3.2":
   "integrity" "sha1-ilJveLj99GI7cJ4Ll1xSwkwC/Ro="
   "resolved" "https://registry.nlark.com/fsevents/download/fsevents-2.3.2.tgz"
   "version" "2.3.2"
@@ -6540,6 +6555,11 @@
     "import-local" "^3.0.2"
     "jest-cli" "^25.5.4"
 
+"js-md5@^0.7.3":
+  "integrity" "sha1-tPL7sLMnRV9ZjWcn447Ccs0Jw/I="
+  "resolved" "https://registry.nlark.com/js-md5/download/js-md5-0.7.3.tgz"
+  "version" "0.7.3"
+
 "js-message@1.0.7":
   "integrity" "sha1-+93QU8ekcCGHG7iyyVOXzBfCDkc="
   "resolved" "https://registry.nlark.com/js-message/download/js-message-1.0.7.tgz"
@@ -7389,6 +7409,11 @@
     "any-promise" "^1.0.0"
     "object-assign" "^4.0.1"
     "thenify-all" "^1.0.0"
+
+"nan@^2.12.1":
+  "integrity" "sha1-PzSkc/8Y4VwbVia2KQO1rW5mX+4="
+  "resolved" "https://registry.nlark.com/nan/download/nan-2.15.0.tgz?cache=0&sync_timestamp=1628093719696&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnan%2Fdownload%2Fnan-2.15.0.tgz"
+  "version" "2.15.0"
 
 "nanocolors@^0.1.5":
   "integrity" "sha1-vCNQ0+39v63XrAGMhVrnwTkFpq0="
@@ -10286,6 +10311,16 @@
     "has-bigints" "^1.0.1"
     "has-symbols" "^1.0.2"
     "which-boxed-primitive" "^1.0.2"
+
+"uni-read-pages@^1.0.5":
+  "integrity" "sha1-RSyNyqiXe7rvYAkJvpJsjZcEOHw="
+  "resolved" "https://registry.nlark.com/uni-read-pages/download/uni-read-pages-1.0.5.tgz"
+  "version" "1.0.5"
+
+"uni-simple-router@^2.0.7":
+  "integrity" "sha1-BOC1vmzXM6HsudNaPb6C8n9IIE4="
+  "resolved" "https://registry.nlark.com/uni-simple-router/download/uni-simple-router-2.0.7.tgz?cache=0&sync_timestamp=1629105759580&other_urls=https%3A%2F%2Fregistry.nlark.com%2Funi-simple-router%2Fdownload%2Funi-simple-router-2.0.7.tgz"
+  "version" "2.0.7"
 
 "unicode-canonical-property-names-ecmascript@^2.0.0":
   "integrity" "sha1-MBrNxSVjFnDTn2FG4Od/9rvevdw="
