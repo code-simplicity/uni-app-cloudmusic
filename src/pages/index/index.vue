@@ -2,12 +2,7 @@
 	<view class="content">
 		<image class="logo" src="/static/images/logo.png"></image>
 		<view class="title">
-			<text class="title">{{ result }}</text>
-		</view>
-		<u-action-sheet :list="list" v-model="show"></u-action-sheet>
-		<view>
-			<u-field v-model="mobile" label="手机号" placeholder="请填写手机号"></u-field>
-			<u-field v-model="code" label="验证码" placeholder="请填写验证码"></u-field>
+			<text class="title">{{ title }}</text>
 		</view>
 	</view>
 </template>
@@ -18,51 +13,37 @@
  * time     2021-9-23 5:15:06 ?F10: PM?
  * description
  */
-import { getPlaylistCatlist } from '../../api/service/user.js';
 export default {
 	name: 'Lndex',
 	data() {
 		return {
-			title: 'Hello',
-			result: {},
-			uid: '5145505596',
-			list: [
-				{
-					text: '点赞',
-					color: 'blue',
-					fontSize: 28
-				},
-				{
-					text: '分享'
-				},
-				{
-					text: '评论'
-				}
-			],
-			show: true,
-			mobile: '',
-			code: ''
+			title: '欢迎使用my-music',
+			timer: null
 		};
 	},
 	component: {},
 	mounted() {
-		this.getPlaylistCatlist();
+		this.timer = setTimeout(() => {
+			// 定时器路由到登录
+			uni.redirectTo({
+				url:'../login/index'
+			},1000)
+		});
 	},
 	methods: {
-		// 获取用户歌单
-		getPlaylistCatlist() {
-			getPlaylistCatlist().then(res => {
-				if (res.code === 200) {
-					this.result = res.categories;
-					console.log('res', this.result);
-				}
-			});
+		
+	},
+	destroyed() {
+		// 销毁定时器
+		if (this.timer) {
+			clearTimeout(this.timer);
+			this.timer = null;
 		}
 	}
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .content {
 	display: flex;
 	flex-direction: column;
@@ -82,6 +63,7 @@ export default {
 }
 
 .title {
+	margin-top: 20rpx;
 	font-size: 36rpx;
 	color: #000000;
 }
