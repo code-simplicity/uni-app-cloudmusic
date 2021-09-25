@@ -10,7 +10,7 @@
  */
 
 export default {
-	name: '',
+	name: 'Square',
 	data() {
 		return {};
 	},
