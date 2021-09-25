@@ -46,7 +46,15 @@ http.interceptors.response.use((response) => {
 	console.log('response.data', response.data)
 	if (data.code === 200) {
 		return Promise.resolve(data)
-	} else if (data.code === 404) {
+	} else if (data.code === 301) {
+		uni.showToast({
+			title: '请先登录',
+			icon: 'error'
+		})
+		this.$Router.replace({
+			name: 'Login'
+		})
+	} else {
 		return Promise.reject(response)
 	}
 }, response => {
