@@ -1,10 +1,12 @@
 {
 	// pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	"pages": [ 
-		{
+	"pages": [{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "my-music"
+				"navigationBarTitleText": "my-music",
+				"h5": {
+					"titleNView": false
+				}
 			}
 		},
 		{
@@ -14,7 +16,10 @@
 				"title": "登录"
 			},
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationBarTitleText": "登录",
+				"h5": {
+					"titleNView": false
+				}
 			}
 		},
 		{
@@ -24,7 +29,10 @@
 				"title": "首页"
 			},
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"h5": {
+					"titleNView": false
+				}
 			}
 
 		},
@@ -35,9 +43,12 @@
 				"title": "直播"
 			},
 			"style": {
-				"navigationBarTitleText": "直播"
+				"navigationBarTitleText": "直播",
+				"h5": {
+					"titleNView": false
+				}
 			}
-		
+
 		},
 		{
 			"path": "pages/user/index",
@@ -46,9 +57,12 @@
 				"title": "我的"
 			},
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "我的",
+				"h5": {
+					"titleNView": false
+				}
 			}
-		
+
 		},
 		{
 			"path": "pages/focus/index",
@@ -57,9 +71,12 @@
 				"title": "关注"
 			},
 			"style": {
-				"navigationBarTitleText": "关注"
+				"navigationBarTitleText": "关注",
+				"h5": {
+					"titleNView": false
+				}
 			}
-		
+
 		},
 		{
 			"path": "pages/square/index",
@@ -68,9 +85,12 @@
 				"title": "广场"
 			},
 			"style": {
-				"navigationBarTitleText": "广场"
+				"navigationBarTitleText": "广场",
+				"h5": {
+					"titleNView": false
+				}
 			}
-		
+
 		}
 	],
 
@@ -93,7 +113,7 @@
 				"text": "直播"
 			},
 			{
-				"pagePath": "pages/my/index",
+				"pagePath": "pages/user/index",
 				"iconPath": "static/images/my_press.png",
 				"selectedIconPath": "static/images/my_normal.png",
 				"text": "我的"
@@ -124,6 +144,8 @@
 		"autoscan": true,
 		"^sq-(.*)": "@/components/sq/sq-$1.vue", // 匹配components目录内的vue文件
 		"^q-(.*)": "@/components/q/$1/q-$1.vue", // 匹配components目录内的vue文件
+		"^my-(.*)": "@/components/home/$1/my-$1.vue", // 匹配components/home/$的目录内的vue文件
+		"^recommend-(.*)": "@/components/home/recommend-$1/recommend-$1.vue", // 匹配components/home/$的目录内的vue文件
 		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue" //匹配uview组件
 	}
 }
