@@ -12,7 +12,7 @@
  */
 
 export default {
-	name: '',
+	name: 'Find',
 	data() {
 		return {};
 	},
