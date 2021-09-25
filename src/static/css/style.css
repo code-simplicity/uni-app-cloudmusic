@@ -1,0 +1,77 @@
+body,
+html {
+	font-family: PingFang SC, Arial, Microsoft YaHei, sans-serif;
+	background-color: #eeeeee;
+}
+
+.primary-color {
+	color: #e51419;
+}
+
+.primary-bg-color {
+	background-color: #e51419;
+}
+
+/* flex */
+.flex-layout {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex{
+	display: flex;
+	flex-direction: row;
+}
+
+/* 全屏垂直滚动样式 */
+.vertical-roll-box{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+}
+.vertical-roll-box .swiper{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+.vertical-roll-box .swiper-item{
+	width: 100%;
+	height: 100%;
+}
+.vertical-roll-box .swiper-item .item-full-bg{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+}
+.vertical-roll-box .swiper-item .item-full-bg .bg-image{
+	width: 100%;
+	height: 100%;
+}
