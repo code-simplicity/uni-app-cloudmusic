@@ -19,6 +19,9 @@ import constant from './utils/constant.js'
 // 使用vuex
 import store from './store/index.js'
 
+// 引入工具
+import utils from './utils/utils.js'
+
 // 关闭生产提示
 Vue.config.productionTip = false
 
@@ -26,6 +29,8 @@ Vue.config.productionTip = false
 Vue.prototype.$api = api
 // 状态码
 Vue.prototype.$code = constant
+// 工具挂载
+Vue.prototype.$utils = utils
 App.mpType = 'app'
 
 const app = new Vue({
