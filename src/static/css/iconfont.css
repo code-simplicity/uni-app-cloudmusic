@@ -1,0 +1,149 @@
+@font-face {
+  font-family: "my-icon"; /* Project id 2787265 */
+  /* Color fonts */  
+}
+
+.my-icon {
+  font-family: "my-icon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.my-icon-diantai:before {
+  content: "\e7e5";
+}
+
+.my-icon-paixingbang:before {
+  content: "\e6c5";
+}
+
+.my-icon-zuixingedan:before {
+  content: "\e75f";
+}
+
+.my-icon-zhuanji:before {
+  content: "\e600";
+}
+
+.my-icon-calendar:before {
+  content: "\e9ab";
+}
+
+.my-icon-icon-test:before {
+  content: "\e674";
+}
+
+.my-icon-guanzhubangshou:before {
+  content: "\e632";
+}
+
+.my-icon-zhibo:before {
+  content: "\e619";
+}
+
+.my-icon-guangchang:before {
+  content: "\e61a";
+}
+
+.my-icon-faxian:before {
+  content: "\e80f";
+}
+
+.my-icon-maikefeng:before {
+  content: "\e601";
+}
+
+.my-icon-quxiaomaikefeng:before {
+  content: "\e602";
+}
+
+.my-icon-quxiaoyinliang:before {
+  content: "\e603";
+}
+
+.my-icon-zengjiayinliang:before {
+  content: "\e604";
+}
+
+.my-icon-jianshaoyinliang:before {
+  content: "\e605";
+}
+
+.my-icon-yinliangdi:before {
+  content: "\e606";
+}
+
+.my-icon-yinlianggao:before {
+  content: "\e607";
+}
+
+.my-icon-jingyin:before {
+  content: "\e608";
+}
+
+.my-icon-shipin:before {
+  content: "\e609";
+}
+
+.my-icon-tupian:before {
+  content: "\e60a";
+}
+
+.my-icon-tianjiatubiao:before {
+  content: "\e60b";
+}
+
+.my-icon-bianjitupian:before {
+  content: "\e60c";
+}
+
+.my-icon-yinfu:before {
+  content: "\e60d";
+}
+
+.my-icon-yinfu2:before {
+  content: "\e60e";
+}
+
+.my-icon-bofang:before {
+  content: "\e60f";
+}
+
+.my-icon-tingzhi:before {
+  content: "\e610";
+}
+
+.my-icon-zanting:before {
+  content: "\e611";
+}
+
+.my-icon-houtui:before {
+  content: "\e612";
+}
+
+.my-icon-kuaijin:before {
+  content: "\e613";
+}
+
+.my-icon-bofangliebiao:before {
+  content: "\e614";
+}
+
+.my-icon-bofangshaixuan:before {
+  content: "\e615";
+}
+
+.my-icon-xunhuanbofang:before {
+  content: "\e616";
+}
+
+.my-icon-suijibofang:before {
+  content: "\e617";
+}
+
+.my-icon-zuidahua:before {
+  content: "\e618";
+}
+
