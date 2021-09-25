@@ -14,7 +14,7 @@
  * description
  */
 export default {
-	name: 'Lndex',
+	name: 'Index',
 	data() {
 		return {
 			title: '欢迎使用my-music',
