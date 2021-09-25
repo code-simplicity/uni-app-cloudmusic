@@ -1,7 +1,5 @@
 <template>
-	<view class="">
-		我的
-	</view>
+	<view class="">我的</view>
 </template>
 
 <script>
@@ -12,7 +10,7 @@
  */
 
 export default {
-	name: '',
+	name: 'User',
 	data() {
 		return {};
 	},
