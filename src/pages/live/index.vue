@@ -12,7 +12,7 @@
  */
 
 export default {
-	name: '',
+	name: 'Live',
 	data() {
 		return {};
 	},
