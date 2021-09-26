@@ -24,11 +24,14 @@ export default {
 	component: {},
 	mounted() {
 		this.timer = setTimeout(() => {
-			// 定时器路由到登录
+			// // 定时器路由到登录
 			uni.redirectTo({
-				url:'../login/index'
-			},1000)
-		});
+				url:'/pages/login/index'
+			})
+			// this.$Router.replace({
+			// 	name: 'Home'
+			// })
+		},2000);
 	},
 	methods: {
 		
