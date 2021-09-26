@@ -47,7 +47,9 @@
             },
             "ios" : {},
             /* ios打包配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* SDK配置 */
@@ -55,9 +57,11 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 微信小程序特有相关 */
-        "appid" : "",
+        "appid" : "wxd3c747e96517d4a4",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "minified" : true,
+            "es6" : false
         },
         "usingComponents" : true
     },
@@ -74,3 +78,5 @@
         "usingComponents" : true
     }
 }
+/* 模块配置 *//* 应用发布信息 *//* android打包配置 */
+
