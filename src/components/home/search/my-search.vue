@@ -51,14 +51,18 @@ export default {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	background-color: #eaeaea;
+	text-align: center;
 	.my-search-item {
 		margin-right: 20rpx;
+		margin-top: 10rpx;
 	}
 	.hmy-search-input {
 		flex: 1;
 	}
 	.my-search-mike {
 		margin-left: 10px;
+		margin-top: 10rpx;
 	}
 }
 </style>
