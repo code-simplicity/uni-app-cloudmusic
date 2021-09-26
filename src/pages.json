@@ -34,7 +34,6 @@
 					"titleNView": false
 				}
 			}
-
 		},
 		{
 			"path": "pages/live/index",
@@ -48,7 +47,6 @@
 					"titleNView": false
 				}
 			}
-
 		},
 		{
 			"path": "pages/user/index",
@@ -62,7 +60,6 @@
 					"titleNView": false
 				}
 			}
-
 		},
 		{
 			"path": "pages/focus/index",
@@ -76,7 +73,6 @@
 					"titleNView": false
 				}
 			}
-
 		},
 		{
 			"path": "pages/square/index",
@@ -90,7 +86,6 @@
 					"titleNView": false
 				}
 			}
-
 		}
 	],
 
