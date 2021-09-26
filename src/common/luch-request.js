@@ -24,7 +24,7 @@ http.setConfig((config) => {
 		Accept: 'application/json',
 		'Content-Type': 'application/json; charset=UTF-8',
 	}
-	config.responseType = 'json'
+	config.responseType = 'json' || 'text'
 	return config
 })
 
@@ -33,7 +33,6 @@ http.interceptors.request.use((config) => {
 	config.header = {
 		...config.header
 	}
-	console.log('config', config)
 	return config
 }, (config) => {
 	return Promise.reject(config)
@@ -43,7 +42,6 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use((response) => {
 	let data = response.data
 	let status = response.status
-	console.log('response.data', response.data)
 	if (data.code === 200) {
 		return Promise.resolve(data)
 	} else if (data.code === 301) {
@@ -58,7 +56,6 @@ http.interceptors.response.use((response) => {
 		return Promise.reject(response)
 	}
 }, response => {
-	console.log('response', response)
 	return Promise.reject(response)
 })
 
