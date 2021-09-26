@@ -111,11 +111,14 @@ export default {
 						type: 'success'
 					});
 					// 设置定时器2s跳转到首页
-					setTimeout(() => {
-						this.$Router.replace({
-							name: 'Home'
-						});
-					}, 2000);
+					uni.redirectTo({
+					    url: 'pages/home/index'
+					});
+					// setTimeout(() => {
+					// 	this.$Router.replace({
+					// 		name: 'Home'
+					// 	});
+					// }, 2000);
 				}
 			});
 		},
