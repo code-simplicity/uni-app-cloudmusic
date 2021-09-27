@@ -111,8 +111,14 @@ export default {
 						type: 'success'
 					});
 					// 设置定时器2s跳转到首页
-					uni.redirectTo({
-					    url: 'pages/home/index'
+					uni.switchTab({
+						url: 'pages/home/index',
+						// success() {
+						// 	uni.showToast({
+						// 		title: '成功登陆',
+						// 		type: 'success'
+						// 	});
+						// }
 					});
 					// setTimeout(() => {
 					// 	this.$Router.replace({
