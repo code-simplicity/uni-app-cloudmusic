@@ -11,7 +11,7 @@
 						class="icon-style"
 						:class="item.name ? 'active' : ''"
 						size="40"
-						label-pos="bottom "
+						label-pos="bottom"
 						:custom-prefix="item.icon"
 					></u-icon>
 				</view>
@@ -34,33 +34,33 @@ export default {
 			list: [
 				{
 					label: '每日推荐',
-					name: 'calendar',
-					icon: 'my-icon',
-					value: '每日推荐'
+					name: 'iconfont icon-calendar',
+					value: '每日推荐',
+					icon: 'iconfont'
 				},
 				{
 					label: '私人FM',
-					name: 'diantai',
-					icon: 'my-icon',
-					value: '私人FM'
+					name: 'iconfont icon-diantai',
+					value: '私人FM',
+					icon: 'iconfont'
 				},
 				{
 					label: '歌单',
-					name: 'zuixingedan',
-					icon: 'my-icon',
-					value: '歌单'
+					name: 'iconfont icon-zuixingedan',
+					value: '歌单',
+					icon: 'iconfont'
 				},
 				{
 					label: '排行榜',
-					name: 'paixingbang',
-					icon: 'my-icon',
-					value: '排行榜'
+					name: 'iconfont icon-paixingbang',
+					value: '排行榜',
+					icon: 'iconfont'
 				},
 				{
 					label: '专辑',
-					name: 'zhuanji',
-					icon: 'my-icon',
-					value: '专辑'
+					name: 'iconfont icon-zhuanji',
+					value: '专辑',
+					icon: 'iconfont'
 				}
 			]
 		};
@@ -86,6 +86,7 @@ export default {
 				height: 100rpx;
 				margin: 0 16rpx;
 				border-radius: 50%;
+				color: #ff0000;
 				// &.active {
 				// 	color: #111;
 				// }
