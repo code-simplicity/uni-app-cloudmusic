@@ -25,6 +25,8 @@ import utils from './utils/utils.js'
 // 关闭生产提示
 Vue.config.productionTip = false
 
+import "animate.css"
+
 // 引入接口，全局使用某个接口
 Vue.prototype.$api = api
 // 状态码
