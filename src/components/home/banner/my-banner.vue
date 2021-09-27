@@ -1,5 +1,12 @@
 <template>
-	<view class="my-banner"><u-swiper :list="bannerList" :interval="4000" name="pic"></u-swiper></view>
+	<view class="my-banner">
+		<u-swiper
+			:list="bannerList"
+			:interval="4000"
+			name="pic"
+			:current="current"
+		></u-swiper>
+	</view>
 </template>
 
 <script>
@@ -15,7 +22,8 @@ export default {
 		return {
 			bannerList: [],
 			// 获取轮播图类型,1为安卓
-			type: 1
+			type: 1,
+			current: 0
 		};
 	},
 	component: {},
@@ -29,8 +37,16 @@ export default {
 				if (res.code === this.$code.code_status) {
 					this.bannerList = res.banners;
 				}
+				this.setData({
+					bannerList:  res.banners
+				})
 			});
-		}
+		},
+		// checkBanner() {
+		// 	this.setData({
+		// 	        "current"：0
+		// 	    })
+		// }
 	}
 };
 </script>
