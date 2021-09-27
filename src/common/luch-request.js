@@ -52,6 +52,9 @@ http.interceptors.response.use((response) => {
 		this.$Router.replace({
 			name: 'Login'
 		})
+		// uni.switchTab({
+		//     url: 'pages/home/index'
+		// });
 	} else {
 		return Promise.reject(response)
 	}
