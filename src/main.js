@@ -32,7 +32,7 @@ Vue.prototype.$api = api
 // 状态码
 Vue.prototype.$code = constant
 // 工具挂载
-Vue.prototype.$utils = utils
+Vue.prototype.utils = utils
 App.mpType = 'app'
 
 const app = new Vue({
