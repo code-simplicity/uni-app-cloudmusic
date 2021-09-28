@@ -37,9 +37,9 @@ export default {
 				if (res.code === this.$code.code_status) {
 					this.bannerList = res.banners;
 				}
-				this.setData({
-					bannerList:  res.banners
-				})
+				// this.setData({
+				// 	bannerList:  res.banners
+				// })
 			});
 		},
 		// checkBanner() {
