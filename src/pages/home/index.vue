@@ -36,7 +36,9 @@ export default {
 			newSong: []
 		};
 	},
-	component: {},
+	component: {
+		
+	},
 
 	mounted() {
 		this.getRecommendResource();
@@ -125,7 +127,7 @@ export default {
 		top: 0;
 		left: 0;
 		right: 0;
-		z-index: 9999;
+		z-index: 666;
 		background-color: #eaeaea;
 	}
 	.home-content {
