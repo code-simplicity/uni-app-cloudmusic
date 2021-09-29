@@ -66,16 +66,21 @@
 			</view>
 			<view class="music-play-btn">
 				<view class="music-play-btn-list">
-					<u-icon size="54" name="iconfont icon-shunxubofang" custom-prefix="iconfont"></u-icon>
+					<u-icon size="54" :name="playModeIcon" custom-prefix="iconfont" @click="changeMode"></u-icon>
 				</view>
 				<view class="music-play-btn-list">
-					<u-icon size="54" name="iconfont icon-shangyiqu1" custom-prefix="iconfont"></u-icon>
+					<u-icon
+						size="54"
+						name="iconfont icon-shangyiqu1"
+						custom-prefix="iconfont"
+						@click="prevSong"
+					></u-icon>
 				</view>
 				<view class="music-play-btn-list">
 					<u-icon size="90" :name="playIcon" custom-prefix="iconfont" @click="togglePlaying"></u-icon>
 				</view>
 				<view class="music-play-btn-list">
-					<u-icon size="54" name="iconfont icon-xiayiqu" custom-prefix="iconfont"></u-icon>
+					<u-icon size="54" name="iconfont icon-xiayiqu" custom-prefix="iconfont" @click="nextSong"></u-icon>
 				</view>
 				<view class="music-play-btn-list">
 					<u-icon size="46" name="iconfont icon-bofangliebiao" custom-prefix="iconfont"></u-icon>
@@ -92,6 +97,8 @@
  * description
  */
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+
+import { playMode } from '@/utils/playmode.js';
 
 const innerAudioContext = uni.createInnerAudioContext();
 innerAudioContext.autoplay = true;
@@ -131,6 +138,14 @@ export default {
 		]),
 		playIcon() {
 			return this.playing ? 'iconfont icon-zanting' : 'iconfont icon-bofang';
+		},
+
+		playModeIcon() {
+			return this.mode === playMode.sequence
+				? 'iconfont icon-shunxubofang'
+				: this.mode === playMode.loop
+				? 'iconfont icon-24gl-repeatOnce2'
+				: 'iconfont icon-suiji';
 		}
 	},
 
@@ -186,7 +201,7 @@ export default {
 		let id = this.$Route.query.id;
 		this.id = id;
 		this.onTimeUpdate();
-		console.log('currentSong', this.currentSong)
+		console.log('currentSong', this.currentSong);
 	},
 	methods: {
 		// 改变进度条
@@ -210,17 +225,26 @@ export default {
 
 		// 更新播放器时间
 		onTimeUpdate() {
-			innerAudioContext.onTimeUpdate(res => {
+			innerAudioContext.onTimeUpdate(() => {
 				if (!this.progressState) {
-					this.currentTime = res.target.currentTime;
-					this.progressBar = (res.target.currentTime / this.currentSong.duration) * 100;
+					this.currentTime = innerAudioContext.currentTime;
+					this.progressBar = (innerAudioContext.currentTime / this.currentSong.duration) * 100;
 				}
 			});
 		},
+		
 
 		// 播放准备完成
 		onCanplay() {
 			innerAudioContext.onCanplay(res => {});
+		},
+
+		// 单曲循环
+		loopSong() {
+			innerAudioContext.currentTime = 0;
+			innerAudioContext.play();
+			InnerAudioContext.loop = true;
+			this.setPlayingState(true);
 		},
 
 		// 关闭播放器
@@ -230,8 +254,81 @@ export default {
 			});
 		},
 
+		// 重置当前播放序号
+		resetCurrentIndex(list) {
+			let index = list.findIndex(item => {
+				return item.id === this.currentSong.id;
+			});
+			this.setCurrentIndex(index);
+		},
+
+		// 切换播放模式
+		changeMode() {
+			let mode = (this.mode + 1) % 3;
+			this.setPlayMode(mode);
+			let list = null;
+			if (mode === playMode.random) {
+				list = this.utils.shuffle(this.sequenceList);
+			} else {
+				list = this.sequenceList;
+			}
+			this.resetCurrentIndex(list);
+			this.setPlayList(list);
+		},
+
+		// 上一曲
+		prevSong() {
+			// if (!this.songReady) {
+			// 	return
+			// }
+			// 假如只有一首歌
+			if (this.playList.length === 1) {
+				循环播放;
+				this.loopSong();
+				return;
+			} else {
+				// 是一个专辑或者歌单
+				let index = this.currentIndex - 1;
+				if (index === -1) {
+					index = this.playList.length - 1;
+				}
+				// 设置播放序号
+				this.setCurrentIndex(index);
+				if (!this.playing) {
+					this.togglePlaying();
+				}
+			}
+		},
+
+		// 下一曲
+		nextSong() {
+			// if (!this.songReady) {
+			// 	return
+			// }
+			// 假如只有一首歌
+			if (this.playList.length === 1) {
+				循环播放;
+				this.loopSong();
+				return;
+			} else {
+				// 是一个专辑或者歌单
+				let index = this.currentIndex + 1;
+				if (index === this.playList.length) {
+					index = 0;
+				}
+				// 设置播放序号
+				this.setCurrentIndex(index);
+				if (!this.playing) {
+					this.togglePlaying();
+				}
+			}
+		},
+
 		// 播放/暂停
 		togglePlaying() {
+			if (!this.songReady) {
+				return;
+			}
 			this.setPlayingState(!this.playing);
 		},
 
