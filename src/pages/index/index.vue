@@ -25,12 +25,12 @@ export default {
 	mounted() {
 		this.timer = setTimeout(() => {
 			// // 定时器路由到登录
-			// uni.redirectTo({
-			// 	url:'/pages/login/index'
-			// })
-			uni.switchTab({
-			    url: 'pages/home/index'
-			});
+			uni.redirectTo({
+				url:'/pages/login/index'
+			})
+			// uni.switchTab({
+			//     url: 'pages/home/index'
+			// });
 			// this.$Router.replace({
 			// 	name: 'Home'
 			// })
