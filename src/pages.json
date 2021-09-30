@@ -180,7 +180,9 @@
 			"^my-(.*)": "@/components/home/$1/my-$1.vue", // 匹配components/home/$的目录内的vue文件
 			"^recommend-(.*)": "@/components/home/recommend-$1/recommend-$1.vue", // 匹配components/home/$的目录内的vue文件
 			"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue", //匹配uview组件
-			"^music-(.*)": "@/components/music/music-$1/music-$1.vue" // 匹配components目录内的vue文件
+			"^music-(.*)": "@/components/music/music-$1/music-$1.vue", // 匹配components目录内的vue文件
+			"^scroll-(.*)": "@/components/scroll/scroll.vue", // 匹配components目录内的vue文件
+			"^board-(.*)": "@/components/home/board-$1/board-$1.vue" // 匹配components目录内的vue文件
 		}
 		
 	}
