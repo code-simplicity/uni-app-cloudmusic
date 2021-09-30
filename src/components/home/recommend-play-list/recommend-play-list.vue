@@ -6,7 +6,7 @@
 		</view>
 		<view class="recommend-play-content scroll-x-box">
 			<scroll-view scroll-x="true" class="scroll-x">
-				<view class="recommend-play-wrap" v-for="(item, index) of songlist" :key="item.id">
+				<view class="recommend-play-wrap" v-for="(item, index) in songlist" :key="item.id">
 					<view class="cover">
 						<u-image mode="widthFix" border-radius="10" :src="item.picUrl + '?param=270y270'"></u-image>
 						<view class="play-count">{{ (utils.tranNumber(item.playcount)) }}</view>
