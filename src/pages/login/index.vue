@@ -80,7 +80,7 @@ export default {
 							// 存储cookie
 							uni.setStorageSync('cookie', res.cookie);
 							// 存储token
-							uni.setStorageSync('cookie', res.token);
+							uni.setStorageSync('token', res.token);
 							// 设置为登录状态
 							uni.setStorageSync('loginState', true);
 							// 设置登录状态响应
