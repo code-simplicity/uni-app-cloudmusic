@@ -18,13 +18,13 @@ http.setConfig((config) => {
 	config.timeout = 60 * 1000
 	// 跨域请求时是否携带凭证（cookies）仅H5支持（HBuilderX 2.6.15+）
 	config.withCredentials = true
-	config.dataType = 'json'
-	config.header = {
-		'X-Requested-With': 'XMLHttpRequest',
-		Accept: 'application/json',
-		'Content-Type': 'application/json; charset=UTF-8',
-	}
-	config.responseType = 'json' || 'text'
+	// config.dataType = 'json'
+	// config.header = {
+	// 	'X-Requested-With': 'XMLHttpRequest',
+	// 	Accept: 'application/json',
+	// 	'Content-Type': 'application/json; charset=UTF-8',
+	// }
+	config.responseType = 'json'
 	return config
 })
 
@@ -49,12 +49,12 @@ http.interceptors.response.use((response) => {
 			title: '请先登录',
 			icon: 'error'
 		})
-		this.$Router.replace({
-			name: 'Login'
-		})
-		// uni.switchTab({
-		//     url: 'pages/home/index'
-		// });
+		// this.$Router.replace({
+		// 	name: 'Login'
+		// })
+		uni.redirectTo({
+		    url: 'pages/login/index'
+		});
 	} else {
 		return Promise.reject(response)
 	}
