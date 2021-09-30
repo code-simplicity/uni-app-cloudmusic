@@ -85,6 +85,7 @@
     "cross-env": "^7.0.2",
     "jest": "^25.4.0",
     "js-md5": "^0.7.3",
+    "lyric-parser": "^1.0.1",
     "mini-types": "*",
     "miniprogram-api-typings": "*",
     "postcss-comment": "^2.0.0",
