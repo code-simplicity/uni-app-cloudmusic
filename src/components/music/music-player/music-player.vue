@@ -35,10 +35,23 @@
 					</view>
 				</view>
 				<view class="musci-content">
-					<view class="musci-content-cover">
-						<image class="image-cover" :src="currentSong.image" mode="aspectFit"></image>
+					<view class="musci-content-cover" @click="openLyric('image')" v-if="showLyric">
+						<view class=""></view>
+						<image
+							class="image-cover  animate__animated animate__bounceIn"
+							:class="playing ? 'playing' : ''"
+							:src="currentSong.image"
+							mode="aspectFit"
+						></image>
 					</view>
-					<view class="musci-content-lyric"><!-- 歌词 --></view>
+					<view class="musci-content-lyric" @click="openLyric('lyric')" v-else>
+						<lyric
+							:audio="audio"
+							@marginTop="marginTop"
+							:currentLyric="currentLyric"
+							:currentLyricNum="currentLyricNum"
+						></lyric>
+					</view>
 				</view>
 				<view class="musci-tools">
 					<view class="musci-like">
@@ -113,6 +126,7 @@
  * description
  */
 import { mapGetters, mapActions, mapMutations } from 'vuex';
+import Lyric from 'lyric-parser';
 import { playMode } from '@/utils/playmode.js';
 
 export default {
@@ -127,14 +141,25 @@ export default {
 			currentTime: 0,
 			// 音乐进度条
 			progressBar: 0,
-			// 歌曲正在播放
-			songReady: false,
 			// 进度条状态
 			progressState: false,
 			// 歌曲是否正在播放
-			songReady: false,
 			// 播放器实例
 			audio: uni.createInnerAudioContext(),
+			// 打开歌词
+			showLyric: true,
+			// 当前歌词
+			currentLyric: null,
+			// 是否是有歌词的音乐
+			isPureMusic: false,
+			// 播放的歌词
+			playingLyric: '',
+			// 歌词行数
+			currentLyricNum: 0,
+			canLyricPlay: false,
+			// 歌词滚动距离
+			// marginTop: 0
+			marTop: 0
 		};
 	},
 	component: {},
@@ -168,14 +193,19 @@ export default {
 				return;
 			}
 			this.songReady = false;
+			// 歌词处理
+			// 歌词id加载
+			this.canLyricPlay = false;
+			this.getLyric(newVal.id);
 			this.$nextTick(function() {
 				if (this.audio) {
 					this.audio.src = newVal.url;
 					this.audio.autoplay = true;
-					this.audio.play()
-					this.onTimeUpdate()
-					this.onEnded()
-					// this.saveHistoryList(newVal);
+					this.audio.play();
+					this.onPlay();
+					this.onTimeUpdate();
+					this.onEnded();
+					this.saveHistoryList(newVal);
 				}
 			});
 			// 假若歌曲为播放，就认为超时，做超时处理
@@ -195,10 +225,119 @@ export default {
 		}
 	},
 
-	mounted() {
-		this.onEnded()
-	},
+	mounted() {},
 	methods: {
+		// 收到歌词滚动的距离了
+		marginTop(top) {
+			console.log(top);
+			this.marTop = top;
+		},
+		// 获取歌词
+		async getLyric(id) {
+			try {
+				let res = await this.$api.getLyric(id);
+				if (res.code === this.$code.code_status) {
+					let lyric = res.lrc.lyric;
+					this.currentLyric = new Lyric(lyric, this.lyricHandle);
+					if (this.isPureMusic) {
+						this.playingLyric = this.sliceNull(this.parseLyric(this.currentLyric.lrc));
+					}
+				}
+			} catch (error) {
+				this.currentLyric = null;
+				this.playingLyric = '';
+				this.currentLyricNum = 0;
+			}
+		},
+
+		//去除空白行
+		sliceNull(lrc) {
+			var result = [];
+			for (var i = 0; i < lrc.length; i++) {
+				if (lrc[i][1] !== '') {
+					result.push(lrc[i]);
+				}
+			}
+			return result;
+		},
+
+		// 格式化歌词
+		parseLyric(text) {
+			let result = [];
+			let lines = text.split('\n'), //切割每一行
+				pattern = /\[\d{2}:\d{2}.\d+\]/g; //用于匹配时间的正则表达式，匹配的结果类似[xx:xx.xx]
+			//去掉不含时间的行
+			while (!pattern.test(lines[0])) {
+				lines = lines.slice(1);
+			}
+			//上面用'\n'生成数组时，结果中最后一个为空元素，这里将去掉
+			lines[lines.length - 1].length === 0 && lines.pop();
+			lines.forEach(function(v /*数组元素值*/, i /*元素索引*/, a /*数组本身*/) {
+				//提取出时间[xx:xx.xx]
+				var time = v.match(pattern),
+					//提取歌词
+					value = v.replace(pattern, '');
+				// 因为一行里面可能有多个时间，所以time有可能是[xx:xx.xx][xx:xx.xx][xx:xx.xx]的形式，需要进一步分隔
+				time.forEach(function(v1, i1, a1) {
+					//去掉时间里的中括号得到xx:xx.xx
+					var t = v1.slice(1, -1).split(':');
+					//将结果压入最终数组
+					result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), value]);
+				});
+			});
+			// 最后将结果数组中的元素按时间大小排序，以便保存之后正常显示歌词
+			result.sort(function(a, b) {
+				return a[0] - b[0];
+			});
+			return result;
+		},
+
+		// 歌词滚动的方法
+		lyricsRolling(audio) {
+			// 歌词滚动
+			this.marTop = (this.currentLyricNum - 3) * 39;
+			if (this.currentLyricNum !== this.currentLyric.lines.length - 1) {
+				for (let j = this.currentLyricNum; j < this.currentLyric.lines.length; j++) {
+					// 当前时间与前一行，后一行时间作比较， j:代表当前行数
+					//倒数第二行
+					if (this.currentLyricNum === this.currentLyric.lines.length - 2) {
+						//最后一行只能与前一行时间比较
+						if (
+							parseFloat(audio.currentTime) >
+							parseFloat(this.currentLyric.lines[this.currentLyric.lines.length - 1][0])
+						) {
+							this.setData({
+								currentLyricNum: this.currentLyric.lines - 1
+							});
+							return;
+						}
+					} else {
+						if (
+							parseFloat(audio.currentTime) > parseFloat(this.currentLyric.lines[j][0]) &&
+							parseFloat(audio.currentTime) < parseFloat(this.currentLyric.lines[j + 1][0])
+						) {
+							return;
+						}
+					}
+				}
+			}
+		},
+
+		// 歌词的回调以及歌词在某一个位子固定
+		lyricHandle({ lineNum, txt }) {
+			this.currentLyricNum = lineNum;
+			this.playingLyric = txt;
+		},
+
+		// 打开歌词
+		openLyric(val) {
+			if (val === 'image') {
+				this.showLyric = false;
+			} else if (val === 'lyric') {
+				this.showLyric = true;
+			}
+		},
+
 		// 打开播放器页面
 		openMusciDetail() {
 			if (this.showMusicDetail) {
@@ -212,7 +351,7 @@ export default {
 			const currentTime = ((val.detail.value / 100) * this.currentSong.duration) / 1000;
 			this.audio.currentTime = currentTime * 1000;
 			this.currentTime = currentTime * 1000;
-			this.progressState = false
+			this.progressState = false;
 			if (!this.playing) {
 				this.togglePlaying();
 			}
@@ -224,6 +363,9 @@ export default {
 			const currentTime = (val.detail.value / 100) * this.currentSong.duration;
 			this.currentTime = currentTime;
 			this.progressBar = val.detail.value;
+			if (!this.playing) {
+				this.togglePlaying();
+			}
 		},
 
 		// 更新播放器时间
@@ -232,6 +374,7 @@ export default {
 				if (!this.progressState) {
 					this.currentTime = this.audio.currentTime;
 					this.progressBar = (this.audio.currentTime / this.currentSong.duration) * 100;
+					this.lyricsRolling(this.audio);
 				}
 			});
 		},
@@ -241,14 +384,34 @@ export default {
 			this.audio.onCanplay(() => {
 				clearTimeout(this.timer);
 				this.songReady = true;
+				this.canLyricPlay = false;
+				if (this.currentLyric && !this.isPureMusic) {
+					this.currentLyric.seek(this.currentTime * 1000);
+				}
 			});
 		},
-		
+
+		// 歌曲播放
+		onPlay() {
+			this.audio.onPlay(() => {
+				clearTimeout(this.timer);
+				this.songReady = true;
+				this.canLyricPlay = true;
+			});
+		},
+
+		// 歌曲暂停
+		onPause() {
+			this.audio.onPause(() => {
+				this.setPlayingState(false);
+			});
+		},
+
 		// 歌曲跳转到指定位置
 		seek() {
-			this.audio.seek((position) => {
-				console.log(position)
-			})
+			this.audio.seek(position => {
+				console.log(position);
+			});
 		},
 
 		// 单曲循环
@@ -365,7 +528,13 @@ export default {
 			setPlayMode: 'PLAY_MODE',
 			setPlayList: 'PLAY_LIST'
 		}),
-		...mapActions('player', ['selectPlay', 'pausePlay', 'saveHistoryList'])
+		...mapActions('player', {
+			selectPlay: 'selectPlay',
+			pausePlay: 'pausePlay',
+			saveHistoryList: 'saveHistoryList',
+			deleteHistoryList: 'deleteHistoryList',
+			clearHistoryList: 'clearHistoryList'
+		})
 	}
 };
 </script>
@@ -430,6 +599,7 @@ export default {
 }
 .musci-player-detail {
 	width: 100%;
+	height: 100%;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -437,7 +607,7 @@ export default {
 	z-index: 9999;
 	.musci-player-box {
 		padding: 10rpx 16rpx;
-		background-color: #d7efee;
+		background-color: #d6d6d6;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -461,9 +631,29 @@ export default {
 					width: 400rpx;
 					height: 400rpx;
 					border-radius: 50%;
+					&.playing {
+						animation-duration: 6s;
+						animation-delay: 6s;
+						animation: loading 6s linear infinite;
+					}
+				}
+				@keyframes loading {
+					0% {
+						transform: rotate(0deg);
+					}
+					100% {
+						transform: rotate(360deg);
+					}
 				}
 			}
 			.musci-content-lyric {
+				width: 100%;
+				border-radius: 8rpx;
+				padding: 0;
+				font-size: 38rpx;
+				overflow: hidden;
+				color: #ffffff;
+				margin-top: 30rpx;
 			}
 		}
 		.musci-tools {
