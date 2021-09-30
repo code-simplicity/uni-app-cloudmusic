@@ -14,6 +14,10 @@ export const getPersonalizedNewSong = (limit) => api.get(`/personalized/newsong?
  * 获取歌曲详情
  */
 export const getSongDetail = (params) => api.get(`/song/detail`, {
-    params
+	params
 })
 
+/**
+ * 获取歌词
+ */
+export const getLyric = id => api.get(`/lyric?id=${id}`, {})
