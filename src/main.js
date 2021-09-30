@@ -13,6 +13,11 @@ Vue.use(router);
 // 引入暴露的api接口
 import api from './api/index.js'
 
+// 暴露歌曲格式化工具
+// import {
+// 	createSong
+// } from 'utils/song.js'
+
 // 一些常量接入
 import constant from './utils/constant.js'
 
@@ -33,6 +38,9 @@ Vue.prototype.$api = api
 Vue.prototype.$code = constant
 // 工具挂载
 Vue.prototype.utils = utils
+
+// Vue.prototype.$createSong = createSong
+
 App.mpType = 'app'
 
 const app = new Vue({
