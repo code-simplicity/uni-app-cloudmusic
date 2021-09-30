@@ -10,6 +10,20 @@
 				<recommend-play-list :songlist="songlist"></recommend-play-list>
 			</view>
 			<view class="home-recommend-new-song"><recommend-new-song :newSong="newSong"></recommend-new-song></view>
+			<!-- 排行榜 -->
+			<view class="home-recommend-board">
+				<view class="home-recommend-board-header">
+					<text class="home-recommend-board-text">排行榜</text>
+					<text class="home-recommend-board-more">更多</text>
+				</view>
+				<view class="home-recommend-board-swiper">
+					<swiper :indicator-dots="false" :duration="1000">
+						<swiper-item><board-new-song></board-new-song></swiper-item>
+						<swiper-item><board-original-list></board-original-list></swiper-item>
+						<swiper-item><board-hot-video></board-hot-video></swiper-item>
+					</swiper>
+				</view>
+			</view>
 		</view>
 		<music-player></music-player>
 		<!-- 左侧弹出菜单 -->
@@ -36,9 +50,7 @@ export default {
 			newSong: []
 		};
 	},
-	component: {
-		
-	},
+	component: {},
 
 	mounted() {
 		this.getRecommendResource();
@@ -117,7 +129,9 @@ export default {
 <style lang="scss" scoped>
 .home-box {
 	width: 100%;
+	height: 100%;
 	display: flex;
+	bottom: calc(var(--window-bottom));
 	.home-header {
 		width: 100%;
 		position: fixed;
@@ -150,6 +164,33 @@ export default {
 		.home-recommend-new-song {
 			display: flex;
 			flex-direction: column;
+		}
+		.home-recommend-board {
+			display: flex;
+			flex-direction: column;
+			margin-top: 16rpx;
+			background-color: #ffffff;
+			padding: 20rpx;
+			.home-recommend-board-header {
+				display: flex;
+				flex: 1;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 20rpx;
+				.home-recommend-board-text {
+				}
+				.home-recommend-board-more {
+					border-radius: 16rpx;
+					border: 1px solid #000000;
+					padding: 6rpx;
+				}
+			}
+			.home-recommend-board-swiper {
+				border: 1px solid #c3c3c3;
+				padding: 10rpx;
+				border-radius: 16rpx;
+				box-shadow: 0rpx 0rpx 5rpx  rgba(0, 0, 0, 0.5);
+			}
 		}
 	}
 }
