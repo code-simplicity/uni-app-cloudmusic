@@ -109,8 +109,8 @@
 			}
 		},
 		{
-			"path": "pages/music-detail/music-detail",
-			"name": "MusicDetail",
+			"path": "pages/player/index",
+			"name": "Player",
 			"meta": {
 				"title": "播放详情"
 			},
