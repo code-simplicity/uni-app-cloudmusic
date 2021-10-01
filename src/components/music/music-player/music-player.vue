@@ -3,9 +3,9 @@
 		<view class="music-player-box">
 			<view class="music-play-wrap" @click="openMusciDetail">
 				<view class="cover"><image class="image-cover" :src="currentSong.image" mode="aspectFit"></image></view>
-				<view class="music-name-info">
-					<text class="musci-name">{{ currentSong.name }}--</text>
-					<text class="musci-singer">{{ currentSong.singer }}</text>
+				<view class="music-name-info  u-line-1">
+					<view class="musci-name u-line-1">{{ currentSong.name }}--</view>
+					<view class="musci-singer u-line-1">{{ currentSong.singer }}</view>
 				</view>
 			</view>
 			<view class="music-button-list">
@@ -571,16 +571,13 @@ export default {
 			}
 			.music-name-info {
 				margin-left: 20rpx;
-				flex-wrap: nowrap;
+				display: flex;
+				flex-direction: row;
 				.musci-name {
 					font-size: 32rpx;
-					word-wrap: break-word;
-					text-overflow: ellipsis;
 				}
 				.musci-singer {
 					font-size: 26rpx;
-					word-wrap: break-word;
-					text-overflow: ellipsis;
 				}
 			}
 		}
