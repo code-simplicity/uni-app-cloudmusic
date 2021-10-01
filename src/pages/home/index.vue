@@ -17,8 +17,8 @@
 					<text class="home-recommend-board-more">更多</text>
 				</view>
 				<view class="home-recommend-board-swiper">
-					<swiper :indicator-dots="false" :duration="1000">
-						<swiper-item><board-new-song></board-new-song></swiper-item>
+					<swiper :indicator-dots="false" class="swiper">
+						<swiper-item class="swiper-item"><board-new-song></board-new-song></swiper-item>
 						<swiper-item><board-original-list></board-original-list></swiper-item>
 						<swiper-item><board-hot-video></board-hot-video></swiper-item>
 					</swiper>
@@ -53,7 +53,7 @@ export default {
 	component: {},
 
 	mounted() {
-		this.getRecommendResource();
+		this.getPersonalized();
 		this.getPersonalizedNewSong();
 	},
 
@@ -99,12 +99,12 @@ export default {
 		},
 
 		// 获取推荐歌单
-		getRecommendResource() {
+		getPersonalized() {
 			this.$api
-				.getRecommendResource()
+				.getPersonalized(this.limit)
 				.then(res => {
 					if (res.code === this.$code.code_status) {
-						this.songlist = res.recommend;
+						this.songlist = res.result;
 					}
 				})
 				.catch(err => {
@@ -145,7 +145,7 @@ export default {
 		background-color: #eaeaea;
 	}
 	.home-content {
-		padding: 0 10rpx;
+		padding: 0 22rpx;
 		width: 100%;
 		flex-direction: column;
 		margin-top: 100rpx;
@@ -189,7 +189,15 @@ export default {
 				border: 1px solid #c3c3c3;
 				padding: 10rpx;
 				border-radius: 16rpx;
-				box-shadow: 0rpx 0rpx 5rpx  rgba(0, 0, 0, 0.5);
+				box-shadow: 0rpx 0rpx 5rpx rgba(0, 0, 0, 0.5);
+				height: 100%;
+
+				.swiper {
+					height: 340rpx;
+					.swiper-item {
+						height: 100%;
+					}
+				}
 			}
 		}
 	}
