@@ -18,13 +18,22 @@ http.setConfig((config) => {
 	config.timeout = 60 * 1000
 	// 跨域请求时是否携带凭证（cookies）仅H5支持（HBuilderX 2.6.15+）
 	config.withCredentials = true
-	// config.dataType = 'json'
+	config.dataType = 'json'
+	config.header = {
+		'Content-Type': 'multipart/form-data;application/json;charset=UTF-8;'
+	}
 	// config.header = {
 	// 	'X-Requested-With': 'XMLHttpRequest',
 	// 	Accept: 'application/json',
 	// 	'Content-Type': 'application/json; charset=UTF-8',
 	// }
+
+	// #ifdef APP-PLUS || H5
 	config.responseType = 'json'
+
+	// #ifdef MP
+	config.responseType = 'text'
+
 	return config
 })
 
@@ -33,33 +42,35 @@ http.interceptors.request.use((config) => {
 	config.header = {
 		...config.header
 	}
+	if (config.method === 'POST') {
+		config.data = JSON.stringify(config.data);
+	}
 	return config
-}, (config) => {
-	return Promise.reject(config)
+}, (error) => {
+	return Promise.reject(error)
 })
 
 // 响应拦截器
 http.interceptors.response.use((response) => {
 	let data = response.data
-	let status = response.status
-	if (data.code === 200) {
+	let status = response.statusCode
+	if (status === 200) {
 		return Promise.resolve(data)
-	} else if (data.code === 301) {
-		uni.showToast({
-			title: '请先登录',
-			icon: 'error'
-		})
-		// this.$Router.replace({
-		// 	name: 'Login'
-		// })
-		uni.redirectTo({
-		    url: 'pages/login/index'
-		});
 	} else {
 		return Promise.reject(response)
 	}
-}, response => {
-	return Promise.reject(response)
+}, error => {
+	if (error.statusCode === 301) {
+		uni.showToast({
+			title: '需要登录',
+			icon: 'error'
+		})
+		uni.clearStorageSync();
+		uni.switchTab({
+			url: '/pages/login/index'
+		})
+	}
+	return Promise.reject(error)
 })
 
 // 请求方式的组合
