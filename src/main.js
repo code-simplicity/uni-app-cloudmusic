@@ -18,6 +18,8 @@ import api from './api/index.js'
 // 	createSong
 // } from 'utils/song.js'
 
+import player from './utils/player.js'
+
 // 一些常量接入
 import constant from './utils/constant.js'
 
@@ -38,6 +40,8 @@ Vue.prototype.$api = api
 Vue.prototype.$code = constant
 // 工具挂载
 Vue.prototype.utils = utils
+
+Vue.prototype.player = player
 
 // Vue.prototype.$createSong = createSong
 
