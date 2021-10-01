@@ -5,11 +5,12 @@
 			<view
 				class="board-new-warp"
 				v-for="(item, index) of hotSong"
-				:class="index === currentIndex && currentSong.id == item.id && playing ? 'playing' : ''"
+				:key="item.id"
+				:class="index === currentIndex && currentSong.id === item.id && playing ? 'playing' : ''"
 			>
 				<view class="board-new-image">
 					<view class="board-new-cover">
-						<image class="image-cover" :src="item.image" mode="aspectFit" lazy-load="true"></image>
+						<image class="image-cover image-border" :src="item.image" mode="aspectFit" lazy-load="true"></image>
 					</view>
 					<u-icon
 						class="play-btn"
@@ -193,6 +194,7 @@ export default {
 	}
 	.board-new-content {
 		width: 100%;
+		height: 100%;
 		.board-new-warp {
 			display: flex;
 			justify-content: space-between;
