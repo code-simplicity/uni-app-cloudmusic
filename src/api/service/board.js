@@ -1,4 +1,5 @@
 import api from '@/common/luch-request.js'
+// import api from '@/common/instance.js'
 
 /**
  * 获取榜单

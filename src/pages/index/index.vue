@@ -13,6 +13,7 @@
  * time     2021-9-23 5:15:06 ?F10: PM?
  * description
  */
+import { mapGetters } from 'vuex';
 export default {
 	name: 'Index',
 	data() {
@@ -21,24 +22,30 @@ export default {
 			timer: null
 		};
 	},
+
+	computed: {
+		...mapGetters('user', ['userInfo', 'loginState'])
+	},
+
 	component: {},
 	mounted() {
 		this.timer = setTimeout(() => {
 			// // 定时器路由到登录
-			uni.redirectTo({
-				url:'/pages/login/index'
-			})
-			// uni.switchTab({
-			//     url: 'pages/home/index'
-			// });
-			// this.$Router.replace({
-			// 	name: 'Home'
-			// })
-		},2000);
+			// if (this.loginState === null || this.loginState === undefined) {
+			// 	uni.redirectTo({
+			// 		url: '/pages/login/index'
+			// 	});
+			// } else {
+			// 	// uni.switchTab({
+			// 	// 	url: 'pages/home/index'
+			// 	// });
+			// }
+			uni.switchTab({
+				url: 'pages/home/index'
+			});
+		}, 2000);
 	},
-	methods: {
-		
-	},
+	methods: {},
 	destroyed() {
 		// 销毁定时器
 		if (this.timer) {

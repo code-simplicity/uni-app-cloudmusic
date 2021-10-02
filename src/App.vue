@@ -1,38 +1,33 @@
 <script>
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
 	onLaunch: function() {
-		// 每次进入app的时候都检查是否登录
-		// let userInfo = uni.getStorageSync('userInfo') || '';
-		// if (userInfo.id) {
-		// 	// 更新登录状态
-		// 	uni.getStorage({
-		// 		key: 'userInfo',
-		// 		success: res => {
-		// 			this.userInfo(res.data);
-		// 			this.loginState(true);
-		// 		}
-		// 	});
-		// }
+		// #ifdef APP-PLUS
+		// token标志来判断
+		let token = uni.getStorageSync('token');
+		if (token) {
+			plus.navigator.closeSplashscreen();
+		} else {
+			//不存在则跳转至登录页
+			uni.reLaunch({
+				url: '/pages/login/login',
+				success: () => {
+					plus.navigator.closeSplashscreen();
+				}
+			});
+		}
+		// #endif
 		console.log('App Launch');
-		// let player = this.player;
-		// let url = 'https://music.163.com/song/media/outer/url?id=1882669038.mp3';
-		// player.setUrl(url);
-		// player.play();
-		// console.log('player', url);
-		// 创建实例
-		this.createAudio()
 	},
-	methods: {
-		// 创建全局唯一的播放器实例
-		createAudio() {
-			const player = this.player;
-			player.autoplay = true;
-		},
 
+	computed: {
+		...mapGetters('user', ['userInfo', 'loginState'])
+	},
+
+	methods: {
 		...mapMutations('user', {
-			userInfo: 'USER_INFO',
-			loginState: 'LOGIN_STATE'
+			setUserInfo: 'USER_INFO',
+			setLoginState: 'LOGIN_STATE'
 		})
 	},
 	onShow: function() {

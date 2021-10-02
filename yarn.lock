@@ -2531,6 +2531,13 @@
   "resolved" "https://registry.nlark.com/aws4/download/aws4-1.11.0.tgz"
   "version" "1.11.0"
 
+"axios@^0.22.0":
+  "integrity" "sha1-v3AsQftQ+8pFOVidg5oHcRe3myU="
+  "resolved" "https://registry.npmmirror.com/axios/download/axios-0.22.0.tgz"
+  "version" "0.22.0"
+  dependencies:
+    "follow-redirects" "^1.14.4"
+
 "babel-jest@^25.5.1":
   "integrity" "sha1-vC5hAfhJ1vauwJcg/8e8UzLmKFM="
   "resolved" "https://registry.nlark.com/babel-jest/download/babel-jest-25.5.1.tgz"
@@ -4966,7 +4973,7 @@
   dependencies:
     "request" "^2.85.0"
 
-"follow-redirects@^1.0.0":
+"follow-redirects@^1.0.0", "follow-redirects@^1.14.4":
   "integrity" "sha1-g4/fSKi73XnlLuUfsclOPtmLk3k="
   "resolved" "https://registry.nlark.com/follow-redirects/download/follow-redirects-1.14.4.tgz?cache=0&sync_timestamp=1631622206750&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.14.4.tgz"
   "version" "1.14.4"

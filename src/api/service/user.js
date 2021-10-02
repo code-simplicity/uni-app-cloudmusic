@@ -1,5 +1,6 @@
 // 引入接口
 import api from '@/common/luch-request.js'
+// import api from '@/common/instance.js'
 
 /**
  * 手机登录接口
@@ -17,3 +18,13 @@ export const loginWithPhone = params => api.get(`/login/cellphone`, {
  * @param {*} uid 用户id
  */
 export const getUserInfo = (uid) => api.get(`/user/detail?uid=${uid}`, {})
+
+/**
+ * 获取喜欢的音乐
+ */
+export const getLikeList = (uid) => api.get(`/likelist?uid=${uid}`, {})
+
+/**
+ * 获取用户登录状态
+ */
+export const getLoginStatus = () => api.get(`/login/status`, {})

@@ -15,19 +15,17 @@ const {
 // 全局配置
 http.setConfig((config) => {
 	config.baseURL = api_base_url
+	// #ifdef H5 || APP-PLUS || MP-ALIPAY || MP-WEIXIN
 	config.timeout = 60 * 1000
+	// #ifdef H5
 	// 跨域请求时是否携带凭证（cookies）仅H5支持（HBuilderX 2.6.15+）
-	config.withCredentials = true
+	config. withCredentials = true
+	
 	config.dataType = 'json'
 	config.header = {
+		'X-Requested-With': 'XMLHttpRequest',
 		'Content-Type': 'multipart/form-data;application/json;charset=UTF-8;'
 	}
-	// config.header = {
-	// 	'X-Requested-With': 'XMLHttpRequest',
-	// 	Accept: 'application/json',
-	// 	'Content-Type': 'application/json; charset=UTF-8',
-	// }
-
 	// #ifdef APP-PLUS || H5
 	config.responseType = 'json'
 
@@ -56,32 +54,35 @@ http.interceptors.response.use((response) => {
 	let status = response.statusCode
 	if (status === 200) {
 		return Promise.resolve(data)
-	} else {
-		return Promise.reject(response)
-	}
-}, error => {
-	if (error.statusCode === 301) {
+	} else
+	if (status === 301) {
 		uni.showToast({
 			title: '需要登录',
 			icon: 'error'
 		})
-		uni.clearStorageSync();
 		uni.switchTab({
 			url: '/pages/login/index'
 		})
+	} else {
+		return Promise.reject(response)
 	}
+}, error => {
+
 	return Promise.reject(error)
 })
 
 // 请求方式的组合
 let requestMethod = ['get', 'post']
 // 遍历请求方式
+
 requestMethod.forEach(method => {
 	api[method] = function(url, data, config) {
 		return new Promise(function(resolve, reject) {
-			http.get(url, data, config).then(response => {
+			http[method](url, data, config).then((response) => {
+				// 成功调用promise
 				resolve(response)
-			}).catch(error => {
+			}).catch((error) => {
+				// 调用promise失败
 				reject(error)
 			})
 		})

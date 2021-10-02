@@ -1,0 +1,122 @@
+<template>
+	<view class="user-play-list">
+		<view class="user-play-header">
+			<view class="user-play-header-text">{{ header }}</view>
+			<view class="user-play-header-tools">
+				<view class="user-play-header-add"><u-icon name="plus" color="#2979ff" size="30"></u-icon></view>
+				<view class="user-play-header-more">
+					<u-icon name="more-dot-fill" color="#2979ff" size="30"></u-icon>
+				</view>
+			</view>
+		</view>
+		<view class="user-play-content" v-for="(item, index) of songList" :key="item.id">
+			<view class="user-play-image">
+				<image class="image-cover image-border" :src="item.coverImgUrl" mode="aspectFit"></image>
+			</view>
+			<view class="user-play-detail">
+				<view class="user-play-name">{{ item.name }}</view>
+
+				<view class="user-play-num">
+					<text class="user-list-count">{{ item.trackCount }}</text>
+					<text>by.{{ item.creator.nickname }}</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+/**
+ * author	bugdr
+ * time     2021-10-1 10:16:19 ?F10: PM?
+ * description
+ */
+
+export default {
+	name: 'user-play-list',
+	data() {
+		return {};
+	},
+
+	props: {
+		songList: {
+			type: Array
+		},
+
+		header: {
+			type: String
+		}
+	},
+
+	component: {},
+	mounted() {},
+	methods: {}
+};
+</script>
+
+<style lang="scss" scoped>
+.user-play-list {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	.user-play-header {
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 30rpx;
+		align-items: center;
+		justify-content: space-between;
+		.user-play-header-text {
+			font-size: 30rpx;
+		}
+		.user-play-header-tools {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			.user-play-header-add {
+				font-size: 26rpx;
+				margin-right: 40rpx;
+			}
+			.user-play-header-more {
+				font-size: 26rpx;
+			}
+		}
+	}
+	.user-play-content {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 20rpx;
+		width: 100%;
+		.user-play-image {
+			flex: 1;
+			.image-cover {
+				width: 100rpx;
+				height: 100rpx;
+			}
+		}
+		.user-play-detail {
+			flex: 5;
+			margin-left: 20rpx;
+			display: flex;
+			flex-direction: column;
+			width: 0;
+			.user-play-name {
+				flex: 1;
+				font-size: 30rpx;
+				margin-bottom: 10rpx;
+				flex-wrap: nowrap;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				word-break: break-all;
+			}
+			.user-play-num {
+				font-size: 26rpx;
+				.user-list-count {
+					margin-right: 20rpx;
+				}
+			}
+		}
+	}
+}
+</style>

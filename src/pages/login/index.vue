@@ -66,7 +66,6 @@ export default {
 	methods: {
 		// 登录
 		login() {
-			debugger;
 			if (this.mode === 'phone') {
 				let params = {
 					phone: this.phoneNumber,
@@ -78,28 +77,17 @@ export default {
 					.then(res => {
 						if (res.code === this.$code.code_status) {
 							this.getUserInfo(res.profile.userId);
-							// 存储cookie
-							uni.setStorage({
-								key: 'cookie',
-								data: res.cookie
-							});
-							// uni.setStorageSync('cookie', res.cookie);
-							// 存储token
-							uni.setStorage({
-								key: 'token',
-								data: res.token
-							});
-							// uni.setStorageSync('token', res.token);
-							// 设置为登录状态
-							uni.setStorage({
-								key: 'loginState',
-								data: true
-							});
-							// uni.setStorageSync('loginState', true);
+
+							uni.setStorageSync('cookie', res.cookie);
+
+							uni.setStorageSync('token', res.token);
+
+							uni.setStorageSync('loginState', true);
 							// 设置登录状态响应
 							this.setLoginState(true);
 							// 获取用户信息到vuex
 							this.setUserInfo(res.profile);
+							// this.getLoginStatus()
 						}
 					})
 					.catch(error => {
@@ -107,6 +95,13 @@ export default {
 					});
 			}
 		},
+
+		// getLoginStatus() {
+		// 	this.$api.getLoginStatus().then(res => {
+
+		// 	})
+		// },
+
 		// 获取用户登录信息
 		getUserInfo(uid) {
 			this.$api.getUserInfo(uid).then(res => {
@@ -116,32 +111,19 @@ export default {
 					userInfo.listenSongs = res.listenSongs;
 					userInfo.createTime = res.createTime;
 					userInfo.createDays = res.createDays;
-					uni.setStorage({
-						key: 'userInfo',
-						data: JSON.stringify(userInfo)
-					});
-					// uni.setStorageSync('userInfo', JSON.stringify(userInfo));
-					this.setUserInfo(res.profile);
 					// 登录成功，跳转到首页
 					this.$refs.uToast.show({
 						title: '登录成功',
 						type: 'success'
 					});
 					// 设置定时器2s跳转到首页
-					uni.switchTab({
-						url: 'pages/home/index'
-						// success() {
-						// 	uni.showToast({
-						// 		title: '成功登陆',
-						// 		type: 'success'
-						// 	});
-						// }
-					});
-					// setTimeout(() => {
-					// 	this.$Router.replace({
-					// 		name: 'Home'
-					// 	});
-					// }, 2000);
+					setTimeout(() => {
+						this.$Router.replace({
+							name: 'Home'
+						});
+					}, 1000);
+					uni.setStorageSync('userInfo', JSON.stringify(userInfo));
+					this.setUserInfo(res.profile);
 				}
 			});
 		},

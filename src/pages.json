@@ -123,6 +123,22 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/play-music-detail/index",
+			"name": "PlayDetail",
+			"meta": {
+				"title": "歌单详情"
+			},
+			"style": {
+				"navigationBarTitleText": "歌单详情",
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 
@@ -182,8 +198,10 @@
 			"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue", //匹配uview组件
 			"^music-(.*)": "@/components/music/music-$1/music-$1.vue", // 匹配components目录内的vue文件
 			"^scroll-(.*)": "@/components/scroll/scroll.vue", // 匹配components目录内的vue文件
-			"^board-(.*)": "@/components/home/board-$1/board-$1.vue" // 匹配components目录内的vue文件
+			"^board-(.*)": "@/components/home/board-$1/board-$1.vue", // 匹配components目录内的vue文件
+			"^user-(.*)": "@/components/user/user-$1/user-$1.vue", // 匹配components目录内的vue文件
+			"^play-(.*)": "@/components/play-list/play-$1/play-$1.vue" // 匹配components目录内的vue文件
 		}
-		
+
 	}
 }
