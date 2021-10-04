@@ -16,10 +16,36 @@
 				</view>
 			</view>
 		</view>
-		<view class="play-list-content" v-for="(item, index) in songs">
+		<view
+			class="play-list-content"
+			v-for="(item, index) in songs"
+			:key="index"
+			:class="index === currentIndex && currentSong.id === item.id && playing ? 'playing' : ''"
+		>
 			<view class="play-list-left">
-				<view class="play-list-index">{{ utils.formatZero(index + 1, 2) }}</view>
-				<view class="play-list-info">
+				<view class="play-list-index">
+					<view class="index">{{ utils.formatZero(index + 1, 2) }}</view>
+					<u-icon
+						custom-prefix="iconfont"
+						class="play-btn"
+						name="iconfont icon-bofang1"
+						color="#be0c00"
+						size="56"
+						@click="playMusci(item, index)"
+					></u-icon>
+					<u-icon
+						custom-prefix="iconfont"
+						class="pause-btn"
+						name="iconfont icon-zanting1"
+						color="#be0c00"
+						size="56"
+						@click="pauseSong"
+					></u-icon>
+				</view>
+				<view class="play-list-images" @click="playMusci(item, index)">
+					<image class="image-cover image-border" :src="item.image" mode="aspectFit"></image>
+				</view>
+				<view class="play-list-info" @click="playMusci(item, index)">
 					<view class="play-list-title">
 						<text class="title">{{ utils.strslice(item.name) }}</text>
 					</view>
@@ -52,7 +78,7 @@
  * time     2021-10-2 8:17:57 ?F10: PM?
  * description
  */
-
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
 	name: 'play-list-music',
 	data() {
@@ -64,9 +90,40 @@ export default {
 		}
 	},
 
+	computed: {
+		...mapGetters('player', ['currentIndex', 'currentSong', 'playing'])
+	},
+
 	component: {},
 	mounted() {},
-	methods: {}
+	methods: {
+		// 播放音乐
+		playMusci(item, index) {
+			this.$Router.push({
+				name: 'Player',
+				params: {
+					newSong: this.songs,
+					index: index
+				}
+			});
+		},
+
+		// 暂停
+		pauseSong() {
+			this.pausePlay();
+			this.$audio_player.pause()
+		},
+
+		...mapActions('player', ['selectPlay', 'pausePlay', 'playAll']),
+
+		// 响应状态
+		...mapMutations('player', {
+			setPlayingState: 'PLAYING_STATE',
+			setCurrentIndex: 'CURRENT_INDEX',
+			setPlayMode: 'PLAY_MODE',
+			setPlayList: 'PLAY_LIST'
+		})
+	}
 };
 </script>
 
@@ -103,15 +160,38 @@ export default {
 		align-items: center;
 		flex-direction: row;
 		margin-bottom: 20rpx;
-		height: 80rpx;
+		height: 90rpx;
 		.play-list-left {
 			display: flex;
 			align-items: center;
 			.play-list-index {
-				margin-right: 40rpx;
-				font-size: 30rpx;
-				margin-left: 20rpx;
-				text-align: center;
+				margin-right: 50rpx;
+				.index {
+					font-size: 32rpx;
+					margin-left: 18rpx;
+					text-align: center;
+				}
+				.play-btn {
+					cursor: pointer;
+					position: relative;
+					display: none;
+					text-align: center;
+				}
+				.pause-btn {
+					cursor: pointer;
+					position: relative;
+					display: none;
+					text-align: center;
+				}
+			}
+			.play-list-images {
+				width: 90rpx;
+				height: 90rpx;
+				margin-right: 16rpx;
+				.image-cover {
+					width: 90rpx;
+					height: 90rpx;
+				}
 			}
 			.play-list-info {
 				display: flex;
@@ -134,6 +214,45 @@ export default {
 						white-space: nowrap;
 						text-overflow: ellipsis;
 						overflow: hidden;
+					}
+				}
+			}
+		}
+		&.playing {
+			.play-list-index {
+				.index {
+					display: none;
+				}
+				.pause-btn {
+					display: block;
+				}
+				.play-btn {
+					display: none;
+				}
+			}
+		}
+		&:hover {
+			.play-list-index {
+				.index {
+					display: none;
+				}
+				.pause-btn {
+					display: none;
+				}
+				.play-btn {
+					display: block;
+				}
+			}
+			&.playing {
+				.play-list-index {
+					.index {
+						display: none;
+					}
+					.pause-btn {
+						display: block;
+					}
+					.play-btn {
+						display: none;
 					}
 				}
 			}
