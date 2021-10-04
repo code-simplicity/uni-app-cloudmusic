@@ -21,18 +21,22 @@
 						class="play-btn"
 						custom-prefix="iconfont"
 						name="iconfont icon-bofang1"
+						size="62"
+						color="#ffffff"
 						@click="playMusci(item, index)"
 					></u-icon>
 					<u-icon
 						class="pause-btn"
 						custom-prefix="iconfont"
 						name="iconfont icon-zanting1"
+						size="62"
+						color="#ffffff"
 						@click="pauseMusci"
 					></u-icon>
 				</view>
 
-				<view class="board-new-index">{{ index + 1 }}</view>
-				<view class="board-new-info">
+				<view class="board-new-index" @click="playMusci(item, index)">{{ index + 1 }}</view>
+				<view class="board-new-info" @click="playMusci(item, index)">
 					<view class="song-name">{{ item.name }}</view>
 					<view>--</view>
 					<view class="singer-name">{{ item.singer }}</view>
@@ -93,6 +97,7 @@ export default {
 		// 暂停音乐
 		pauseMusci() {
 			this.pausePlay();
+			this.$audio_player.pause();
 		},
 
 		// 获取新歌榜单的id
@@ -221,19 +226,17 @@ export default {
 				}
 			}
 			.play-btn {
+				margin: 10rpx 10rpx;
 				cursor: pointer;
 				position: relative;
 				align-items: center;
-				font-size: 64rpx;
-				color: #ffffff;
 			}
 			.pause-btn {
-				font-size: 64rpx;
+				margin: 10rpx 10rpx;
 				display: none;
 				cursor: pointer;
 				position: relative;
 				text-align: center;
-				color: #ffffff;
 			}
 			.board-new-index {
 				margin-left: 16rpx;
@@ -260,7 +263,7 @@ export default {
 						display: none;
 					}
 					.pause-btn {
-						display: none;
+						display: block;
 					}
 				}
 			}
