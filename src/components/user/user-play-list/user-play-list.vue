@@ -3,22 +3,25 @@
 		<view class="user-play-header">
 			<view class="user-play-header-text">{{ header }}</view>
 			<view class="user-play-header-tools">
-				<view class="user-play-header-add"><u-icon name="plus" color="#2979ff" size="30"></u-icon></view>
+				<view class="user-play-header-add"><u-icon name="plus" color="#000000" size="30"></u-icon></view>
 				<view class="user-play-header-more">
-					<u-icon name="more-dot-fill" color="#2979ff" size="30"></u-icon>
+					<u-icon class="tools-more" name="more-dot-fill" color="#000000" size="30"></u-icon>
 				</view>
 			</view>
 		</view>
-		<view class="user-play-content" v-for="(item, index) of songList" :key="item.id" @click="toPlayDetail(item.id)">
-			<view class="user-play-image">
+		<view class="user-play-content" v-for="(item, index) of songList" :key="item.id">
+			<view class="user-play-image" @click="toPlayDetail(item.id)">
 				<image class="image-cover image-border" :src="item.coverImgUrl" mode="aspectFit"></image>
 			</view>
-			<view class="user-play-detail">
+			<view class="user-play-detail" @click="toPlayDetail(item.id)">
 				<view class="user-play-name">{{ item.name }}</view>
 				<view class="user-play-num">
-					<text class="user-list-count">{{ item.trackCount }}</text>
+					<text class="user-list-count">{{ item.trackCount }}首</text>
 					<text>by.{{ item.creator.nickname }}</text>
 				</view>
+			</view>
+			<view class="user-play-tools">
+				<u-icon class="tools-more" name="more-dot-fill" color="#000000" size="30"></u-icon>
 			</view>
 		</view>
 	</view>
@@ -87,6 +90,9 @@ export default {
 			}
 			.user-play-header-more {
 				font-size: 26rpx;
+				.tools-more {
+					transform: rotate(90deg);
+				}
 			}
 		}
 	}
@@ -123,6 +129,12 @@ export default {
 				.user-list-count {
 					margin-right: 20rpx;
 				}
+			}
+		}
+		.user-play-tools {
+			font-size: 26rpx;
+			.tools-more {
+				transform: rotate(90deg);
 			}
 		}
 	}
