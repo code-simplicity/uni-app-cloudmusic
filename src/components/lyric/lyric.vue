@@ -13,25 +13,39 @@
 				/>
 			</view>
 		</view>
-		<scroll-view
-			scroll-y="true"
-			class="lyric"
-			scroll-with-animation="true"
-			scroll-top="marginTop"
-			@scroll="scrollChange"
-		>
-			<view class="lyric-wrapper" v-if="currentLyric">
-				<view
-					class="lyric-text"
-					v-for="(item, index) of currentLyric.lines"
-					:key="index"
-					:class="currentLyricNum === index ? 'active' : ''"
-				>
-					{{ item.txt }}
+		<!-- <view class="lyric">
+			<view class="lyric-wrapper" ref="scroll">
+				<view class="scroll-content" v-if="currentLyric">
+					<view
+						ref="lyricLine"
+						class="lyric-text"
+						v-for="(item, index) in currentLyric.lines"
+						:class="currentLyricNum === index ? 'active' : ''"
+						:key="item.key"
+					>
+						{{ item.txt }}
+					</view>
 				</view>
+				<view class="no-lyric" v-else>暂无歌词,请搜索重试</view>
 			</view>
-			<view class="no-lyric" v-else>暂无歌词,请搜索重试</view>
-		</scroll-view>
+		</view> -->
+
+		<scroll class="lyric" ref="lyricList" :data="currentLyric && currentLyric.lines">
+			<view class="lyric-wrapper">
+				<view v-if="currentLyric">
+					<view
+						ref="lyricLine"
+						class="lyric-text"
+						v-for="(item, index) in currentLyric.lines"
+						:class="currentLyricNum === index ? 'active' : ''"
+						:key="item.key"
+					>
+						{{ item.txt }}
+					</view>
+				</view>
+				<view class="no-lyric" v-else>暂无歌词,请搜索重试</view>
+			</view>
+		</scroll>
 	</view>
 </template>
 
@@ -41,7 +55,9 @@
  * time     2021-9-29 8:31:31 ?F10: PM?
  * description
  */
+import BScroll from 'better-scroll';
 import { mapGetters } from 'vuex';
+
 export default {
 	name: 'Lyric',
 	data() {
@@ -49,11 +65,8 @@ export default {
 			// 音量
 			volumeNum: 40,
 			// 是否静音
-			isMuted: false,
-			// 挂载音乐
-			// audio: uni.createInnerAudioContext(),
-			// 竖向滚动的位置
-			marginTop: 0
+			isMuted: false
+			// 底部
 		};
 	},
 
@@ -63,10 +76,6 @@ export default {
 		},
 
 		currentLyric: {
-			type: Object
-		},
-		
-		audio: {
 			type: Object
 		}
 	},
@@ -87,23 +96,17 @@ export default {
 	},
 
 	component: {},
-	mounted() {
-		this.mTop();
-	},
+	mounted() {},
+
 	methods: {
 		// 滚动触发的事件
 		scrollChange() {},
-
-		// 分发滚动位置给父组件
-		mTop() {
-			this.$emit('marginTop', this.marginTop);
-		},
 
 		// 改变声音大小
 		changeVolume(val) {
 			val.detail.value === 0 ? (this.isMuted = true) : (this.isMuted = false);
 			this.volume = val.detail.value / 100;
-			this.audio.volume = val.detail.value / 100;
+			this.$audio_player.volume = val.detail.value / 100;
 		},
 
 		// 改变音量
@@ -115,7 +118,7 @@ export default {
 		mutedHandle(state, num) {
 			this.isMuted = state;
 			this.volumeNum = num;
-			this.audio.volume = num / 100;
+			this.$audio_player.volume = num / 100;
 		}
 	}
 };
@@ -142,21 +145,19 @@ export default {
 		}
 	}
 	.lyric {
-		display: inline-block;
 		width: 100%;
 		height: 60%;
 		overflow: hidden;
-		vertical-align: top;
+		overflow-y: scroll;
 		.lyric-wrapper {
-			margin: 0 auto;
-			overflow: hidden;
+			line-height: 60rpx;
 			display: flex;
 			width: 100%;
 			justify-content: center;
 			flex-direction: column;
 			.lyric-text {
-				line-height: 50rpx;
-				height: 50rpx;
+				line-height: 60rpx;
+				height: 60rpx;
 				border-radius: 16rpx;
 				font-size: 30rpx;
 				font-weight: 500;
@@ -164,10 +165,10 @@ export default {
 				color: #000000;
 				&:hover {
 					background-color: #000001;
-					color: #d0a73d;
+					color: #d00000;
 				}
 				&.active {
-					color: #d0a73d;
+					color: #d00000;
 				}
 				&::after {
 					color: #ffffff;

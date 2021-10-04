@@ -1,5 +1,7 @@
 <template>
-	<view class="">广场</view>
+	<view class="">
+		广场
+	</view>
 </template>
 
 <script>

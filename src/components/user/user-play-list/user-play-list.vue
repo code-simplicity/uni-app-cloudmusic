@@ -9,13 +9,12 @@
 				</view>
 			</view>
 		</view>
-		<view class="user-play-content" v-for="(item, index) of songList" :key="item.id">
+		<view class="user-play-content" v-for="(item, index) of songList" :key="item.id" @click="toPlayDetail(item.id)">
 			<view class="user-play-image">
 				<image class="image-cover image-border" :src="item.coverImgUrl" mode="aspectFit"></image>
 			</view>
 			<view class="user-play-detail">
 				<view class="user-play-name">{{ item.name }}</view>
-
 				<view class="user-play-num">
 					<text class="user-list-count">{{ item.trackCount }}</text>
 					<text>by.{{ item.creator.nickname }}</text>
@@ -50,7 +49,17 @@ export default {
 
 	component: {},
 	mounted() {},
-	methods: {}
+	methods: {
+		// 去详情界面
+		toPlayDetail(id) {
+			this.$Router.push({
+				name: 'PlayDetail',
+				params: {
+					id: id
+				}
+			});
+		}
+	}
 };
 </script>
 
@@ -104,7 +113,6 @@ export default {
 				flex: 1;
 				font-size: 30rpx;
 				margin-bottom: 10rpx;
-				flex-wrap: nowrap;
 				white-space: nowrap;
 				text-overflow: ellipsis;
 				overflow: hidden;

@@ -9,27 +9,37 @@
 			</view>
 			<view class="play-list-play-right">
 				<view class="play-list-right-download">
-					<u-icon name="download" color="#2979ff" size="40"></u-icon>
+					<u-icon name="download" color="#7b777c" size="40"></u-icon>
 				</view>
 				<view class="play-list-right-checkmark">
-					<u-icon name="checkmark-circle" color="#2979ff" size="40"></u-icon>
+					<u-icon name="checkmark-circle" color="#7b777c" size="40"></u-icon>
 				</view>
 			</view>
 		</view>
-		<view class="play-list-content">
+		<view class="play-list-content" v-for="(item, index) in songs">
 			<view class="play-list-left">
-				<view class="play-list-index">1</view>
+				<view class="play-list-index">{{ utils.formatZero(index + 1, 2) }}</view>
 				<view class="play-list-info">
-					<view class="play-list-title">1</view>
-					<view class="play-list-name">1</view>
+					<view class="play-list-title">
+						<text class="title">{{ utils.strslice(item.name) }}</text>
+					</view>
+					<view class="play-list-name">
+						<text class="title">{{ item.singer }}</text>
+					</view>
 				</view>
 			</view>
 			<view class="play-list-right">
 				<view class="play-list-video">
-					<u-icon class="video-tools" name="more-dot-fill" color="#2979ff" size="40"></u-icon>
+					<u-icon
+						class="video-tools"
+						name="iconfont icon-MV"
+						custom-prefix="iconfont"
+						color="#7b777c"
+						size="40"
+					></u-icon>
 				</view>
 				<view class="play-list-tools">
-					<u-icon class="list-tools" name="more-dot-fill" color="#2979ff" size="40"></u-icon>
+					<u-icon class="list-tools" name="more-dot-fill" color="#7b777c" size="40"></u-icon>
 				</view>
 			</view>
 		</view>
@@ -48,6 +58,12 @@ export default {
 	data() {
 		return {};
 	},
+	props: {
+		songs: {
+			type: Array
+		}
+	},
+
 	component: {},
 	mounted() {},
 	methods: {}
@@ -68,7 +84,7 @@ export default {
 			display: flex;
 			align-items: center;
 			.play-list-left-circle {
-				margin-right: 30rpx;
+				margin-right: 40rpx;
 			}
 			.play-list-left-all {
 				font-size: 36rpx;
@@ -86,16 +102,40 @@ export default {
 		justify-content: space-between;
 		align-items: center;
 		flex-direction: row;
+		margin-bottom: 20rpx;
+		height: 80rpx;
 		.play-list-left {
 			display: flex;
 			align-items: center;
 			.play-list-index {
 				margin-right: 40rpx;
-				font-size: 36rpx;
+				font-size: 30rpx;
 				margin-left: 20rpx;
+				text-align: center;
 			}
 			.play-list-info {
-				font-size: 36rpx;
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				.play-list-title {
+					font-size: 30rpx;
+					margin-bottom: 10rpx;
+					.title {
+						flex-wrap: nowrap;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					}
+				}
+				.play-list-name {
+					font-size: 22rpx;
+					.title {
+						flex-wrap: nowrap;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					}
+				}
 			}
 		}
 		.play-list-right {

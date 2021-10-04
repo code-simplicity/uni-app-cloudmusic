@@ -25,7 +25,7 @@
 				</view>
 			</view>
 		</view>
-		<music-player></music-player>
+		<!-- <music-player></music-player> -->
 		<!-- 左侧弹出菜单 -->
 		<view class="home-left">
 			<view class="home-user">

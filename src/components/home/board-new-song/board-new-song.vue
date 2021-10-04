@@ -10,7 +10,12 @@
 			>
 				<view class="board-new-image">
 					<view class="board-new-cover">
-						<image class="image-cover image-border" :src="item.image" mode="aspectFit" lazy-load="true"></image>
+						<image
+							class="image-cover image-border"
+							:src="item.image"
+							mode="aspectFit"
+							lazy-load="true"
+						></image>
 					</view>
 					<u-icon
 						class="play-btn"
@@ -76,9 +81,12 @@ export default {
 	methods: {
 		// 播放音乐
 		playMusci(item, index) {
-			this.selectPlay({
-				list: this.hotSong,
-				index
+			this.$Router.push({
+				name: 'Player',
+				params: {
+					newSong: this.hotSong,
+					index: index
+				}
 			});
 		},
 

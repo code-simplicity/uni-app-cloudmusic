@@ -20,11 +20,23 @@
 						</view>
 					</view>
 					<view class="user-info-to-detail">
-						<u-icon name="arrow-right" color="#2979ff" size="28"></u-icon>
+						<u-icon name="arrow-right" color="#2d2d2d" size="28"></u-icon>
 					</view>
 				</view>
 				<view class="user-info-wrap-tools">
-					<view class="user-info-wrap-num"><recommend-day></recommend-day></view>
+					<view class="user-info-wrap-num">
+						<view class="user-tools" v-for="(item, index) in toolsList" :key="item.value">
+							<u-icon
+								class="icon-style"
+								:name="item.name"
+								label-pos="bottom"
+								:label="item.label"
+								:custom-prefix="item.icon"
+								size="70"
+								margin-top ="10"
+							></u-icon>
+						</view>
+					</view>
 				</view>
 				<view class="user-info-like">
 					<view class="user-info-liked" v-for="(item, index) in likeMusic" @click="toPlayDetail(item.id)">
@@ -67,8 +79,42 @@ export default {
 			// 我创建的歌单
 			myPlayTxt: '我创建的歌单',
 			// 我收藏的歌单
-			collectPlayTxt: '我收藏的歌单'
+			collectPlayTxt: '我收藏的歌单',
 			// 我喜欢的歌曲id
+
+			// 准备功能
+			toolsList: [
+				{
+					label: '本地/下载',
+					name: 'iconfont icon-yinle1',
+					value: '本地/下载',
+					icon: 'iconfont'
+				},
+				{
+					label: '云盘',
+					name: 'iconfont icon-yunpan',
+					value: '云盘',
+					icon: 'iconfont'
+				},
+				{
+					label: '最近播放',
+					name: 'iconfont icon-bofang2',
+					value: '最近播放',
+					icon: 'iconfont'
+				},
+				{
+					label: '我的好友',
+					name: 'iconfont icon-iconfontwodehaoyou',
+					value: '我的好友',
+					icon: 'iconfont'
+				},
+				{
+					label: '收藏和赞',
+					name: 'iconfont icon-shoucangjia',
+					value: '收藏和赞',
+					icon: 'iconfont'
+				}
+			]
 		};
 	},
 	computed: {
@@ -240,6 +286,19 @@ export default {
 				margin-top: 26rpx;
 				background-color: #ffffff;
 				border-radius: 16rpx;
+				padding: 20rpx;
+				.user-info-wrap-num {
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					align-items: center;
+					width: 100%;
+					.user-tools {
+						.icon-style {
+							color: #FD6464;
+						}
+					}
+				}
 			}
 			.user-info-like {
 				margin-top: 26rpx;

@@ -71,12 +71,16 @@ export default {
 
 		// 播放音乐
 		playMusci(item, index) {
-			this.selectPlay({
-				list: this.newSong,
-				index
-			});
-			// uni.navigateTo({
-			// 	url: '/pages/player/index'
+			this.$Router.push({
+				name: 'Player',
+				params: {
+					newSong: this.newSong,
+					index: index
+				}
+			})
+			// this.selectPlay({
+			// 	list: this.newSong,
+			// 	index
 			// });
 		},
 

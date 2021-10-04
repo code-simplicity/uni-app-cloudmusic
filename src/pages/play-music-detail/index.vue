@@ -4,12 +4,12 @@
 			<view class="play-musci-header">
 				<view class="play-musci-header-top">
 					<view class="header-left">
-						<u-icon name="arrow-leftward" color="#2979ff" size="40" @click="toBack"></u-icon>
+						<u-icon name="arrow-leftward" color="#ffffff" size="40" @click="toBack"></u-icon>
 						<view class="title">歌单</view>
 					</view>
 					<view class="header-right">
-						<u-icon name="search" color="#2979ff" size="40"></u-icon>
-						<u-icon class="tools" name="more-dot-fill" color="#2979ff" size="40"></u-icon>
+						<u-icon name="search" color="#ffffff" size="40"></u-icon>
+						<u-icon class="tools" name="more-dot-fill" color="#ffffff" size="40"></u-icon>
 					</view>
 				</view>
 				<view class="play-musci-header-content">
@@ -30,12 +30,36 @@
 					</view>
 				</view>
 				<view class="play-musci-tools">
-					<view class="play-musci-tools-collect">收藏</view>
-					<view class="play-musci-tools-comment">评论</view>
-					<view class="play-musci-tools-share">分享</view>
+					<view class="play-musci-tools-collect">
+						<u-icon
+							name="iconfont icon-shoucang2"
+							custom-prefix="iconfont"
+							color="#ffffff"
+							size="60"
+						></u-icon>
+						<text class="title">111</text>
+					</view>
+					<view class="play-musci-tools-comment">
+						<u-icon
+							name="iconfont icon-pinglun"
+							custom-prefix="iconfont"
+							color="#ffffff"
+							size="60"
+						></u-icon>
+						<text class="title">111</text>
+					</view>
+					<view class="play-musci-tools-share">
+						<u-icon
+							name="iconfont icon-fenxiang1"
+							custom-prefix="iconfont"
+							color="#ffffff"
+							size="60"
+						></u-icon>
+						<text class="title">分享</text>
+					</view>
 				</view>
 			</view>
-			<view class="play-music-content"><play-list-music></play-list-music></view>
+			<view class="play-music-content"><play-list-music :songs="songs"></play-list-music></view>
 		</view>
 	</view>
 </template>
@@ -140,13 +164,13 @@ export default {
 				timestamp: timestamp + 1
 			};
 			if (after) {
-				let beforeRes = await getSongDetail(params);
-				let afterRes = await getSongDetail({ params: params1 });
+				let beforeRes = await this.$api.getSongDetail(params);
+				let afterRes = await this.$api.getSongDetail({ params: params1 });
 				// 数组连接起来
 				let res = beforeRes.songs.concat(afterRes.songs);
 				this.songs = this._normaLizeSongs(res);
 			} else {
-				let beforeRes = await getSongDetail(params);
+				let beforeRes = await this.$api.getSongDetail(params);
 				let res = beforeRes.songs;
 				this.songs = this._normaLizeSongs(res);
 			}
@@ -185,7 +209,7 @@ export default {
 		.play-musci-header {
 			width: 100%;
 			background-color: #dda750;
-			height: 400rpx;
+			height: 430rpx;
 			.play-musci-header-top {
 				display: flex;
 				flex-direction: row;
@@ -242,6 +266,7 @@ export default {
 					flex-direction: column;
 					justify-content: space-between;
 					margin-left: 20rpx;
+					width: 0;
 					.music-title {
 						font-size: 36rpx;
 						margin-bottom: 30rpx;
@@ -257,8 +282,13 @@ export default {
 						}
 					}
 					.music-detail {
-						font-size: 30rpx;
+						font-size: 26rpx;
 						margin-bottom: 30rpx;
+						flex-wrap: nowrap;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
+						word-break: break-all;
 					}
 				}
 			}
@@ -268,10 +298,31 @@ export default {
 				align-items: center;
 				padding: 10rpx 20rpx;
 				.play-musci-tools-collect {
+					display: flex;
+					align-items: center;
+					.title {
+						text-align: center;
+						font-size: 36rpx;
+						color: #ffffff;
+					}
 				}
 				.play-musci-tools-comment {
+					display: flex;
+					align-items: center;
+					.title {
+						text-align: center;
+						font-size: 36rpx;
+						color: #ffffff;
+					}
 				}
 				.play-musci-tools-share {
+					display: flex;
+					align-items: center;
+					.title {
+						text-align: center;
+						font-size: 36rpx;
+						color: #ffffff;
+					}
 				}
 			}
 		}
