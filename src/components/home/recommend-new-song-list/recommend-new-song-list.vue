@@ -20,16 +20,20 @@
 						class="play-btn"
 						custom-prefix="iconfont"
 						name="iconfont icon-bofang1"
+						size="62"
+						color="#ffffff"
 						@click="playMusci(item, index)"
 					></u-icon>
 					<u-icon
 						class="pause-btn"
 						custom-prefix="iconfont"
 						name="iconfont icon-zanting1"
+						size="62"
+						color="#ffffff"
 						@click="pauseMusci"
 					></u-icon>
 				</view>
-				<view class="board-new-info">
+				<view class="board-new-info" @click="playMusci(item, index)">
 					<view class="song-name">{{ item.name }}</view>
 					<view class="singer-name">{{ item.singer }}</view>
 				</view>
@@ -67,6 +71,7 @@ export default {
 		// 暂停
 		pauseMusci() {
 			this.pausePlay();
+			this.$audio_player.pause()
 		},
 
 		// 播放音乐
@@ -78,10 +83,6 @@ export default {
 					index: index
 				}
 			})
-			// this.selectPlay({
-			// 	list: this.newSong,
-			// 	index
-			// });
 		},
 
 		// 响应状态
@@ -116,19 +117,17 @@ export default {
 				}
 			}
 			.play-btn {
+				margin: 16rpx 20rpx;
 				cursor: pointer;
 				position: relative;
 				align-items: center;
-				font-size: 64rpx;
-				color: #ffffff;
 			}
 			.pause-btn {
-				font-size: 64rpx;
+				margin: 16rpx 20rpx;
 				display: none;
 				cursor: pointer;
 				position: relative;
 				text-align: center;
-				color: #ffffff;
 			}
 
 			.board-new-info {
@@ -153,7 +152,7 @@ export default {
 						display: none;
 					}
 					.pause-btn {
-						display: none;
+						display: block;
 					}
 				}
 			}
