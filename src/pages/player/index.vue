@@ -484,6 +484,7 @@ export default {
 	z-index: 9999;
 	
 	.musci-player-box {
+		padding: 16rpx 26rpx;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
