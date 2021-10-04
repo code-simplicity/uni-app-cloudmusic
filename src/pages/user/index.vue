@@ -3,12 +3,12 @@
 		<view class="user-info-wrap">
 			<view class="user-info-header">
 				<view class="user-info-absolute">
-					<view class="user-info-tool"><u-icon name="grid-fill" size="50" color="#000000"></u-icon></view>
-					<view class="user-info-search"><u-icon name="mic" size="50" color="#000000"></u-icon></view>
+					<view class="user-info-tool"><u-icon name="grid-fill" size="50" color="#dc2500"></u-icon></view>
+					<view class="user-info-search"><u-icon name="mic" size="50" color="#dc2500"></u-icon></view>
 				</view>
 			</view>
 			<view class="user-info-content">
-				<view class="user-info-detail">
+				<view class="user-info-detail" @click="toUserDetail(userInfo.userId)">
 					<view class="user-info-avatar">
 						<u-avatar sex-icon="man" size="100" :src="userInfo.avatarUrl"></u-avatar>
 					</view>
@@ -33,13 +33,18 @@
 								:label="item.label"
 								:custom-prefix="item.icon"
 								size="70"
-								margin-top ="10"
+								margin-top="10"
 							></u-icon>
 						</view>
 					</view>
 				</view>
 				<view class="user-info-like">
-					<view class="user-info-liked" v-for="(item, index) in likeMusic" @click="toPlayDetail(item.id)">
+					<view
+						class="user-info-liked"
+						v-for="(item, index) in likeMusic"
+						:key="item.id"
+						@click="toPlayDetail(item.id)"
+					>
 						<image class="image-cover image-border" :src="item.coverImgUrl" mode="aspectFit"></image>
 						<view class="user-info-like-content">
 							<view class="user-info-like-title">我喜欢的音乐</view>
@@ -119,10 +124,6 @@ export default {
 	},
 	computed: {
 		...mapGetters('user', ['userInfo', 'loginState'])
-
-		// likeMusic() {
-		// 	return this.userPlayList.slice(0, 1);
-		// }
 	},
 
 	watch: {
@@ -143,6 +144,16 @@ export default {
 		}
 	},
 	methods: {
+		// 去用户详情界面
+		toUserDetail(userId) {
+			this.$Router.push({
+				name: 'UserInfoDetail',
+				params: {
+					id: userId
+				}
+			});
+		},
+
 		// 去详情界面
 		toPlayDetail(id) {
 			this.$Router.push({
@@ -295,7 +306,7 @@ export default {
 					width: 100%;
 					.user-tools {
 						.icon-style {
-							color: #FD6464;
+							color: #fd6464;
 						}
 					}
 				}
