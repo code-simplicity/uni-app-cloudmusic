@@ -3,8 +3,8 @@
 		<view class="user-info-wrap">
 			<view class="user-info-header">
 				<view class="user-info-absolute">
-					<view class="user-info-tool"><u-icon name="grid-fill" size="50" color="#dc2500"></u-icon></view>
-					<view class="user-info-search"><u-icon name="mic" size="50" color="#dc2500"></u-icon></view>
+					<user-setting></user-setting>
+					<view class="user-info-search"><u-icon name="search" size="50" color="#000000"></u-icon></view>
 				</view>
 			</view>
 			<view class="user-info-content">
@@ -48,7 +48,7 @@
 						<image class="image-cover image-border" :src="item.coverImgUrl" mode="aspectFit"></image>
 						<view class="user-info-like-content">
 							<view class="user-info-like-title">我喜欢的音乐</view>
-							<view class="user-info-like-num">{{ item.trackCount }}</view>
+							<view class="user-info-like-num">{{ item.trackCount }}首</view>
 						</view>
 					</view>
 				</view>
@@ -144,6 +144,9 @@ export default {
 		}
 	},
 	methods: {
+		// 打开菜单
+		toUserSetting() {},
+
 		// 去用户详情界面
 		toUserDetail(userId) {
 			this.$Router.push({
@@ -245,9 +248,9 @@ export default {
 		.user-info-header {
 			width: 100%;
 			position: fixed;
-			padding: 10rpx 20rpx;
-			height: 80rpx;
-			line-height: 80rpx;
+			padding: 0 10rpx;
+			height: 90rpx;
+			line-height: 90rpx;
 			top: 0;
 			left: 0;
 			right: 0;
