@@ -1,9 +1,7 @@
 <template>
-	<view class="my-search flex-row">
-		<view class="my-search-item">
-			<u-icon name="grid-fill" size="50" color="#000000" @click="showUserInfo = true"></u-icon>
-		</view>
-		<view class="hmy-search-input">
+	<view class="my-search">
+		<user-setting></user-setting>
+		<view class="my-search-input">
 			<u-search
 				placeholder="输入歌曲/MV/歌手"
 				v-model="search"
@@ -39,7 +37,7 @@ export default {
 			default: false
 		}
 	},
-	
+
 	component: {},
 	mounted() {},
 	methods: {}
@@ -52,12 +50,9 @@ export default {
 	flex-direction: row;
 	align-items: center;
 	background-color: #eaeaea;
-	text-align: center;
-	.my-search-item {
-		margin-right: 20rpx;
-		margin-top: 10rpx;
-	}
-	.hmy-search-input {
+	justify-content: space-between;
+	width: 100%;
+	.my-search-input {
 		flex: 1;
 	}
 	.my-search-mike {
