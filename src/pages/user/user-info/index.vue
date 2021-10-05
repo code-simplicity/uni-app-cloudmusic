@@ -44,17 +44,17 @@
 			<view class="user-info-tabs">
 				<view class="user-tabs-list">
 					<u-tabs
-						:list="list"
-						bold="true"
+						:list="listTabs"
+						:bold="true"
 						:is-scroll="false"
 						bg-color="#f0f0f0"
 						:current="current"
-						@change="change"
+						@change="checkTabs"
 					></u-tabs>
 				</view>
 				<view class="user-tabs-check">
 					<!-- 主页 -->
-					<view class="user-info-home-page">
+					<view class="user-info-home-page" v-if="mode === 0">
 						<view class="basic-information">
 							<view class="basic-information-header">基本信息</view>
 							<view class="basic-information-content">
@@ -84,17 +84,29 @@
 						<view class="user-info-musical-taste">
 							<view class="user-info-musical-header">基本信息</view>
 							<view class="user-info-musical-content">
-								<image class="image-cover image-border" src="" mode="aspectFit"></image>
+								<view class="image">
+									<image
+										class="image-cover image-border"
+										src="../../../static/images/ranking.png"
+										mode="aspectFit"
+									></image>
+								</view>
 								<view class="user-info-musical-info">
 									<view class="music-like">听歌排行</view>
-									<view class="info-text">累计听歌111</view>
+									<view class="info-text">累计听歌{{ userDetail.listenSongs }}</view>
 								</view>
 							</view>
-							<view class="user-info-musical-content">
-								<image class="image-cover image-border" src="" mode="aspectFit"></image>
+							<view class="user-info-musical-content" v-for="(item, index) in likeMusic" :key="index">
+								<view class="image">
+									<image
+										class="image-cover image-border"
+										:src="item.coverImgUrl"
+										mode="aspectFit"
+									></image>
+								</view>
 								<view class="user-info-musical-info">
 									<view class="music-like">我喜欢的音乐</view>
-									<view class="info-text">3首</view>
+									<view class="info-text">{{ item.trackCount }}首</view>
 								</view>
 							</view>
 						</view>
@@ -105,6 +117,10 @@
 							<user-play-list :songList="collectPlayList" :header="collectPlayTxt"></user-play-list>
 						</view>
 					</view>
+					<!-- 动态 -->
+					<view class="user-info-home-dynamic" v-if="mode === 1">123</view>
+					<!-- 播客 -->
+					<view class="user-info-home-play" v-if="mode === 2">23</view>
 				</view>
 			</view>
 		</view>
@@ -123,19 +139,22 @@ export default {
 	name: 'user-info',
 	data() {
 		return {
-			list: [
+			listTabs: [
 				{
 					name: '主页'
 				},
 				{
 					name: '动态',
-					count: 5
+					count: ''
 				},
 				{
 					name: '播客'
 				}
 			],
+			// 默认索引
 			current: 0,
+			// 切换模式
+			mode: 0,
 			// 我创建的歌单
 			myPlayTxt: '我创建的歌单',
 			// 我收藏的歌单
@@ -147,7 +166,9 @@ export default {
 			// 用户基本信息
 			userProfile: {},
 			// 用户详细信息
-			userDetail: {}
+			userDetail: {},
+			// 我喜欢的音乐
+			likeMusic: []
 		};
 	},
 
@@ -223,8 +244,17 @@ export default {
 		},
 
 		// 切换tabs
-		change(index) {
-			this.current = index;
+		checkTabs(index) {
+			if (index === 0) {
+				this.current = index;
+				this.mode = index;
+			} else if (index === 1) {
+				this.current = index;
+				this.mode = index;
+			} else if (index === 2) {
+				this.current = index;
+				this.mode = index;
+			}
 		},
 
 		// 返回上一层路由
@@ -283,8 +313,14 @@ export default {
 				.image-background {
 					width: 100%;
 					height: 500rpx;
-					background-size: 100%;
-					background-repeat: no-repeat;
+					width: 100%;
+					position: absolute;
+					top: 0;
+					left: 0;
+					bottom: 0;
+					z-index: 1;
+					opacity: 0.9;
+					filter: drop-shadow(0rpx 8rpx 16rpx #111111);
 				}
 			}
 			.user-info-detail {
@@ -412,14 +448,20 @@ export default {
 							display: flex;
 							justify-content: space-between;
 							align-items: center;
-							margin-bottom: 10rpx;
-							.image-cover {
+							margin-bottom: 16rpx;
+							.image {
 								flex: 1;
-								width: 120rpx;
-								height: 120rpx;
+								width: 100rpx;
+								height: 100rpx;
+								.image-cover {
+									width: 100rpx;
+									height: 100rpx;
+									border-radius: 16rpx;
+								}
 							}
+
 							.user-info-musical-info {
-								flex: 3;
+								flex: 4;
 								width: 100%;
 								.music-like {
 									margin-bottom: 10rpx;
