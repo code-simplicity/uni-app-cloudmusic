@@ -1,6 +1,9 @@
 <template>
-	<view class="musci-player-detail" >
-		<view class="musci-player-box" >
+	<view class="musci-player-detail">
+		<view class="bg-wrapper">
+			<image class="image-bg" style="width: 100%;height: 100%;" :src="currentSong.image" mode="aspectFit"></image>
+		</view>
+		<view class="musci-player-box">
 			<view class="musci-header">
 				<view class="left">
 					<u-icon
@@ -482,7 +485,19 @@ export default {
 	left: 0;
 	bottom: 0;
 	z-index: 9999;
-	
+	.bg-wrapper {
+		.image-bg {
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			filter: blur(60px);
+			opacity: 0.9;
+		}
+	}
 	.musci-player-box {
 		padding: 16rpx 26rpx;
 		display: flex;
