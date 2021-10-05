@@ -1,7 +1,7 @@
 <template>
 	<view class="home-box">
 		<!-- 头部固定 -->
-		<view class="home-header"><my-search :showUserInfo="showUserInfo"></my-search></view>
+		<view class="home-header"><my-search :searchShow="searchShow" :micShow="micShow"></my-search></view>
 		<!-- 中间内容 -->
 		<view class="home-content">
 			<my-banner></my-banner>
@@ -26,12 +26,6 @@
 			</view>
 		</view>
 		<!-- <music-player></music-player> -->
-		<!-- 左侧弹出菜单 -->
-		<view class="home-left">
-			<view class="home-user">
-				<u-popup v-model="showUserInfo"><view>出淤泥而不染，濯清涟而不妖</view></u-popup>
-			</view>
-		</view>
 	</view>
 </template>
 
@@ -41,7 +35,10 @@ export default {
 	name: 'Home',
 	data() {
 		return {
-			showUserInfo: false,
+			// 展示搜索框
+			searchShow: true,
+			// 展示麦克风
+			micShow: true,
 			// 热门歌单
 			songlist: [],
 			// 音乐返回数量
@@ -129,20 +126,10 @@ export default {
 <style lang="scss" scoped>
 .home-box {
 	width: 100%;
-	height: 100%;
 	display: flex;
 	bottom: calc(var(--window-bottom));
 	.home-header {
 		width: 100%;
-		position: fixed;
-		padding: 0 10rpx;
-		height: 100rpx;
-		line-height: 90rpx;
-		top: 0;
-		left: 0;
-		right: 0;
-		z-index: 666;
-		background-color: #eaeaea;
 	}
 	.home-content {
 		padding: 0 22rpx;
@@ -150,7 +137,6 @@ export default {
 		flex-direction: column;
 		margin-top: 100rpx;
 		align-items: center;
-		flex-wrap: wrap;
 		.home-recommend-day {
 			margin-top: 220rpx;
 			display: flex;

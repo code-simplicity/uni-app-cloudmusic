@@ -1,16 +1,21 @@
 <template>
 	<view class="my-search">
-		<user-setting></user-setting>
-		<view class="my-search-input">
-			<u-search
-				placeholder="输入歌曲/MV/歌手"
-				v-model="search"
-				:clearabled="true"
-				:show-action="false"
-				border-color="#111"
-			></u-search>
-		</view>
-		<view class="my-search-mike"><u-icon name="mic" size="50" color="#000000"></u-icon></view>
+		<u-navbar :is-back="false" title="" :background="background">
+			<user-setting></user-setting>
+			<view class="my-search-input" v-if="searchShow">
+				<u-search
+					placeholder="输入歌曲/MV/歌手"
+					v-model="search"
+					:clearabled="true"
+					:show-action="false"
+					border-color="#3b3b3b"
+				></u-search>
+			</view>
+			<view class="my-search-mike" v-if="micShow"><u-icon name="mic" size="50" color="#3b3b3b"></u-icon></view>
+			<view class="user-info-search" v-if="searchIconShow">
+				<u-icon name="search" size="50" color="#3b3b3b"></u-icon>
+			</view>
+		</u-navbar>
 	</view>
 </template>
 
@@ -27,12 +32,25 @@ export default {
 		return {
 			// 搜索关键字
 			search: '',
-			// 左侧弹出框
-			show: false
+
+			background: {
+				// 渐变色
+				backgroundImage: 'linear-gradient(45deg, rgb(240, 240, 240), rgb(198, 142, 143))'
+			}
 		};
 	},
 	props: {
-		showUserInfo: {
+		searchShow: {
+			type: Boolean,
+			default: false
+		},
+
+		micShow: {
+			type: Boolean,
+			default: false
+		},
+
+		searchIconShow: {
 			type: Boolean,
 			default: false
 		}
@@ -49,15 +67,17 @@ export default {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	background-color: #eaeaea;
 	justify-content: space-between;
 	width: 100%;
 	.my-search-input {
 		flex: 1;
 	}
 	.my-search-mike {
-		margin-left: 10px;
-		margin-top: 10rpx;
+		margin: 0 10rpx;
+	}
+	.user-info-search {
+		margin-left: auto;
+		margin-right: 10rpx;
 	}
 }
 </style>

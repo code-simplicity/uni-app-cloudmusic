@@ -1,16 +1,6 @@
 <template>
 	<view class="user-info">
-		<view class="user-info-header">
-			<view class="user-info-header-left">
-				<view class="header-back">
-					<u-icon name="arrow-leftward" color="#ffffff" size="40" @click="toBack"></u-icon>
-				</view>
-				<view class="header-title">{{ userProfile.nickname }}</view>
-			</view>
-			<view class="user-info-header-right">
-				<u-icon class="tools" name="more-dot-fill" color="#ffffff" size="40"></u-icon>
-			</view>
-		</view>
+		<view class="user-info-header"><play-list-navbar :title="userProfile.nickname"></play-list-navbar></view>
 		<view class="user-info-content">
 			<view class="user-info-wrap">
 				<view class="user-info-background">
@@ -139,6 +129,8 @@ export default {
 	name: 'user-info',
 	data() {
 		return {
+			// title
+			title: '',
 			listTabs: [
 				{
 					name: '主页'
@@ -276,30 +268,6 @@ export default {
 		width: 100%;
 		justify-content: space-between;
 		align-items: center;
-		height: 80rpx;
-		line-height: 80rpx;
-		background-color: #666163;
-		position: fixed;
-		top: 0;
-		z-index: 8;
-		.user-info-header-left {
-			display: flex;
-			align-items: center;
-			.header-back {
-				margin-right: 20rpx;
-				margin-left: 10rpx;
-			}
-			.header-title {
-				font-size: 32rpx;
-				color: #ffffff;
-			}
-		}
-		.user-info-header-right {
-			margin-right: 10rpx;
-			.tools {
-				transform: rotate(90deg);
-			}
-		}
 	}
 	.user-info-content {
 		width: 100%;

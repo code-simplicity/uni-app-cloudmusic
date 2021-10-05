@@ -1,12 +1,9 @@
 <template>
 	<view class="user-info">
+		<view class="user-info-header">
+			<view class="home-header"><my-search :searchIconShow="searchIconShow"></my-search></view>
+		</view>
 		<view class="user-info-wrap">
-			<view class="user-info-header">
-				<view class="user-info-absolute">
-					<user-setting></user-setting>
-					<view class="user-info-search"><u-icon name="search" size="50" color="#000000"></u-icon></view>
-				</view>
-			</view>
 			<view class="user-info-content">
 				<view class="user-info-detail" @click="toUserDetail(userInfo.userId)">
 					<view class="user-info-avatar">
@@ -75,6 +72,8 @@ export default {
 	name: 'User',
 	data() {
 		return {
+			// 展示搜索图标
+			searchIconShow: true,
 			// 我喜欢的音乐
 			likeMusic: [],
 			// 用户创建的歌单
@@ -241,30 +240,16 @@ export default {
 .user-info {
 	width: 100%;
 	height: 100%;
+	.user-info-header {
+		width: 100%;
+	}
 	.user-info-wrap {
 		width: 100%;
 		height: 100%;
 		padding: 0 26rpx;
-		.user-info-header {
-			width: 100%;
-			position: fixed;
-			padding: 0 10rpx;
-			height: 90rpx;
-			line-height: 90rpx;
-			top: 0;
-			left: 0;
-			right: 0;
-			z-index: 666;
-			background-color: #eaeaea;
-			.user-info-absolute {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			}
-		}
 		.user-info-content {
 			width: 100%;
-			margin-top: 120rpx;
+			margin-top: 60rpx;
 			.user-info-detail {
 				width: 100%;
 				display: flex;

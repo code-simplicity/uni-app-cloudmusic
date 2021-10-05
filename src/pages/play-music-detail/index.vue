@@ -1,18 +1,9 @@
 <template>
 	<view class="play-music-detail">
+		<play-list-navbar></play-list-navbar>
 		<view class="play-music-wrap">
 			<view class="play-musci-header">
 				<image class="image-bg" mode="aspectFill" :src="playlistDetail.coverImgUrl" />
-				<view class="play-musci-header-top">
-					<view class="header-left">
-						<u-icon name="arrow-leftward" color="#000000" size="40" @click="toBack"></u-icon>
-						<view class="title">歌单</view>
-					</view>
-					<view class="header-right">
-						<u-icon name="search" color="#000000" size="40"></u-icon>
-						<u-icon class="tools" name="more-dot-fill" color="#000000" size="40"></u-icon>
-					</view>
-				</view>
 				<view class="play-musci-header-content">
 					<view class="play-musci-info-left">
 						<image
@@ -219,7 +210,7 @@ export default {
 		width: 100%;
 		.play-musci-header {
 			width: 100%;
-			height: 430rpx;
+			height: 400rpx;
 			.image-bg {
 				width: 100%;
 				position: absolute;
@@ -227,47 +218,16 @@ export default {
 				left: 0;
 				bottom: 0;
 				z-index: 1;
-				opacity: 0.4;
+				opacity: 0.3;
 				filter: blur(80rpx) drop-shadow(0rpx 8rpx 16rpx #111111);
 			}
-			.play-musci-header-top {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: space-between;
-				position: fixed;
-				top: 0;
-				left: 0;
-				right: 0;
-				padding: 20rpx 20rpx;
-				z-index: 66;
-				.header-left {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-					justify-content: space-between;
-					.title {
-						margin-left: 30rpx;
-						font-size: 34rpx;
-					}
-				}
-				.header-right {
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-					justify-content: space-between;
-					.tools {
-						margin-left: 30rpx;
-						transform: rotate(90deg);
-					}
-				}
-			}
+			
 			.play-musci-header-content {
 				display: flex;
 				flex-direction: row;
 				align-items: center;
 				justify-content: space-between;
-				margin-top: 80rpx;
+				margin-top: 10rpx;
 				padding: 30rpx;
 				.play-musci-info-left {
 					width: 280rpx;

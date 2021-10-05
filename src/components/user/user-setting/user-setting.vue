@@ -1,7 +1,7 @@
 <template>
 	<view class="user-setting">
 		<view class="user-info-tool" @click="toUserSetting">
-			<u-icon name="grid-fill" size="50" color="#000000"></u-icon>
+			<u-icon name="grid-fill" size="50" color="#3b3b3b"></u-icon>
 		</view>
 	</view>
 </template>
@@ -32,9 +32,10 @@ export default {
 
 <style lang="scss" scoped>
 .user-setting {
+	display: flex;
+	align-items: center;
 	.user-info-tool {
-		margin-right: 18rpx;
-		margin-top: 10rpx;
+		margin: 0 10rpx;
 	}
 }
 </style>
