@@ -137,7 +137,7 @@ export default {
 		position: fixed;
 		padding: 0 10rpx;
 		height: 100rpx;
-		line-height: 100rpx;
+		line-height: 90rpx;
 		top: 0;
 		left: 0;
 		right: 0;
