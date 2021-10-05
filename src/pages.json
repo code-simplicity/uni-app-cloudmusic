@@ -155,6 +155,24 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/user/user-setting/index",
+			"name": "UserSetting",
+			"meta": {
+				"title": "设置"
+			},
+			"style": {
+				"navigationBarTitleText": "设置",
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+				// "navigationStyle": "custom", // 隐藏系统导航栏
+				// "navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
 		}
 	],
 
