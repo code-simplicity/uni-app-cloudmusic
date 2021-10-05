@@ -2,14 +2,15 @@
 	<view class="play-music-detail">
 		<view class="play-music-wrap">
 			<view class="play-musci-header">
+				<image class="image-bg" mode="aspectFill" :src="playlistDetail.coverImgUrl" />
 				<view class="play-musci-header-top">
 					<view class="header-left">
-						<u-icon name="arrow-leftward" color="#ffffff" size="40" @click="toBack"></u-icon>
+						<u-icon name="arrow-leftward" color="#000000" size="40" @click="toBack"></u-icon>
 						<view class="title">歌单</view>
 					</view>
 					<view class="header-right">
-						<u-icon name="search" color="#ffffff" size="40"></u-icon>
-						<u-icon class="tools" name="more-dot-fill" color="#ffffff" size="40"></u-icon>
+						<u-icon name="search" color="#000000" size="40"></u-icon>
+						<u-icon class="tools" name="more-dot-fill" color="#000000" size="40"></u-icon>
 					</view>
 				</view>
 				<view class="play-musci-header-content">
@@ -22,7 +23,7 @@
 					</view>
 					<view class="play-musci-info-right">
 						<view class="music-title">{{ playlistDetail.name }}</view>
-						<view class="music-username">
+						<view class="music-username" @click="toUserDetail(creatorInfo.userId)">
 							<u-avatar :src="creatorInfo.avatarUrl" size="50"></u-avatar>
 							<view class="music-user-name">{{ creatorInfo.nickname }}</view>
 						</view>
@@ -34,7 +35,7 @@
 						<u-icon
 							name="iconfont icon-shoucang2"
 							custom-prefix="iconfont"
-							color="#ffffff"
+							color="#000000"
 							size="60"
 						></u-icon>
 						<text class="title">111</text>
@@ -43,7 +44,7 @@
 						<u-icon
 							name="iconfont icon-pinglun"
 							custom-prefix="iconfont"
-							color="#ffffff"
+							color="#000000"
 							size="60"
 						></u-icon>
 						<text class="title">111</text>
@@ -52,7 +53,7 @@
 						<u-icon
 							name="iconfont icon-fenxiang1"
 							custom-prefix="iconfont"
-							color="#ffffff"
+							color="#000000"
 							size="60"
 						></u-icon>
 						<text class="title">分享</text>
@@ -110,6 +111,16 @@ export default {
 		}
 	},
 	methods: {
+		// 去用户信息
+		toUserDetail(id) {
+			this.$router.push({
+				name: 'UserInfoDetail',
+				params: {
+					id: id
+				}
+			});
+		},
+
 		// 获取歌单详情
 		getPlaylistDetail(id, s) {
 			this.$api.getPlaylistDetail(id, s).then(res => {
@@ -208,8 +219,17 @@ export default {
 		width: 100%;
 		.play-musci-header {
 			width: 100%;
-			background-color: #dda750;
 			height: 430rpx;
+			.image-bg {
+				width: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				z-index: 1;
+				opacity: 0.4;
+				filter: blur(80rpx) drop-shadow(0rpx 8rpx 16rpx #111111);
+			}
 			.play-musci-header-top {
 				display: flex;
 				flex-direction: row;
@@ -219,7 +239,6 @@ export default {
 				top: 0;
 				left: 0;
 				right: 0;
-				background-color: #dda750;
 				padding: 20rpx 20rpx;
 				z-index: 66;
 				.header-left {
@@ -303,7 +322,7 @@ export default {
 					.title {
 						text-align: center;
 						font-size: 36rpx;
-						color: #ffffff;
+						color: #000000;
 					}
 				}
 				.play-musci-tools-comment {
@@ -312,7 +331,7 @@ export default {
 					.title {
 						text-align: center;
 						font-size: 36rpx;
-						color: #ffffff;
+						color: #000000;
 					}
 				}
 				.play-musci-tools-share {
@@ -321,7 +340,7 @@ export default {
 					.title {
 						text-align: center;
 						font-size: 36rpx;
-						color: #ffffff;
+						color: #000000;
 					}
 				}
 			}
