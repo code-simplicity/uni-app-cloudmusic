@@ -1,18 +1,16 @@
 <template>
-	<view class="">
-		发现
-	</view>
+	<view class="search-lyric"></view>
 </template>
 
 <script>
 /**
  * author	bugdr
- * time     2021-9-24 9:30:28 ?F10: PM?
- * description
+ * time     2021-10-6 8:58:37 ?F10: PM?
+ * description 歌词搜索
  */
 
 export default {
-	name: 'Find',
+	name: 'search-lyric',
 	data() {
 		return {};
 	},

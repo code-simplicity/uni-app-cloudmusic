@@ -1,7 +1,7 @@
 <template>
 	<view class="home-box">
 		<!-- 头部固定 -->
-		<view class="home-header"><my-search :searchShow="searchShow" :micShow="micShow"></my-search></view>
+		<my-search :searchShow="searchShow" :micShow="micShow"></my-search>
 		<!-- 中间内容 -->
 		<view class="home-content">
 			<my-banner></my-banner>
@@ -128,9 +128,9 @@ export default {
 	width: 100%;
 	display: flex;
 	bottom: calc(var(--window-bottom));
-	.home-header {
-		width: 100%;
-	}
+	// .home-header {
+	// 	width: 100%;
+	// }
 	.home-content {
 		padding: 0 22rpx;
 		width: 100%;

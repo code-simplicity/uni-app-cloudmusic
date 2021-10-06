@@ -9,6 +9,8 @@
 					:clearabled="true"
 					:show-action="false"
 					border-color="#3b3b3b"
+					@click="toSearch"
+					@focus="toSearch"
 				></u-search>
 			</view>
 			<view class="my-search-mike" v-if="micShow"><u-icon name="mic" size="50" color="#3b3b3b"></u-icon></view>
@@ -58,7 +60,17 @@ export default {
 
 	component: {},
 	mounted() {},
-	methods: {}
+	methods: {
+		// 去用户搜索界面
+		toSearch(val) {
+			this.$Router.push({
+				name: 'Search',
+				params: {
+					key: val
+				}
+			});
+		}
+	}
 };
 </script>
 
@@ -68,7 +80,6 @@ export default {
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	width: 100%;
 	.my-search-input {
 		flex: 1;
 	}

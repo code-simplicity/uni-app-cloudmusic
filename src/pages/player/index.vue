@@ -191,6 +191,8 @@ export default {
 				this.$audio_player.autoplay = true;
 				this.$audio_player.src = newVal.url;
 			});
+			// 保存播放记录
+			this.saveHistoryList(newVal);
 			// 假若歌曲为播放，就认为超时，做超时处理
 			this.timer = setTimeout(() => {
 				this.songReady = true;
