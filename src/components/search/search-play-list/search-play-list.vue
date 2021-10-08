@@ -1,24 +1,17 @@
 <template>
-	<view class="search-video">
-		<u-cell-group class="search-cell-group" :border="false" v-if="video && video.length > 0">
-			<u-cell-item class="u-cell" :arrow="false" v-for="(item, index) in video" :key="index">
+	<view class="search-play-list">
+		<u-cell-group class="search-cell-group" :border="false" v-if="playList && playList.length > 0">
+			<u-cell-item class="u-cell" :arrow="false" v-for="(item, index) in playList" :key="index">
 				<view slot="icon" class="singer-image">
-					<u-image
-						border-radius="16rpx"
-						width="280rpx"
-						height="160rpx"
-						:src="item.coverUrl"
-						mode="aspectFill"
-					></u-image>
+					<u-image width="100rpx" height="100rpx" :src="item.coverImgUrl" mode="aspectFill"></u-image>
 				</view>
 				<view slot="title" class="singer-title">
-					<view class="singer-name">{{ item.title }}</view>
+					<view class="singer-name">{{ item.name }}</view>
 					<view class="singer-num">
-						<text>来自：{{ item.creator[0].userName }}</text>
+						<text>{{ item.trackCount }}首</text>
+						<text>, by. {{ item.creator.nickname }}</text>
+						<text>播放：{{ utils.tranNumber(item.playCount) }}次</text>
 					</view>
-				</view>
-				<view slot="right-icon" class="slot-right">
-					<u-icon class="tools" name="more-dot-fill" size="40"></u-icon>
 				</view>
 			</u-cell-item>
 		</u-cell-group>
@@ -28,25 +21,25 @@
 <script>
 /**
  * author	bugdr
- * time     2021-10-6 8:56:56 ?F10: PM?
- * description   视频搜索
+ * time     2021-10-6 8:56:13 ?F10: PM?
+ * description 歌单搜索
  */
 
 export default {
-	name: 'search-video',
+	name: 'search-play-list',
 	data() {
 		return {
-			// 歌手
-			video: [],
-			// 搜索类型为 1014: 视频
-			searchType: 1014
+			// 歌单
+			playList: [],
+			// 搜索类型为 1000: 歌单
+			searchType: 1000
 		};
 	},
 	component: {},
 	mounted() {},
 	methods: {
 		// 歌单搜索
-		getSearchVideo(keyword) {
+		getSearchPlayList(keyword) {
 			// 调用搜索接口
 			let params = {
 				keywords: keyword,
@@ -54,7 +47,7 @@ export default {
 			};
 			this.$api.getSearch(params).then(res => {
 				if (res.code === this.$code.code_status) {
-					this.video = res.result.videos;
+					this.playList = res.result.playlists;
 				}
 			});
 		}
@@ -63,7 +56,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.search-video {
+.search-play-list {
 	width: 100%;
 	height: 100%;
 	.search-cell-group {
@@ -84,14 +77,9 @@ export default {
 				}
 			}
 		}
-		.slot-right {
-			.tools {
-				transform: rotate(90deg);
-			}
-		}
-
+		
 		.u-cell {
-			padding: 18rpx 16rpx
+			padding: 18rpx 16rpx;
 		}
 	}
 }

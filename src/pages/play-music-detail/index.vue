@@ -16,7 +16,7 @@
 						<view class="music-title">{{ playlistDetail.name }}</view>
 						<view class="music-username" @click="toUserDetail(creatorInfo.userId)">
 							<u-avatar :src="creatorInfo.avatarUrl" size="50"></u-avatar>
-							<view class="music-user-name">{{ creatorInfo.nickname }}</view>
+							<view class="music-user-name" >{{ creatorInfo.nickname }}</view>
 						</view>
 						<view class="music-detail">{{ playlistDetail.description }}</view>
 					</view>
@@ -27,7 +27,7 @@
 							name="iconfont icon-shoucang2"
 							custom-prefix="iconfont"
 							color="#000000"
-							size="60"
+							size="50"
 						></u-icon>
 						<text class="title">111</text>
 					</view>
@@ -36,7 +36,7 @@
 							name="iconfont icon-pinglun"
 							custom-prefix="iconfont"
 							color="#000000"
-							size="60"
+							size="50"
 						></u-icon>
 						<text class="title">111</text>
 					</view>
@@ -45,7 +45,7 @@
 							name="iconfont icon-fenxiang1"
 							custom-prefix="iconfont"
 							color="#000000"
-							size="60"
+							size="50"
 						></u-icon>
 						<text class="title">分享</text>
 					</view>
@@ -104,7 +104,7 @@ export default {
 	methods: {
 		// 去用户信息
 		toUserDetail(id) {
-			this.$router.push({
+			this.$Router.push({
 				name: 'UserInfoDetail',
 				params: {
 					id: id
@@ -211,15 +211,15 @@ export default {
 		.play-musci-header {
 			width: 100%;
 			height: 400rpx;
+			padding: 30rpx;
 			.image-bg {
 				width: 100%;
 				position: absolute;
 				top: 0;
 				left: 0;
 				bottom: 0;
-				z-index: 1;
 				opacity: 0.3;
-				filter: blur(80rpx) drop-shadow(0rpx 8rpx 16rpx #111111);
+				filter: blur(110rpx) drop-shadow(0rpx 8rpx 16rpx #111111);
 			}
 			
 			.play-musci-header-content {
@@ -228,7 +228,6 @@ export default {
 				align-items: center;
 				justify-content: space-between;
 				margin-top: 10rpx;
-				padding: 30rpx;
 				.play-musci-info-left {
 					width: 280rpx;
 					height: 280rpx;
@@ -247,7 +246,7 @@ export default {
 					margin-left: 20rpx;
 					width: 0;
 					.music-title {
-						font-size: 36rpx;
+						font-size: 32rpx;
 						margin-bottom: 30rpx;
 					}
 					.music-username {
@@ -255,13 +254,13 @@ export default {
 						display: flex;
 						align-items: center;
 						.music-user-name {
-							font-size: 34rpx;
-							color: #7083ff;
+							font-size: 30rpx;
+							color: #21327f;
 							margin-left: 28rpx;
 						}
 					}
 					.music-detail {
-						font-size: 26rpx;
+						font-size: 24rpx;
 						margin-bottom: 30rpx;
 						flex-wrap: nowrap;
 						white-space: nowrap;
@@ -275,13 +274,13 @@ export default {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 10rpx 20rpx;
+				padding: 20rpx 60rpx;
 				.play-musci-tools-collect {
 					display: flex;
 					align-items: center;
 					.title {
 						text-align: center;
-						font-size: 36rpx;
+						font-size: 28rpx;
 						color: #000000;
 					}
 				}
@@ -290,7 +289,7 @@ export default {
 					align-items: center;
 					.title {
 						text-align: center;
-						font-size: 36rpx;
+						font-size: 28rpx;
 						color: #000000;
 					}
 				}
@@ -299,7 +298,7 @@ export default {
 					align-items: center;
 					.title {
 						text-align: center;
-						font-size: 36rpx;
+						font-size: 28rpx;
 						color: #000000;
 					}
 				}

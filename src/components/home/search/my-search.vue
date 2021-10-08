@@ -15,7 +15,7 @@
 			</view>
 			<view class="my-search-mike" v-if="micShow"><u-icon name="mic" size="50" color="#3b3b3b"></u-icon></view>
 			<view class="user-info-search" v-if="searchIconShow">
-				<u-icon name="search" size="50" color="#3b3b3b"></u-icon>
+				<u-icon name="search" size="50" color="#3b3b3b" @click="toSearch"></u-icon>
 			</view>
 		</u-navbar>
 	</view>

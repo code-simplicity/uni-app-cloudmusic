@@ -3,7 +3,7 @@
 		<u-navbar :is-back="true" back-text="返回" :title="title" :background="background">
 			<view class="play-musci-header-top">
 				<view class="header-right">
-					<u-icon name="search" color="#3b3b3b" size="50"></u-icon>
+					<u-icon name="search" color="#3b3b3b" size="50" @click="toSearch"></u-icon>
 					<u-icon class="tools" name="more-dot-fill" color="#3b3b3b" size="50"></u-icon>
 				</view>
 			</view>
@@ -24,7 +24,7 @@ export default {
 		return {
 			background: {
 				// 渐变色
-				backgroundImage: 'linear-gradient(45deg, rgb(240, 240, 240), rgb(198, 142, 143))'
+				backgroundImage: 'linear-gradient(45deg, rgb(227, 227, 227), rgb(206, 201, 201))'
 			}
 		};
 	},
@@ -36,7 +36,17 @@ export default {
 
 	component: {},
 	mounted() {},
-	methods: {}
+	methods: {
+		// 去用户搜索界面
+		toSearch(val) {
+			this.$Router.push({
+				name: 'Search',
+				params: {
+					key: val
+				}
+			});
+		}
+	}
 };
 </script>
 

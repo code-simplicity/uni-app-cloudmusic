@@ -2,10 +2,27 @@
 	<view class="search-result">
 		<view class="search-header">
 			<u-navbar>
-				<search-bar ref="searchBar" @search="onSearch" @custom="onSearch" @change="change"></search-bar>
+				<search-bar
+					ref="searchBar"
+					@search="onSearch"
+					@custom="onSearch"
+					@change="change"
+					@focus="onFocus"
+					@blur="onBlur"
+				></search-bar>
 			</u-navbar>
 		</view>
-
+		<view class="search-suggest-box" v-if="showSuggest">
+			<u-cell-item
+				v-for="(item, index) in searchSuggest"
+				:key="index"
+				icon="search"
+				:title="item.keyword"
+				:arrow="false"
+				icon-size="36"
+				@click="onSearch(item.keyword)"
+			></u-cell-item>
+		</view>
 		<view class="search-wrap">
 			<u-tabs-swiper
 				ref="uTabs"
@@ -23,9 +40,59 @@
 			@transition="transition"
 			@animationfinish="animationfinish"
 		>
+			<!-- 综合 -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
 					<search-multiple ref="searchMultiple"></search-multiple>
+				</scroll-view>
+			</swiper-item>
+			
+			<!-- 单曲 -->
+			<swiper-item class="swiper-item">
+				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+					<search-song ref="searchSong"></search-song>
+				</scroll-view>
+			</swiper-item>
+			
+			<!-- 歌单 -->
+			<swiper-item class="swiper-item">
+				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+					<search-play-list ref="searchPlayList"></search-play-list>
+				</scroll-view>
+			</swiper-item>
+			
+			<!-- 视频 -->
+			<swiper-item class="swiper-item">
+				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+					<search-video ref="searchVideo"></search-video>
+				</scroll-view>
+			</swiper-item>
+			
+			<!-- 歌手 -->
+			<swiper-item class="swiper-item">
+				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+					<search-singer ref="searchSinger"></search-singer>
+				</scroll-view>
+			</swiper-item>
+			
+			<!-- 歌词 -->
+			<swiper-item class="swiper-item">
+				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+					<search-lyric ref="searchLyric"></search-lyric>
+				</scroll-view>
+			</swiper-item>
+			
+			<!-- 专辑 -->
+			<swiper-item class="swiper-item">
+				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+					<search-album ref="searchAlbum"></search-album>
+				</scroll-view>
+			</swiper-item>
+			
+			<!-- 用户 -->
+			<swiper-item class="swiper-item">
+				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+					<search-user ref="searchUser"></search-user>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -85,7 +152,11 @@ export default {
 			// 选项卡的值
 			currentTab: 0,
 			// 控制切换选项卡
-			swiperCurrent: 0
+			swiperCurrent: 0,
+			// 建议搜索
+			searchSuggest: [],
+			// 显示搜索建议
+			showSuggest: false
 		};
 	},
 
@@ -110,8 +181,36 @@ export default {
 	},
 
 	methods: {
+				
+		// 搜索框获取焦点之后，出现搜索建议
+		onFocus() {
+			this.showSuggest = true;
+		},
+
+		// 失去焦点
+		onBlur() {
+			this.showSuggest = false;
+		},
 		// 值改变之后出现搜索建议的框
-		change() {},
+		change(val) {
+			if (val) {
+				this.getSearchSuggest(val);
+			}
+		},
+
+		// 建议搜索
+		getSearchSuggest(keywords) {
+			let params = {
+				keywords,
+				type: 'mobile'
+			};
+			this.$api.getSearchSuggest(params).then(res => {
+				if (res.code === this.$code.code_status) {
+					this.searchSuggest = res.result.allMatch;
+				}
+			});
+		},
+
 		// 执行搜索
 		onSearch(keyword) {
 			if (!keyword) {
@@ -142,31 +241,31 @@ export default {
 					break;
 				}
 				case 1: {
-					this.$refs.searchMultiple.getSearchMultimatch(keyword);
+					this.$refs.searchSong.getSearchSongs(keyword);
 					break;
 				}
 				case 2: {
-					this.$refs.searchMultiple.getSearchMultimatch(keyword);
+					this.$refs.searchPlayList.getSearchPlayList(keyword);
 					break;
 				}
 				case 3: {
-					this.$refs.searchMultiple.getSearchMultimatch(keyword);
+					this.$refs.searchVideo.getSearchVideo(keyword);
 					break;
 				}
 				case 4: {
-					this.$refs.searchMultiple.getSearchMultimatch(keyword);
+					this.$refs.searchSinger.getSearchArtist(keyword);
 					break;
 				}
 				case 5: {
-					this.$refs.searchMultiple.getSearchMultimatch(keyword);
+					this.$refs.searchLyric.getSearchLyric(keyword);
 					break;
 				}
 				case 6: {
-					this.$refs.searchMultiple.getSearchMultimatch(keyword);
+					this.$refs.searchAlbum.getSearchAlbum(keyword);
 					break;
 				}
 				case 7: {
-					this.$refs.searchMultiple.getSearchMultimatch(keyword);
+					this.$refs.searchUser.getSearchUser(keyword);
 					break;
 				}
 			}
@@ -195,6 +294,11 @@ export default {
 				this.getCloudSearch(this.searchKeyword, current);
 			}
 			this.currentTab = current;
+		},
+		
+		// scroll-view到底部加载更多
+		onreachBottom() {
+			console.log("没有更多了!");
 		}
 	}
 };
@@ -215,8 +319,19 @@ export default {
 	.search-header {
 		width: 100%;
 	}
+	.search-suggest-box {
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ffffff;
+		border: 1px solid #b0b0b0;
+		border-radius: 16rpx;
+		z-index: 666;
+	}
 	.search-wrap {
-		margin-top: 10rpx;
 		width: 100%;
 	}
 	.search-swiper {

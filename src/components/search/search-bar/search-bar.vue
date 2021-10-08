@@ -5,7 +5,7 @@
 			v-model="searchKeyword"
 			:show-action="true"
 			action-text="搜索"
-			:focus="true"
+			:focus="false"
 			:clearabled="true"
 			:animation="true"
 			margin="0 20rpx 0 0"

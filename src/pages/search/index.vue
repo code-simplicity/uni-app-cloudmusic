@@ -72,8 +72,7 @@ export default {
 			searchKeyword: '',
 			// 热搜榜
 			hotSearch: [],
-			// 输入框默认搜索
-			// searchDefault: '',
+			// 建议搜索
 			searchSuggest: [],
 			// 显示搜索建议
 			showSuggest: false
@@ -87,7 +86,6 @@ export default {
 	component: {},
 	mounted() {
 		this.getSearchHotDetail();
-		// this.getSearchDefault();
 	},
 	methods: {
 		// 输入框内容变化之后展示建议搜索列表
@@ -150,15 +148,6 @@ export default {
 				this.searchKeyword = '';
 			}
 		},
-
-		// // 获取默认搜索关键字
-		// getSearchDefault() {
-		// 	this.$api.getSearchDefault().then(res => {
-		// 		if (res.code === this.$code.code_status) {
-		// 			this.searchDefault = res.data.showKeyword;
-		// 		}
-		// 	});
-		// },
 
 		// 获取热搜榜(详细)
 		getSearchHotDetail() {
