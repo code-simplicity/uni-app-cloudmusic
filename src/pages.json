@@ -270,7 +270,8 @@
 			"^scroll-(.*)": "@/components/scroll/scroll.vue", // 匹配components目录内的vue文件
 			"^board-(.*)": "@/components/home/board-$1/board-$1.vue", // 匹配components目录内的vue文件
 			"^user-(.*)": "@/components/user/user-$1/user-$1.vue", // 匹配components目录内的vue文件
-			"^play-(.*)": "@/components/play-list/play-$1/play-$1.vue" // 匹配components目录内的vue文件
+			"^play-(.*)": "@/components/play-list/play-$1/play-$1.vue", // 匹配components目录内的vue文件
+			"^search-(.*)": "@/components/search/search-$1/search-$1.vue" // 匹配components目录内的vue文件
 		}
 
 	}
