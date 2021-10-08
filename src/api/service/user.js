@@ -28,3 +28,8 @@ export const getLikeList = (uid) => api.get(`/likelist?uid=${uid}`, {})
  * 获取用户登录状态
  */
 export const getLoginStatus = () => api.get(`/login/status`, {})
+
+/**
+ * 退出登录
+ */
+export const logout = () => api.get(`/logout`, {})
