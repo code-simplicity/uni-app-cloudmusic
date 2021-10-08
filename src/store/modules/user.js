@@ -13,12 +13,16 @@ const state = () => ({
 const getters = {
 	// 获取用户登录状态
 	loginState: (state) => {
-		return state.loginState || JSON.parse(uni.getStorageSync('loginState'))
+		// 获取登录状态
+		let loginState = uni.getStorageSync('loginState');
+		return state.loginState || JSON.parse(loginState)
 	},
 
 	// 获取用户信息
 	userInfo: (state) => {
-		return state.userInfo || JSON.parse(uni.getStorageSync('userInfo'))
+		// 获取用户信息
+		let userInfo = uni.getStorageSync('userInfo');
+		return state.userInfo || JSON.parse(userInfo)
 	}
 }
 
