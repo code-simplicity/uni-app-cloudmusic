@@ -1,5 +1,7 @@
 <template>
-	<view class=""></view>
+	<view class="search-song">
+		
+	</view>
 </template>
 
 <script>
@@ -10,7 +12,7 @@
  */
 
 export default {
-	name: 'search-single',
+	name: 'search-song',
 	data() {
 		return {};
 	},
