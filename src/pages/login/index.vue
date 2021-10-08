@@ -96,12 +96,6 @@ export default {
 			}
 		},
 
-		// getLoginStatus() {
-		// 	this.$api.getLoginStatus().then(res => {
-
-		// 	})
-		// },
-
 		// 获取用户登录信息
 		getUserInfo(uid) {
 			this.$api.getUserInfo(uid).then(res => {
