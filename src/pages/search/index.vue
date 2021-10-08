@@ -1,21 +1,7 @@
 <template>
 	<view class="search-box">
 		<view class="search-header">
-			<u-navbar>
-				<u-search
-					:placeholder="searchDefault"
-					v-model="searchKeyword"
-					:show-action="true"
-					action-text="搜索"
-					:focus="true"
-					:clearabled="true"
-					:animation="true"
-					margin="0 20rpx 0 0"
-					@search="search"
-					@custom="search"
-					@change="change"
-				></u-search>
-			</u-navbar>
+			<u-navbar><search-bar @search="search" @custom="search" @change="change"></search-bar></u-navbar>
 		</view>
 		<view class="search-suggest-box" v-if="showSuggest">
 			<u-cell-item
@@ -87,7 +73,7 @@ export default {
 			// 热搜榜
 			hotSearch: [],
 			// 输入框默认搜索
-			searchDefault: '',
+			// searchDefault: '',
 			searchSuggest: [],
 			// 显示搜索建议
 			showSuggest: false
@@ -101,7 +87,7 @@ export default {
 	component: {},
 	mounted() {
 		this.getSearchHotDetail();
-		this.getSearchDefault();
+		// this.getSearchDefault();
 	},
 	methods: {
 		// 输入框内容变化之后展示建议搜索列表
@@ -159,20 +145,20 @@ export default {
 					}
 				});
 				// 保存搜索记录
-				this.saveSearchHistory(this.searchKeyword);
+				this.saveSearchHistory(val);
 				// 清空搜索框
 				this.searchKeyword = '';
 			}
 		},
 
-		// 获取默认搜索关键字
-		getSearchDefault() {
-			this.$api.getSearchDefault().then(res => {
-				if (res.code === this.$code.code_status) {
-					this.searchDefault = res.data.showKeyword;
-				}
-			});
-		},
+		// // 获取默认搜索关键字
+		// getSearchDefault() {
+		// 	this.$api.getSearchDefault().then(res => {
+		// 		if (res.code === this.$code.code_status) {
+		// 			this.searchDefault = res.data.showKeyword;
+		// 		}
+		// 	});
+		// },
 
 		// 获取热搜榜(详细)
 		getSearchHotDetail() {
