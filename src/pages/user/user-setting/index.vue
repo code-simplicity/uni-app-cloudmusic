@@ -72,7 +72,9 @@ s
 		</view>
 
 		<view class="user-logout">
-			<u-button type="error" :ripple="true" ripple-bg-color="#4086ff" shape="square">退出登录/关闭</u-button>
+			<u-button type="error" :ripple="true" ripple-bg-color="#4086ff" shape="square" @click="logout">
+				退出登录/关闭
+			</u-button>
 		</view>
 	</view>
 </template>
@@ -83,7 +85,7 @@ s
  * time     2021-10-5 10:16:39 ?F10: AM?
  * description
  */
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
 	name: 'user-setting',
 	data() {
@@ -107,11 +109,31 @@ export default {
 	component: {},
 	mounted() {},
 	methods: {
+		// 退出登录
+		logout() {
+			this.$api.logout().then(res => {
+				if (res.code === this.$code.code_status) {
+					this.$Router.replace({
+						name: 'Login'
+					});
+					uni.setStorageSync('token', '');
+					uni.setStorageSync('loginState', false);
+					// 设置登录状态响应
+					this.setLoginState(false);
+					// 获取用户信息到vuex
+					this.setUserInfo();
+				}
+			});
+		},
+
 		toBack() {
 			uni.navigateBack({
 				delta: 1
 			});
-		}
+		},
+
+		// 同步响应用户信息以及登录状态
+		...mapMutations('user', { setLoginState: 'LOGIN_STATE', setUserInfo: 'USER_INFO' })
 	}
 };
 </script>
