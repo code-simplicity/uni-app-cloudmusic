@@ -21,3 +21,22 @@ export const getSearchDefault = () => api.get(`/search/default`, {})
 export const getSearchSuggest = params => api.get(`/search/suggest`, {
 	params
 })
+
+/**
+ * 搜索多重匹配
+ */
+export const getSearchMultimatch = (keywords) => api.get(`/search/multimatch?keywords=${keywords}`, {})
+
+/**
+ * 搜索
+ */
+export const getSearch = (params) => api.get(`/search`, {
+	params
+})
+
+/**
+ * 更全的搜索
+ */
+export const getCloudSearch = (params) => api.get(`/cloudsearch`, {
+	params
+})
