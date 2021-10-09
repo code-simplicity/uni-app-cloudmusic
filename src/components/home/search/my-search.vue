@@ -1,6 +1,6 @@
 <template>
 	<view class="my-search">
-		<u-navbar :is-back="false" title="" :background="background">
+		<u-navbar :is-back="false" title="">
 			<user-setting></user-setting>
 			<view class="my-search-input" v-if="searchShow">
 				<u-search
@@ -34,11 +34,6 @@ export default {
 		return {
 			// 搜索关键字
 			search: '',
-
-			background: {
-				// 渐变色
-				backgroundImage: 'linear-gradient(45deg, rgb(240, 240, 240), rgb(198, 142, 143))'
-			}
 		};
 	},
 	props: {

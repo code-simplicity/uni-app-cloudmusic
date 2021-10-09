@@ -22,3 +22,8 @@ export const getSongDetail = (params) => api.get(`/song/detail`, {
  * 获取歌词
  */
 export const getLyric = id => api.get(`/lyric?id=${id}`, {})
+
+/**
+ * 获取每日推荐
+ */
+export const getRecommendSongs = () => api.get(`/recommend/songs`, {})

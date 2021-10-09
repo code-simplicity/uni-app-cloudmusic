@@ -9,7 +9,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="user-play-content" v-for="(item, index) of songList" :key="item.id">
+		<view class="user-play-content" v-for="(item, index) of songList" :key="item.id" v-if="loginState">
 			<view class="user-play-image" @click="toPlayDetail(item.id)">
 				<image class="image-cover image-border" :src="item.coverImgUrl" mode="aspectFit"></image>
 			</view>
@@ -24,6 +24,7 @@
 				<u-icon class="tools-more" name="more-dot-fill" color="#000000" size="30"></u-icon>
 			</view>
 		</view>
+		<view class="user-play-no-login" v-if="!loginState">暂无歌单，请登录之后刷新</view>
 	</view>
 </template>
 
@@ -33,7 +34,7 @@
  * time     2021-10-1 10:16:19 ?F10: PM?
  * description
  */
-
+import { mapGetters } from 'vuex';
 export default {
 	name: 'user-play-list',
 	data() {
@@ -48,6 +49,10 @@ export default {
 		header: {
 			type: String
 		}
+	},
+
+	computed: {
+		...mapGetters('user', ['loginState'])
 	},
 
 	component: {},
@@ -137,6 +142,13 @@ export default {
 				transform: rotate(90deg);
 			}
 		}
+	}
+	.user-play-no-login {
+		display: flex;
+		justify-content: center;
+		margin: 10rpx auto;
+		text-align: center;
+		font-size: 26rpx;
 	}
 }
 </style>

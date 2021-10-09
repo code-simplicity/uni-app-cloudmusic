@@ -83,10 +83,12 @@ export default {
 							uni.setStorageSync('token', res.token);
 
 							uni.setStorageSync('loginState', true);
+
 							// 设置登录状态响应
-							this.setLoginState(true);
+							// this.setLoginState(true);
 							// 获取用户信息到vuex
-							this.setUserInfo(res.profile);
+							// this.setUserInfo(res.profile);
+							this.setLogin(res.profile);
 							// this.getLoginStatus()
 						}
 					})
@@ -111,18 +113,18 @@ export default {
 						type: 'success'
 					});
 					// 设置定时器2s跳转到首页
-					setTimeout(() => {
-						this.$Router.replace({
-							name: 'Home'
-						});
-					}, 1000);
+
+					this.$Router.replace({
+						name: 'Home'
+					});
 					uni.setStorageSync('userInfo', JSON.stringify(userInfo));
-					this.setUserInfo(res.profile);
+					// this.setUserInfo(res.profile);
+					this.setLogin(res.profile);
 				}
 			});
 		},
 		// 同步响应用户信息以及登录状态
-		...mapMutations('user', { setLoginState: 'LOGIN_STATE', setUserInfo: 'USER_INFO' })
+		...mapMutations('user', { setLoginState: 'LOGIN_STATE', setUserInfo: 'USER_INFO', setLogin: 'LOGIN' })
 	}
 };
 </script>

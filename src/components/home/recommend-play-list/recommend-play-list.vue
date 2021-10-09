@@ -6,7 +6,12 @@
 		</view>
 		<view class="recommend-play-content scroll-x-box">
 			<scroll-view scroll-x="true" class="scroll-x">
-				<view class="recommend-play-wrap" v-for="(item, index) of songlist" :key="item.id">
+				<view
+					class="recommend-play-wrap"
+					v-for="(item, index) of songlist"
+					:key="item.id"
+					@click="toPlayList(item.id)"
+				>
 					<view class="cover">
 						<u-image
 							class="image-border"
@@ -44,7 +49,17 @@ export default {
 
 	component: {},
 	mounted() {},
-	methods: {}
+	methods: {
+		// 进入歌单详情
+		toPlayList(id) {
+			this.$Router.push({
+				name: 'PlayDetail',
+				params: {
+					id
+				}
+			});
+		}
+	}
 };
 </script>
 

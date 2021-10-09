@@ -10,10 +10,10 @@ module.exports = {
 	configureWebpack: {
 		plugins: [
 			new CopyWebpackPlugin([{
-				from: path.join(__dirname, 'src/images'),
+				from: path.join(__dirname, 'src/static'),
 				to: path.join(__dirname, 'dist', process.env.NODE_ENV === 'production' ? 'build' :
 					'dev',
-					process.env.UNI_PLATFORM, 'images')
+					process.env.UNI_PLATFORM, 'static')
 			}]),
 			// 配置uni-read-pages路由
 			new webpack.DefinePlugin({

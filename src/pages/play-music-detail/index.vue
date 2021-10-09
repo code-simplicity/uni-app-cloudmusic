@@ -16,7 +16,7 @@
 						<view class="music-title">{{ playlistDetail.name }}</view>
 						<view class="music-username" @click="toUserDetail(creatorInfo.userId)">
 							<u-avatar :src="creatorInfo.avatarUrl" size="50"></u-avatar>
-							<view class="music-user-name" >{{ creatorInfo.nickname }}</view>
+							<view class="music-user-name">{{ creatorInfo.nickname }}</view>
 						</view>
 						<view class="music-detail">{{ playlistDetail.description }}</view>
 					</view>
@@ -31,7 +31,7 @@
 						></u-icon>
 						<text class="title">111</text>
 					</view>
-					<view class="play-musci-tools-comment">
+					<view class="play-musci-tools-comment" @click="toComment">
 						<u-icon
 							name="iconfont icon-pinglun"
 							custom-prefix="iconfont"
@@ -102,6 +102,13 @@ export default {
 		}
 	},
 	methods: {
+		// 去评论列表
+		toComment() {
+			this.$Router.push({
+				name: 'Comment'
+			});
+		},
+
 		// 去用户信息
 		toUserDetail(id) {
 			this.$Router.push({
@@ -221,7 +228,7 @@ export default {
 				opacity: 0.3;
 				filter: blur(110rpx) drop-shadow(0rpx 8rpx 16rpx #111111);
 			}
-			
+
 			.play-musci-header-content {
 				display: flex;
 				flex-direction: row;

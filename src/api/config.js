@@ -6,7 +6,8 @@ if (process.env.NODE_ENV === 'development') {
 	// api_base_url = 'http://152.136.183.34:3000'
 } else if (process.env.NODE_ENV === 'production') {
 	// 生产模式的地址
-	api_base_url = 'https://netease-cloud-music-api-zeta-murex.vercel.app/'
+	// api_base_url = 'https://netease-cloud-music-api-zeta-murex.vercel.app/'
+	api_base_url = 'http://152.136.183.34:3000'
 }
 
 // 接口地址统一暴露

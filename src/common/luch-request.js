@@ -17,10 +17,11 @@ http.setConfig((config) => {
 	config.baseURL = api_base_url
 	// #ifdef H5 || APP-PLUS || MP-ALIPAY || MP-WEIXIN
 	config.timeout = 60 * 1000
+	// #endif
 	// #ifdef H5
 	// 跨域请求时是否携带凭证（cookies）仅H5支持（HBuilderX 2.6.15+）
-	config. withCredentials = true
-	
+	config.withCredentials = true
+	// #endif
 	config.dataType = 'json'
 	config.header = {
 		'X-Requested-With': 'XMLHttpRequest',
@@ -28,10 +29,10 @@ http.setConfig((config) => {
 	}
 	// #ifdef APP-PLUS || H5
 	config.responseType = 'json'
-
+	// #endif
 	// #ifdef MP
 	config.responseType = 'text'
-
+	// #endif
 	return config
 })
 

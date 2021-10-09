@@ -3,7 +3,7 @@
 // state
 const state = () => ({
 	//登录状态
-	loginState: false,
+	loginState: null,
 
 	// 用户信息
 	userInfo: null,
@@ -15,14 +15,16 @@ const getters = {
 	loginState: (state) => {
 		// 获取登录状态
 		let loginState = uni.getStorageSync('loginState');
-		return state.loginState || JSON.parse(loginState)
+		return state.loginState || loginState
+		// return state.loginState
 	},
 
 	// 获取用户信息
 	userInfo: (state) => {
 		// 获取用户信息
 		let userInfo = uni.getStorageSync('userInfo');
-		return state.userInfo || JSON.parse(userInfo)
+		return state.userInfo || userInfo
+		// return state.userInfo
 	}
 }
 
@@ -42,6 +44,17 @@ const mutations = {
 	USER_INFO(state, userInfo) {
 		state.userInfo = userInfo
 	},
+
+	LOGIN(state, res) {
+		state.loginState = true
+		state.userInfo = res
+		uni.setStorage({
+			key: 'userInfo',
+			data: res
+		})
+		console.log(state.loginState)
+		console.log(state.userInfo)
+	}
 }
 
 // 统一暴露

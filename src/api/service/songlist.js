@@ -20,3 +20,8 @@ export const getUserPlaylist = (uid) => api.get(`/user/playlist?uid=${uid}`, {})
  * 获取歌单详情
  */
 export const getPlaylistDetail = (id, s) => api.get(`/playlist/detail?id=${id}&s=${s}`, {})
+
+/**
+ * 热门歌单分类
+ */
+export const getPlayListHot = () => api.get(`/playlist/hot`, {})

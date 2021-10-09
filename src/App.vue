@@ -13,13 +13,13 @@ export default {
 		// }
 		audioPlayer = uni.createInnerAudioContext();
 		Vue.prototype.$audio_player = audioPlayer;
-		
+
 		// 播放准备
 		Vue.prototype.$audio_player.onCanplay(() => {
 			Vue.prototype.cusOnCanplay && Vue.prototype.cusOnCanplay();
 			console.log('音频进入可以播放状态，但不保证后面可以流畅播放');
 		});
-		
+
 		// 开始播放
 		Vue.prototype.$audio_player.onPlay(() => {
 			console.log('playing');
@@ -30,20 +30,20 @@ export default {
 				Vue.prototype.cusTimeUpdate();
 			}, 400);
 		});
-		
+
 		// 播放结束
 		Vue.prototype.$audio_player.onEnded(() => {
 			Vue.prototype.cusEnded && Vue.prototype.cusEnded();
 			clearInterval(timer);
 		});
-		
+
 		// 播放错误
 		Vue.prototype.$audio_player.onError(err => {
 			Vue.prototype.cusOnError && Vue.prototype.cusOnError();
 			console.log('play err:' + err);
 			clearInterval(timer);
 		});
-		
+
 		// 暂停
 		Vue.prototype.$audio_player.onPause(() => {
 			console.log('play onPause:');
@@ -51,21 +51,18 @@ export default {
 			clearInterval(timer);
 		});
 
-		// #ifdef APP-PLUS
-		// token标志来判断
-		let token = uni.getStorageSync('token');
-		if (token) {
-			plus.navigator.closeSplashscreen();
+		// 通过查看内存存储的登录状态是否正确，正确就返回首页，没有就返回登录页面进行登录
+		let loginState = uni.getStorageSync('loginState');
+		if (loginState) {
+			this.$Router.replace({
+				name: 'Home'
+			});
 		} else {
-			//不存在则跳转至登录页
-			uni.reLaunch({
-				url: '/pages/login/login',
-				success: () => {
-					plus.navigator.closeSplashscreen();
-				}
+			this.$Router.push({
+				name: 'Login'
 			});
 		}
-		// #endif
+
 		console.log('App Launch');
 	},
 

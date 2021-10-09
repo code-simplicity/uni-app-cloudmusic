@@ -1,21 +1,18 @@
 <template>
 	<view class="recommend-day">
-		<view class="recommend-day-item">
-			<scroll-view scroll-x="true" @scroll="scroll">
-				<view class="recommend-day-list">
-					<u-icon
-						v-for="(item, index) of list"
-						:key="item.value"
-						:name="item.name"
-						:label="item.label"
-						class="icon-style"
-						:class="item.name ? 'active' : ''"
-						size="40"
-						label-pos="bottom"
-						:custom-prefix="item.icon"
-					></u-icon>
-				</view>
-			</scroll-view>
+		<view class="recommend-day-list">
+			<u-icon
+				v-for="(item, index) of list"
+				:key="item.value"
+				:name="item.name"
+				:label="item.label"
+				class="icon-style"
+				size="50"
+				label-size="26"
+				label-pos="bottom"
+				:custom-prefix="item.icon"
+				@click="toDetail(item.label)"
+			></u-icon>
 		</view>
 	</view>
 </template>
@@ -67,34 +64,39 @@ export default {
 	},
 	component: {},
 	mounted() {},
-	methods: {}
+	methods: {
+		toDetail(lable) {
+			if (lable === '每日推荐') {
+				this.$Router.push({
+					name: 'RecommendSongs'
+				});
+			} else if (lable === '歌单') {
+				this.$Router.push({
+					name: 'PlayList'
+				});
+			}
+		}
+	}
 };
 </script>
 
 <style lang="scss" scoped>
 .recommend-day {
-	display: flex;
 	width: 100%;
-	.recommend-day-item {
-		flex: 1;
-		border-radius: 16rpx;
-		background-color: $uni-bg-color;
-		.recommend-day-list {
-			height: 120rpx;
-			line-height: 80rpx;
-			.icon-style {
-				height: 100rpx;
-				margin: 0 16rpx;
-				border-radius: 50%;
-				color: #ff0000;
-				// &.active {
-				// 	color: #111;
-				// }
-				// &:hover {
-				// 	color: #000000;
-				// 	background-color: #000000;
-				// }
-			}
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 10rpx;
+	.recommend-day-list {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		.icon-style {
+			height: 100rpx;
+			margin: 0 16rpx;
+			border-radius: 50%;
+			color: #ff0000;
 		}
 	}
 }

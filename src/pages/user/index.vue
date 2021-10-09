@@ -5,7 +5,7 @@
 		</view>
 		<view class="user-info-wrap">
 			<view class="user-info-content">
-				<view class="user-info-detail" @click="toUserDetail(userInfo.userId)">
+				<view class="user-info-detail" @click="toUserDetail(userInfo.userId)" v-if="loginState">
 					<view class="user-info-avatar">
 						<u-avatar sex-icon="man" size="100" :src="userInfo.avatarUrl"></u-avatar>
 					</view>
@@ -17,6 +17,13 @@
 						</view>
 					</view>
 					<view class="user-info-to-detail">
+						<u-icon name="arrow-right" color="#2d2d2d" size="28"></u-icon>
+					</view>
+				</view>
+				<view class="user-no-login" v-else @click="toLogin">
+					<view class="user-info-avatar"><u-avatar sex-icon="man" size="100" src="src"></u-avatar></view>
+					<view class="user-login">
+						立即登录
 						<u-icon name="arrow-right" color="#2d2d2d" size="28"></u-icon>
 					</view>
 				</view>
@@ -35,7 +42,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="user-info-like">
+				<view class="user-info-like" v-if="loginState">
 					<view
 						class="user-info-liked"
 						v-for="(item, index) in likeMusic"
@@ -143,6 +150,13 @@ export default {
 		}
 	},
 	methods: {
+		// 跳转到登录页面
+		toLogin() {
+			this.$Router.push({
+				name: 'Login'
+			});
+		},
+
 		// 打开菜单
 		toUserSetting() {},
 
@@ -278,6 +292,14 @@ export default {
 					}
 				}
 				.user-info-to-detail {
+				}
+			}
+			.user-no-login {
+				display: flex;
+				align-items: center;
+				.user-login {
+					margin-left: 30rpx;
+					font-size: 32rpx;
 				}
 			}
 			.user-info-wrap-tools {

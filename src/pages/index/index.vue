@@ -30,16 +30,6 @@ export default {
 	component: {},
 	mounted() {
 		this.timer = setTimeout(() => {
-			// // 定时器路由到登录
-			// if (this.loginState === null || this.loginState === undefined) {
-			// 	uni.redirectTo({
-			// 		url: '/pages/login/index'
-			// 	});
-			// } else {
-			// 	// uni.switchTab({
-			// 	// 	url: 'pages/home/index'
-			// 	// });
-			// }
 			uni.switchTab({
 				url: 'pages/home/index'
 			});
