@@ -140,14 +140,6 @@ export default {
 				? 'iconfont icon-24gl-repeatOnce2'
 				: 'iconfont icon-suiji';
 		},
-		// showDetail() {
-		// 	if (this.showMusicDetail) {
-		// 		this.showMusicDetail = false
-		// 	} else {
-		// 		this.showMusicDetail = true
-		// 	}
-		// 	return this.showMusicDetail
-		// }
 	},
 
 	component: {},

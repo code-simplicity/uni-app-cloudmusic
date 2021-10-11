@@ -27,6 +27,11 @@ export default {
 			Vue.prototype.cusPlay && Vue.prototype.cusPlay();
 		});
 
+		// 播放进度更新
+		Vue.prototype.$audio_player.onTimeUpdate(() => {
+			Vue.prototype.cusTimeUpdate && Vue.prototype.cusTimeUpdate();
+		});
+
 		// 播放结束
 		Vue.prototype.$audio_player.onEnded(() => {
 			Vue.prototype.cusEnded && Vue.prototype.cusEnded();

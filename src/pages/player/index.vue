@@ -186,13 +186,14 @@ export default {
 			this.getLyric(newVal.id);
 			this.$nextTick(function() {
 				Vue.prototype.cusPlay = this.onPlay;
-				this.onTimeUpdate();
+				Vue.prototype.cusTimeUpdate = this.onTimeUpdate;
 				Vue.prototype.cusEnded = this.onEnded;
 				Vue.prototype.cusOnCanplay = this.onCanplay;
 				Vue.prototype.cusOnError = this.onError;
 				Vue.prototype.cusOnPause = this.onPause;
 				this.$audio_player.url = newVal.url;
 				this.$audio_player.autoplay = true;
+				this.$audio_player.play();
 				this.$audio_player.src = newVal.url;
 			});
 			// 保存播放记录
@@ -501,8 +502,8 @@ export default {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			filter: blur(40px);
-			opacity: 1;
+			filter: blur(50px);
+			opacity: 0.4;
 		}
 	}
 	.musci-player-box {

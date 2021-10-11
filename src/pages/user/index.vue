@@ -64,6 +64,7 @@
 				</view>
 			</view>
 		</view>
+		<music-player></music-player>
 	</view>
 </template>
 

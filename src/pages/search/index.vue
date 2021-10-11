@@ -54,6 +54,8 @@
 				</view>
 			</view>
 		</view>
+		<!-- 底部播放器 -->
+		<music-player></music-player>
 	</view>
 </template>
 

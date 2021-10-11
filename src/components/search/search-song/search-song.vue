@@ -80,12 +80,9 @@ export default {
 	methods: {
 		// 播放音乐
 		playMusci(item, index) {
-			this.$Router.push({
-				name: 'Player',
-				params: {
-					newSong: this.songs,
-					index: index
-				}
+			this.selectPlay({
+				list: this.songs,
+				index
 			});
 		},
 

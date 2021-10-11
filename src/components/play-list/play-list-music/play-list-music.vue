@@ -79,24 +79,21 @@ export default {
 	methods: {
 		// 播放全部音乐
 		playAll() {
-			this.$Router.push({
-				name: 'Player',
-				params: {
-					newSong: this.songs,
-					index: index
-				}
-			});
 			this.playAll();
 		},
 
 		// 播放音乐
 		playMusci(item, index) {
-			this.$Router.push({
-				name: 'Player',
-				params: {
-					newSong: this.songs,
-					index: index
-				}
+			// this.$Router.push({
+			// 	name: 'Player',
+			// 	params: {
+			// 		newSong: this.songs,
+			// 		index: index
+			// 	}
+			// });
+			this.selectPlay({
+				list: this.songs,
+				index
 			});
 		},
 

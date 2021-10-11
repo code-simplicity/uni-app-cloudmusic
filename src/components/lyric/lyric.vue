@@ -145,7 +145,7 @@ export default {
 				font-size: 30rpx;
 				font-weight: 500;
 				text-align: center;
-				color: #dedede;
+				color: #000000;
 				&:hover {
 					background-color: #f9fffc;
 					color: #000000;

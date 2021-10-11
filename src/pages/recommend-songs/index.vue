@@ -11,6 +11,8 @@
 			</view>
 			<play-list-music :songs="songs"></play-list-music>
 		</view>
+		<!-- 播放器 -->
+		<music-player></music-player>
 	</view>
 </template>
 

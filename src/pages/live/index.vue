@@ -1,6 +1,8 @@
 <template>
 	<view class="">
 		直播
+		<!-- 底部播放器 -->
+		<music-player></music-player>
 	</view>
 </template>
 

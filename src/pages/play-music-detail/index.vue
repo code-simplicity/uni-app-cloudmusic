@@ -56,6 +56,8 @@
 			</view>
 			<view class="play-music-content"><play-list-music :songs="songs"></play-list-music></view>
 		</view>
+		<!-- 播放器 -->
+		<music-player></music-player>
 	</view>
 </template>
 

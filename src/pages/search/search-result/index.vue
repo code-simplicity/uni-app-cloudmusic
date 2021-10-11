@@ -96,6 +96,8 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+		<!-- 底部播放器 -->
+		<music-player></music-player>
 	</view>
 </template>
 

@@ -16,10 +16,10 @@ function findIndex(list, song) {
 	})
 }
 
-// 播放器实例
-const audioPlayer = uni.createInnerAudioContext()
-// 自动播放
-audioPlayer.loop = true;
+// // 播放器实例
+// const audioPlayer = uni.createInnerAudioContext()
+// // 自动播放
+// audioPlayer.loop = true;
 
 // state
 const state = () => ({
@@ -73,44 +73,44 @@ const getters = {
 
 // actions 
 const actions = {
-	// 创建音乐实例
-	playMusic({
-		state,
-		commit,
+	// // 创建音乐实例
+	// playMusic({
+	// 	state,
+	// 	commit,
 
-	}) {
-		// 是否创建音乐实例
-		if (!audioPlayer) return;
+	// }) {
+	// 	// 是否创建音乐实例
+	// 	if (!audioPlayer) return;
 
-		if (state.playing) {
-			console.log('播放');
-			audioPlayer.play()
-		} else {
-			console.log('暂停');
-			audioPlayer.pause()
-		}
+	// 	if (state.playing) {
+	// 		console.log('播放');
+	// 		audioPlayer.play()
+	// 	} else {
+	// 		console.log('暂停');
+	// 		audioPlayer.pause()
+	// 	}
 
-		audioPlayer.onPause(() => {
-			console.log('暂停音乐');
-		})
-		audioPlayer.onPlay(() => {
-			console.log('开始播放音乐');
-		})
-		audioPlayer.onError((res) => {
-			console.log(res)
-		})
-	},
+	// 	audioPlayer.onPause(() => {
+	// 		console.log('暂停音乐');
+	// 	})
+	// 	audioPlayer.onPlay(() => {
+	// 		console.log('开始播放音乐');
+	// 	})
+	// 	audioPlayer.onError((res) => {
+	// 		console.log(res)
+	// 	})
+	// },
 
-	// 销毁
-	desPlayMusic({
-		state,
-		commit,
-	}) {
-		audioPlayer.src = ''
-		audioPlayer.stop()
-		audioPlayer.destroy()
-		console.log('销毁背景音乐实例');
-	},
+	// // 销毁
+	// desPlayMusic({
+	// 	state,
+	// 	commit,
+	// }) {
+	// 	audioPlayer.src = ''
+	// 	audioPlayer.stop()
+	// 	audioPlayer.destroy()
+	// 	console.log('销毁背景音乐实例');
+	// },
 
 
 	// 选择播放

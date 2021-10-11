@@ -71,18 +71,22 @@ export default {
 		// 暂停
 		pauseMusci() {
 			this.pausePlay();
-			this.$audio_player.pause()
+			this.$audio_player.pause();
 		},
 
 		// 播放音乐
 		playMusci(item, index) {
-			this.$Router.push({
-				name: 'Player',
-				params: {
-					newSong: this.newSong,
-					index: index
-				}
-			})
+			// this.$Router.push({
+			// 	name: 'Player',
+			// 	params: {
+			// 		newSong: this.newSong,
+			// 		index: index
+			// 	}
+			// })
+			this.selectPlay({
+				list: this.newSong,
+				index
+			});
 		},
 
 		// 响应状态

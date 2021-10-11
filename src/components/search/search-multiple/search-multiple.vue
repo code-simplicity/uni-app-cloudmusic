@@ -324,6 +324,7 @@
  * time     2021-10-6 8:52:40 ?F10: PM?
  * description 综合搜索
  */
+import { mapActions } from 'vuex';
 import { createSong } from '@/utils/song.js';
 export default {
 	name: 'search-multiple',
@@ -386,12 +387,9 @@ export default {
 	methods: {
 		// 播放音乐
 		playMusci(item, index) {
-			this.$Router.push({
-				name: 'Player',
-				params: {
-					newSong: this.song,
-					index: index
-				}
+			this.selectPlay({
+				list: this.song,
+				index
 			});
 		},
 
@@ -422,6 +420,8 @@ export default {
 				}
 			});
 		},
+
+		...mapActions('player', ['selectPlay', 'pausePlay', 'playAll']),
 
 		// 处理歌曲
 		_normaLizeSongs(res) {

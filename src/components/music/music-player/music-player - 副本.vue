@@ -1,13 +1,11 @@
 <template>
-	<view class="music-player" v-if="playList.length > 0">
+	<view class="music-player" v-show="playList.length > 0">
 		<view class="music-player-box">
 			<view class="music-play-wrap" @click="openMusciDetail">
 				<view class="cover"><image class="image-cover" :src="currentSong.image" mode="aspectFit"></image></view>
-				<view class="music-name-info">
-					<view class="musci-name">
-						{{ currentSong.name }}--
-						<text class="musci-singer">{{ currentSong.singer }}</text>
-					</view>
+				<view class="music-name-info  u-line-1">
+					<view class="musci-name u-line-1">{{ currentSong.name }}--</view>
+					<view class="musci-singer u-line-1">{{ currentSong.singer }}</view>
 				</view>
 			</view>
 			<view class="music-button-list">
@@ -17,15 +15,8 @@
 				<view class="music-list"><u-icon name="grid" size="46"></u-icon></view>
 			</view>
 		</view>
+		<!-- 播放器详情页面 -->
 		<view class="musci-player-detail" v-if="showMusicDetail">
-			<view class="bg-wrapper">
-				<image
-					class="image-bg"
-					style="width: 100%;height: 100%;"
-					:src="currentSong.image"
-					mode="aspectFit"
-				></image>
-			</view>
 			<view class="musci-player-box">
 				<view class="musci-header">
 					<view class="left">
@@ -33,7 +24,7 @@
 							name="iconfont icon-zhankai"
 							size="48"
 							custom-prefix="iconfont"
-							@click="openMusciDetail"
+							@click="colseDetail"
 						></u-icon>
 					</view>
 					<view class="center">
@@ -44,25 +35,22 @@
 					</view>
 				</view>
 				<view class="musci-content">
-					<view
-						class="musci-content-cover"
-						@click="openLyric"
-						:style="{ display: showLyric ? 'none' : 'flex' }"
-					>
+					<view class="musci-content-cover" @click="openLyric('image')" v-if="showLyric">
 						<view class=""></view>
 						<image
 							class="image-cover  animate__animated animate__bounceIn"
-							:class="playing ? '' : 'stoped'"
+							:class="playing ? 'playing' : ''"
 							:src="currentSong.image"
 							mode="aspectFit"
 						></image>
 					</view>
-					<view
-						class="musci-content-lyric"
-						@click="openLyric"
-						:style="{ display: !showLyric ? 'none' : 'block' }"
-					>
-						<lyric ref="lyricRef" :currentLyric="currentLyric" :currentLyricNum="currentLyricNum"></lyric>
+					<view class="musci-content-lyric" @click="openLyric('lyric')" v-else>
+						<lyric
+							:audio="audio"
+							@marginTop="marginTop"
+							:currentLyric="currentLyric"
+							:currentLyricNum="currentLyricNum"
+						></lyric>
 					</view>
 				</view>
 				<view class="musci-tools">
@@ -134,16 +122,15 @@
 <script>
 /**
  * author	bugdr
- * time     2021-9-28 8:07:39 ?F10: AM?
+ * time     2021-9-26 9:52:29 ?F10: AM?
  * description
  */
-import Vue from 'vue';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-
-import { playMode } from '@/utils/playmode.js';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import Lyric from 'lyric-parser';
+import { playMode } from '@/utils/playmode.js';
+
 export default {
-	name: 'music-detail',
+	name: 'music-player',
 	data() {
 		return {
 			// 歌曲正在播放
@@ -157,23 +144,25 @@ export default {
 			// 进度条状态
 			progressState: false,
 			// 歌曲是否正在播放
+			// 播放器实例
+			audio: uni.createInnerAudioContext(),
 			// 打开歌词
 			showLyric: true,
-			// 是否是有歌词的音乐
-			isPureMusic: false,
 			// 当前歌词
 			currentLyric: null,
-			// 歌词文本
-			currentLyricTxt: '',
-			// 正在播放的歌词
+			// 是否是有歌词的音乐
+			isPureMusic: false,
+			// 播放的歌词
 			playingLyric: '',
 			// 歌词行数
 			currentLyricNum: 0,
-			// 是否能通过歌词播放
-			canLyricPlay: false
+			canLyricPlay: false,
+			// 歌词滚动距离
+			// marginTop: 0
+			marTop: 0
 		};
 	},
-
+	component: {},
 	computed: {
 		...mapGetters('player', [
 			'playList',
@@ -205,32 +194,20 @@ export default {
 			}
 			this.songReady = false;
 			// 歌词处理
-			this.isPureMusic = false;
-			if (this.currentLyric) {
-				this.currentLyric.stop();
-				// 重置为null
-				this.currentLyric = null;
-				this.currentTime = 0;
-				this.playingLyric = '';
-				this.currentLyricNum = 0;
-			}
-
 			// 歌词id加载
+			this.canLyricPlay = false;
 			this.getLyric(newVal.id);
 			this.$nextTick(function() {
-				Vue.prototype.cusPlay = this.onPlay;
-				Vue.prototype.cusTimeUpdate = this.onTimeUpdate;
-				Vue.prototype.cusEnded = this.onEnded;
-				Vue.prototype.cusOnCanplay = this.onCanplay;
-				Vue.prototype.cusOnError = this.onError;
-				Vue.prototype.cusOnPause = this.onPause;
-				this.$audio_player.url = newVal.url;
-				this.$audio_player.autoplay = true;
-				this.$audio_player.play();
-				this.$audio_player.src = newVal.url;
+				if (this.audio) {
+					this.audio.src = newVal.url;
+					this.audio.autoplay = true;
+					this.audio.play();
+					this.onPlay();
+					this.onTimeUpdate();
+					this.onEnded();
+					this.saveHistoryList(newVal);
+				}
 			});
-			// 保存播放记录
-			this.saveHistoryList(newVal);
 			// 假若歌曲为播放，就认为超时，做超时处理
 			this.timer = setTimeout(() => {
 				this.songReady = true;
@@ -241,19 +218,20 @@ export default {
 		// 监听播放状态
 		playing(isPlaying) {
 			this.$nextTick(() => {
-				if (this.$audio_player) {
-					isPlaying ? this.$audio_player.play() : this.$audio_player.pause();
+				if (this.audio) {
+					isPlaying ? this.audio.play() : this.audio.pause();
 				}
 			});
 		}
 	},
 
-	created() {},
-
-	component: {},
-
 	mounted() {},
 	methods: {
+		// 收到歌词滚动的距离了
+		marginTop(top) {
+			console.log(top);
+			this.marTop = top;
+		},
 		// 获取歌词
 		async getLyric(id) {
 			try {
@@ -261,67 +239,117 @@ export default {
 				if (res.code === this.$code.code_status) {
 					let lyric = res.lrc.lyric;
 					this.currentLyric = new Lyric(lyric, this.lyricHandle);
-					if (this.playing && this.canLyricPlay) {
-						this.currentLyric.play(this.currentTime);
-						this.currentLyricNum = 0;
-						this.currentLyric.seek(this.currentTime * 1000);
+					if (this.isPureMusic) {
+						this.playingLyric = this.sliceNull(this.parseLyric(this.currentLyric.lrc));
 					}
 				}
 			} catch (error) {
 				this.currentLyric = null;
 				this.playingLyric = '';
 				this.currentLyricNum = 0;
-				this.isPureMusic = true;
-				console.log('获取歌词失败');
 			}
 		},
 
-		lyricHandle({ lineNum, txt }) {
-			if (!this.$refs.lyricRef.$refs.lyricList) {
-				return;
+		//去除空白行
+		sliceNull(lrc) {
+			var result = [];
+			for (var i = 0; i < lrc.length; i++) {
+				if (lrc[i][1] !== '') {
+					result.push(lrc[i]);
+				}
 			}
+			return result;
+		},
+
+		// 格式化歌词
+		parseLyric(text) {
+			let result = [];
+			let lines = text.split('\n'), //切割每一行
+				pattern = /\[\d{2}:\d{2}.\d+\]/g; //用于匹配时间的正则表达式，匹配的结果类似[xx:xx.xx]
+			//去掉不含时间的行
+			while (!pattern.test(lines[0])) {
+				lines = lines.slice(1);
+			}
+			//上面用'\n'生成数组时，结果中最后一个为空元素，这里将去掉
+			lines[lines.length - 1].length === 0 && lines.pop();
+			lines.forEach(function(v /*数组元素值*/, i /*元素索引*/, a /*数组本身*/) {
+				//提取出时间[xx:xx.xx]
+				var time = v.match(pattern),
+					//提取歌词
+					value = v.replace(pattern, '');
+				// 因为一行里面可能有多个时间，所以time有可能是[xx:xx.xx][xx:xx.xx][xx:xx.xx]的形式，需要进一步分隔
+				time.forEach(function(v1, i1, a1) {
+					//去掉时间里的中括号得到xx:xx.xx
+					var t = v1.slice(1, -1).split(':');
+					//将结果压入最终数组
+					result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), value]);
+				});
+			});
+			// 最后将结果数组中的元素按时间大小排序，以便保存之后正常显示歌词
+			result.sort(function(a, b) {
+				return a[0] - b[0];
+			});
+			return result;
+		},
+
+		// 歌词滚动的方法
+		lyricsRolling(audio) {
+			// 歌词滚动
+			this.marTop = (this.currentLyricNum - 3) * 39;
+			if (this.currentLyricNum !== this.currentLyric.lines.length - 1) {
+				for (let j = this.currentLyricNum; j < this.currentLyric.lines.length; j++) {
+					// 当前时间与前一行，后一行时间作比较， j:代表当前行数
+					//倒数第二行
+					if (this.currentLyricNum === this.currentLyric.lines.length - 2) {
+						//最后一行只能与前一行时间比较
+						if (
+							parseFloat(audio.currentTime) >
+							parseFloat(this.currentLyric.lines[this.currentLyric.lines.length - 1][0])
+						) {
+							this.setData({
+								currentLyricNum: this.currentLyric.lines - 1
+							});
+							return;
+						}
+					} else {
+						if (
+							parseFloat(audio.currentTime) > parseFloat(this.currentLyric.lines[j][0]) &&
+							parseFloat(audio.currentTime) < parseFloat(this.currentLyric.lines[j + 1][0])
+						) {
+							return;
+						}
+					}
+				}
+			}
+		},
+
+		// 歌词的回调以及歌词在某一个位子固定
+		lyricHandle({ lineNum, txt }) {
 			this.currentLyricNum = lineNum;
 			this.playingLyric = txt;
-			if (lineNum > 5) {
-				let line = this.$refs.lyricRef.$refs.lyricLine[lineNum - 5];
-				if (this.$refs.lyricRef.$refs.lyricList) {
-					this.$nextTick(() => {
-						this.$refs.lyricRef.$refs.lyricList.scrollToElement(line, 1000);
-					});
-				}
-			} else {
-				if (this.$refs.lyricRef.$refs.lyricList) {
-					this.$nextTick(() => {
-						this.$refs.lyricRef.$refs.lyricList.scrollTo(0, 0, 1000);
-					});
-				}
-			}
-		},
-
-		// 更新播放器时间
-		onTimeUpdate() {
-			this.$audio_player.onTimeUpdate(() => {
-				if (!this.progressState) {
-					this.currentTime = this.$audio_player.currentTime;
-					this.progressBar = (this.$audio_player.currentTime / this.currentSong.duration) * 100;
-				}
-			});
 		},
 
 		// 打开歌词
-		openLyric() {
-			this.showLyric = !this.showLyric;
+		openLyric(val) {
+			if (val === 'image') {
+				this.showLyric = false;
+			} else if (val === 'lyric') {
+				this.showLyric = true;
+			}
 		},
 
 		// 打开播放器页面
 		openMusciDetail() {
-			this.showMusicDetail = !this.showMusicDetail;
+			if (this.showMusicDetail) {
+				this.showMusicDetail = false;
+			} else {
+				this.showMusicDetail = true;
+			}
 		},
-
 		// 改变进度条
 		sliderChange(val) {
 			const currentTime = ((val.detail.value / 100) * this.currentSong.duration) / 1000;
-			this.$audio_player.currentTime = currentTime * 1000;
+			this.audio.currentTime = currentTime * 1000;
 			this.currentTime = currentTime * 1000;
 			this.progressState = false;
 			if (!this.playing) {
@@ -338,69 +366,82 @@ export default {
 			if (!this.playing) {
 				this.togglePlaying();
 			}
-			if (this.currentLyric) {
-				this.currentLyric.seek(currentTime * 1000);
-			}
+		},
+
+		// 更新播放器时间
+		onTimeUpdate() {
+			this.audio.onTimeUpdate(() => {
+				if (!this.progressState) {
+					this.currentTime = this.audio.currentTime;
+					this.progressBar = (this.audio.currentTime / this.currentSong.duration) * 100;
+					this.lyricsRolling(this.audio);
+				}
+			});
 		},
 
 		// 播放准备完成
 		onCanplay() {
-			clearTimeout(this.timer);
-			this.songReady = true;
-			this.canLyricPlay = false;
-			if (this.currentLyric && !this.isPureMusic) {
-				this.currentLyric.seek(this.currentTime * 1000);
-			}
+			this.audio.onCanplay(() => {
+				clearTimeout(this.timer);
+				this.songReady = true;
+				this.canLyricPlay = false;
+				if (this.currentLyric && !this.isPureMusic) {
+					this.currentLyric.seek(this.currentTime * 1000);
+				}
+			});
 		},
 
-		// // 歌曲播放
+		// 歌曲播放
 		onPlay() {
-			clearTimeout(this.timer);
-			this.songReady = true;
-			this.canLyricPlay = true;
+			this.audio.onPlay(() => {
+				clearTimeout(this.timer);
+				this.songReady = true;
+				this.canLyricPlay = true;
+			});
 		},
 
 		// 歌曲暂停
 		onPause() {
-			this.setPlayingState(false);
-			if (this.currentLyric && !this.isPureMusic) {
-				this.currentLyric.seek(this.currentTime * 1000);
-			}
+			this.audio.onPause(() => {
+				this.setPlayingState(false);
+			});
+		},
+
+		// 歌曲跳转到指定位置
+		seek() {
+			this.audio.seek(position => {
+				console.log(position);
+			});
 		},
 
 		// 单曲循环
 		loopSong() {
-			this.$audio_player.currentTime = 0;
-			this.$audio_player.play();
+			this.audio.currentTime = 0;
+			this.audio.play();
 			InnerAudioContext.loop = true;
 			this.setPlayingState(true);
-			if (this.currentLyric !== '') {
-				this.currentLyric.seek(0);
-			}
 		},
 
 		// 播放结束
 		onEnded() {
-			this.currentTime = 0;
-			if (this.mode === playMode.loop) {
-				// 循环播放
-				this.loopSong();
-			} else {
-				this.nextSong();
-			}
-			console.log('ended');
-		},
-
-		onError() {
-			this.$audio_player.currentTime = 0;
-			this.setPlayingState(false);
+			this.audio.onEnded(() => {
+				this.currentTime = 0;
+				if (this.mode === playMode.loop) {
+					// 循环播放
+					this.loopSong();
+				} else {
+					this.nextSong();
+				}
+			});
 		},
 
 		// 关闭播放器
 		colseDetail() {
-			uni.navigateBack({
-				delta: 1
-			});
+			if (this.showMusicDetail) {
+				this.showMusicDetail = false;
+			} else {
+				this.showMusicDetail = true;
+			}
 		},
 
 		// 重置当前播放序号
@@ -470,10 +511,6 @@ export default {
 		// 播放/暂停
 		togglePlaying() {
 			this.setPlayingState(!this.playing);
-			// 切换歌词播放状态
-			if (this.currentLyric) {
-				this.currentLyric.togglePlay();
-			}
 		},
 
 		// 格式化时间
@@ -505,13 +542,15 @@ export default {
 <style lang="scss" scoped>
 .music-player {
 	width: 100%;
+	height: 80rpx;
 	position: fixed;
 	bottom: calc(var(--window-bottom));
 	left: 0;
 	right: 0;
 	z-index: 9888;
-	background-color: #ffffff;
+	background-color: $uni-bg-color;
 	padding: 10rpx 10rpx;
+	line-height: 80rpx;
 	.music-player-box {
 		display: flex;
 		justify-content: space-between;
@@ -519,27 +558,26 @@ export default {
 		.music-play-wrap {
 			display: flex;
 			justify-content: space-between;
-			align-items: center;
 			.cover {
-				height: 70rpx;
-				width: 70rpx;
+				height: 60rpx;
+				width: 60rpx;
 				margin-left: 10rpx;
+				line-height: 60rpx;
 				.image-cover {
-					height: 70rpx;
-					width: 70rpx;
+					width: 100%;
+					height: 100%;
 					border-radius: 50%;
 				}
 			}
 			.music-name-info {
-				display: flex;
 				margin-left: 20rpx;
-				align-items: center;
-
+				display: flex;
+				flex-direction: row;
 				.musci-name {
 					font-size: 32rpx;
-					.musci-singer {
-						font-size: 24rpx;
-					}
+				}
+				.musci-singer {
+					font-size: 26rpx;
 				}
 			}
 		}
@@ -564,22 +602,9 @@ export default {
 	left: 0;
 	bottom: 0;
 	z-index: 9999;
-	background-color: #f1f1f1;
-	.bg-wrapper {
-		.image-bg {
-			width: 100%;
-			height: 100%;
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			filter: blur(50px);
-			opacity: 0.4;
-		}
-	}
 	.musci-player-box {
-		padding: 16rpx 26rpx;
+		padding: 10rpx 16rpx;
+		background-color: #d6d6d6;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -603,16 +628,10 @@ export default {
 					width: 400rpx;
 					height: 400rpx;
 					border-radius: 50%;
-					animation-duration: 6s;
-					animation-delay: 6s;
-					animation: loading 6s linear infinite;
-					// &.playing {
-					// 	animation-duration: 6s;
-					// 	animation-delay: 6s;
-					// 	animation: loading 6s linear infinite;
-					// }
-					&.stoped {
-						animation-play-state: paused;
+					&.playing {
+						animation-duration: 6s;
+						animation-delay: 6s;
+						animation: loading 6s linear infinite;
 					}
 				}
 				@keyframes loading {
@@ -627,13 +646,11 @@ export default {
 			.musci-content-lyric {
 				width: 100%;
 				border-radius: 8rpx;
+				padding: 0;
 				font-size: 38rpx;
+				overflow: hidden;
 				color: #ffffff;
 				margin-top: 30rpx;
-				height: 100%;
-				overflow: hidden;
-				overflow-y: scroll;
-				position: relative;
 			}
 		}
 		.musci-tools {
