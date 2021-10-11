@@ -3,7 +3,7 @@
 		<u-cell-group :border="false" class="search-cell-group">
 			<view class="play-list-header">
 				<view class="play-list-play-left">
-					<view class="play-list-left-circle">
+					<view class="play-list-left-circle" @click="playAll">
 						<u-icon name="play-circle-fill" color="#ff0000" size="50"></u-icon>
 					</view>
 					<view class="play-list-left-all">
@@ -77,6 +77,18 @@ export default {
 	component: {},
 	mounted() {},
 	methods: {
+		// 播放全部音乐
+		playAll() {
+			this.$Router.push({
+				name: 'Player',
+				params: {
+					newSong: this.songs,
+					index: index
+				}
+			});
+			this.playAll();
+		},
+
 		// 播放音乐
 		playMusci(item, index) {
 			this.$Router.push({

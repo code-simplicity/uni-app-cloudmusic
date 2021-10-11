@@ -74,6 +74,7 @@ s
 					:arrow="true"
 				></u-cell-item>
 				<u-cell-item :border-bottom="false" icon="coupon" title="优惠券" :arrow="true"></u-cell-item>
+				<u-cell-item :border-bottom="false" icon="download" title="检查更新" :arrow="true" @click="doUpApp"></u-cell-item>
 			</u-cell-group>
 		</view>
 
@@ -108,6 +109,7 @@ s
  * description
  */
 import { mapGetters, mapMutations } from 'vuex';
+import upApp from '@/uni_modules/uni-upgrade-center-app/utils/check-update'
 export default {
 	name: 'user-setting',
 	data() {
@@ -134,6 +136,11 @@ export default {
 	component: {},
 	mounted() {},
 	methods: {
+		// 检查更新app
+		doUpApp() {
+			upApp()
+		},
+		
 		// 跳转到登录页面
 		toLogin() {
 			this.$Router.push({

@@ -22,32 +22,35 @@
 					</view>
 				</view>
 				<view class="play-musci-tools">
-					<view class="play-musci-tools-collect">
+					<view
+						class="play-musci-tools-collect"
+						@click="PlaylistSubscribe(playlistDetail.subscribed, playlistDetail.id)"
+					>
 						<u-icon
-							name="iconfont icon-shoucang2"
+							:name="likedIcon"
 							custom-prefix="iconfont"
-							color="#000000"
-							size="50"
+							:color="playlistDetail.subscribed ? '#ff0000' : '#000000'"
+							size="48"
 						></u-icon>
-						<text class="title">111</text>
+						<text class="title">{{ playlistDetail.subscribedCount }}</text>
 					</view>
 					<view class="play-musci-tools-comment" @click="toComment">
 						<u-icon
 							name="iconfont icon-pinglun"
 							custom-prefix="iconfont"
 							color="#000000"
-							size="50"
+							size="48"
 						></u-icon>
-						<text class="title">111</text>
+						<text class="title">{{ playlistDetail.commentCount }}</text>
 					</view>
 					<view class="play-musci-tools-share">
 						<u-icon
 							name="iconfont icon-fenxiang1"
 							custom-prefix="iconfont"
 							color="#000000"
-							size="50"
+							size="58"
 						></u-icon>
-						<text class="title">分享</text>
+						<text class="title">{{ playlistDetail.shareCount }}</text>
 					</view>
 				</view>
 			</view>
@@ -76,13 +79,20 @@ export default {
 			// 创作者信息
 			creatorInfo: [],
 			// 歌曲
-			songs: []
+			songs: [],
+			// 歌单id
+			playListId: ''
 		};
 	},
 	component: {},
 
 	computed: {
-		...mapGetters('user', ['userInfo', 'loginState'])
+		...mapGetters('user', ['userInfo', 'loginState']),
+		likedIcon() {
+			return this.playlistDetail.subscribed
+				? 'iconfont icon-shoucangyishoucang-copy-copy'
+				: 'iconfont icon-shoucang2';
+		}
 	},
 
 	watch: {
@@ -98,14 +108,38 @@ export default {
 	mounted() {
 		let id = this.$Route.query.id;
 		if (id) {
+			this.playListId = id;
 			this._initIaLize(id);
 		}
 	},
 	methods: {
+		// 收藏
+		PlaylistSubscribe(t, id) {
+			let params = {
+				id
+			};
+			if (t) {
+				params.t = 2;
+			} else {
+				params.t = 1;
+			}
+			let title = t ? '取消收藏' : '收藏成功';
+			this.$api.playlistSubscribe(params).then(res => {
+				if (res.code === this.$code.code_status) {
+					uni.showToast({
+						title: title,
+						icon: 'success'
+					});
+				}
+			});
+		},
 		// 去评论列表
 		toComment() {
 			this.$Router.push({
-				name: 'Comment'
+				name: 'Comment',
+				params: {
+					id: this.playListId
+				}
 			});
 		},
 
@@ -286,8 +320,9 @@ export default {
 					display: flex;
 					align-items: center;
 					.title {
+						margin-left: 10rpx;
 						text-align: center;
-						font-size: 28rpx;
+						font-size: 26rpx;
 						color: #000000;
 					}
 				}
@@ -295,8 +330,9 @@ export default {
 					display: flex;
 					align-items: center;
 					.title {
+						margin-left: 10rpx;
 						text-align: center;
-						font-size: 28rpx;
+						font-size: 26rpx;
 						color: #000000;
 					}
 				}
@@ -304,8 +340,9 @@ export default {
 					display: flex;
 					align-items: center;
 					.title {
+						margin-left: 10rpx;
 						text-align: center;
-						font-size: 28rpx;
+						font-size: 26rpx;
 						color: #000000;
 					}
 				}

@@ -13,23 +13,6 @@
 				/>
 			</view>
 		</view>
-		<!-- <view class="lyric">
-			<view class="lyric-wrapper" ref="scroll">
-				<view class="scroll-content" v-if="currentLyric">
-					<view
-						ref="lyricLine"
-						class="lyric-text"
-						v-for="(item, index) in currentLyric.lines"
-						:class="currentLyricNum === index ? 'active' : ''"
-						:key="item.key"
-					>
-						{{ item.txt }}
-					</view>
-				</view>
-				<view class="no-lyric" v-else>暂无歌词,请搜索重试</view>
-			</view>
-		</view> -->
-
 		<scroll class="lyric" ref="lyricList" :data="currentLyric && currentLyric.lines">
 			<view class="lyric-wrapper">
 				<view v-if="currentLyric">
@@ -162,13 +145,13 @@ export default {
 				font-size: 30rpx;
 				font-weight: 500;
 				text-align: center;
-				color: #000000;
+				color: #dedede;
 				&:hover {
-					background-color: #000001;
-					color: #d00000;
+					background-color: #f9fffc;
+					color: #000000;
 				}
 				&.active {
-					color: #d00000;
+					color: #e10003;
 				}
 				&::after {
 					color: #ffffff;

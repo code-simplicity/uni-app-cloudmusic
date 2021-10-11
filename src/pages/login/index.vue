@@ -114,9 +114,9 @@ export default {
 					});
 					// 设置定时器2s跳转到首页
 
-					this.$Router.replace({
-						name: 'Home'
-					});
+					uni.switchTab({
+						url:'../home/index'
+					})
 					uni.setStorageSync('userInfo', JSON.stringify(userInfo));
 					// this.setUserInfo(res.profile);
 					this.setLogin(res.profile);

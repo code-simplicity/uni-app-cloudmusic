@@ -74,7 +74,7 @@ export default {
 		let minute = this.formatZero(date.getMinutes(), 2)
 		let seconds = this.formatZero(date.getSeconds(), 2)
 		if (type === 'YYYY-MM-DD') {
-			return `${year}-${month}-${day}`
+			return `${year}年${month}月${day}日`
 		} else if (type === 'YYYY-MM-DD HH:MM:SS') {
 			return `${year}-${month}-${day} ${hour}:${minute}:${seconds}`
 		} else if (type === 'MM/DD  HH:MM:SS') {

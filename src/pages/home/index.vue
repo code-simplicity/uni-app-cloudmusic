@@ -25,6 +25,7 @@
 				</view>
 			</view>
 		</view>
+		<!-- 升级 -->
 		<!-- <music-player></music-player> -->
 	</view>
 </template>

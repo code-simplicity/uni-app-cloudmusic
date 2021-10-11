@@ -22,6 +22,19 @@ export default {
 			timer: null
 		};
 	},
+	created() {
+		// 通过查看内存存储的登录状态是否正确，正确就返回首页，没有就返回登录页面进行登录
+		let loginState = uni.getStorageSync('loginState');
+		if (loginState) {
+			this.$Router.replace({
+				name: 'Home'
+			});
+		} else {
+			this.$Router.push({
+				name: 'Login'
+			});
+		}
+	},
 
 	computed: {
 		...mapGetters('user', ['userInfo', 'loginState'])

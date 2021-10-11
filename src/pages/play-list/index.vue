@@ -17,7 +17,7 @@
 			:current="swiperCurrent"
 			@transition="transition"
 			@animationfinish="animationfinish"
-		></swiper>
+		></swiper> 
 	</view>
 </template>
 

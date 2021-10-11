@@ -45,6 +45,22 @@
 			}
 		},
 		{
+			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
+			"style": {
+				"disableScroll": true,
+				"app-plus": {
+					"backgroundColorTop": "transparent",
+					"background": "transparent",
+					"titleNView": false,
+					"scrollIndicator": false,
+					"popGesture": "none",
+					"animationType": "fade-in",
+					"animationDuration": 200
+
+				}
+			}
+		},
+		{
 			"path": "pages/live/index",
 			"name": "Home",
 			"meta": {
@@ -319,7 +335,8 @@
 			"^board-(.*)": "@/components/home/board-$1/board-$1.vue", // 匹配components目录内的vue文件
 			"^user-(.*)": "@/components/user/user-$1/user-$1.vue", // 匹配components目录内的vue文件
 			"^play-(.*)": "@/components/play-list/play-$1/play-$1.vue", // 匹配components目录内的vue文件
-			"^search-(.*)": "@/components/search/search-$1/search-$1.vue" // 匹配components目录内的vue文件
+			"^search-(.*)": "@/components/search/search-$1/search-$1.vue", // 匹配components目录内的vue文件
+			"^comment-(.*)": "@/components/comment/comment-$1/comment-$1.vue" // 匹配components目录内的vue文件
 		}
 
 	}

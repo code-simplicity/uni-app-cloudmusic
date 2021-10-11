@@ -21,7 +21,7 @@
 				</view>
 			</view>
 			<view class="musci-content">
-				<view class="musci-content-cover" @click="openLyric('image')" v-if="showLyric">
+				<view class="musci-content-cover" @click="openLyric" :style="{ display: showLyric ? 'none' : 'flex' }">
 					<view class=""></view>
 					<image
 						class="image-cover  animate__animated animate__bounceIn"
@@ -30,7 +30,11 @@
 						mode="aspectFit"
 					></image>
 				</view>
-				<view class="musci-content-lyric" @click="openLyric('lyric')" v-else>
+				<view
+					class="musci-content-lyric"
+					@click="openLyric"
+					:style="{ display: !showLyric ? 'none' : 'block' }"
+				>
 					<lyric ref="lyricRef" :currentLyric="currentLyric" :currentLyricNum="currentLyricNum"></lyric>
 				</view>
 			</view>
@@ -182,7 +186,7 @@ export default {
 			this.getLyric(newVal.id);
 			this.$nextTick(function() {
 				Vue.prototype.cusPlay = this.onPlay;
-				Vue.prototype.cusTimeUpdate = this.onTimeUpdate;
+				this.onTimeUpdate();
 				Vue.prototype.cusEnded = this.onEnded;
 				Vue.prototype.cusOnCanplay = this.onCanplay;
 				Vue.prototype.cusOnError = this.onError;
@@ -251,19 +255,24 @@ export default {
 		},
 
 		lyricHandle({ lineNum, txt }) {
+			if (!this.$refs.lyricRef.$refs.lyricList) {
+				return;
+			}
 			this.currentLyricNum = lineNum;
 			this.playingLyric = txt;
-			if (lineNum > 1) {
+			if (lineNum > 5) {
 				let line = this.$refs.lyricRef.$refs.lyricLine[lineNum - 5];
 				if (this.$refs.lyricRef.$refs.lyricList) {
 					this.$nextTick(() => {
 						this.$refs.lyricRef.$refs.lyricList.scrollToElement(line, 1000);
 					});
 				}
-			} else if (this.$refs.lyricRef.$refs.lyricList) {
-				this.$nextTick(() => {
-					this.$refs.lyricRef.$refs.lyricList.scrollTo(0, 0, 1000);
-				});
+			} else {
+				if (this.$refs.lyricRef.$refs.lyricList) {
+					this.$nextTick(() => {
+						this.$refs.lyricRef.$refs.lyricList.scrollTo(0, 0, 1000);
+					});
+				}
 			}
 		},
 
@@ -278,12 +287,8 @@ export default {
 		},
 
 		// 打开歌词
-		openLyric(val) {
-			if (val === 'image') {
-				this.showLyric = false;
-			} else if (val === 'lyric') {
-				this.showLyric = true;
-			}
+		openLyric() {
+			this.showLyric = !this.showLyric;
 		},
 
 		// 打开播放器页面
@@ -496,8 +501,8 @@ export default {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			filter: blur(60px);
-			opacity: 0.9;
+			filter: blur(40px);
+			opacity: 1;
 		}
 	}
 	.musci-player-box {
