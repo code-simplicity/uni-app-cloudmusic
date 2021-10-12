@@ -25,3 +25,10 @@ type: 数字 , 资源类型 , 对应歌曲 , mv, 专辑 , 歌单 , 电台, 视�
 export const doCommentLike = params => api.get(`/comment/like`, {
 	params
 })
+
+/**
+ * 获取歌曲评论
+ */
+export const getCommentMusic = params => api.get(`/comment/music`, {
+	params
+})
