@@ -70,7 +70,9 @@ export default {
 			// 评论数据
 			commentList: [],
 			// 歌单id
-			playListId: ''
+			playListId: '',
+			// 判断是歌单评论还是歌曲评论,传1是歌曲，传2是歌单
+			type: 1
 		};
 	},
 	computed: {},
@@ -88,6 +90,8 @@ export default {
 	component: {},
 	mounted() {
 		let id = this.$Route.query.id;
+		let type = this.$Route.query.type;
+		this.type = type;
 		if (id) {
 			this.playListId = id;
 			this._initIaLize(id);
@@ -127,24 +131,45 @@ export default {
 				limit: this.limit,
 				offset: this.offset
 			};
-			this.$api.getCommentPlayList(params).then(res => {
-				if (res.code === this.$code.code_status) {
-					if (val === '推荐') {
-						this.commentList = res.hotComments;
-					} else if (val === '最热') {
-						// if (res.moreHot) {
-						// 	this.offset += 40;
-						// }
-						this.commentList = res.hotComments;
-					} else if (val === '最新') {
-						// if (res.more) {
-						// if (res.more) {
-						// 	this.offset += 40;
-						// }
-						this.commentList = res.comments;
+			if (this.type === 1) {
+				this.$api.getCommentMusic(params).then(res => {
+					if (res.code === this.$code.code_status) {
+						if (val === '推荐') {
+							this.commentList = res.hotComments;
+						} else if (val === '最热') {
+							// if (res.moreHot) {
+							// 	this.offset += 40;
+							// }
+							this.commentList = res.hotComments;
+						} else if (val === '最新') {
+							// if (res.more) {
+							// if (res.more) {
+							// 	this.offset += 40;
+							// }
+							this.commentList = res.comments;
+						}
 					}
-				}
-			});
+				});
+			} else if (this.type === 2) {
+				this.$api.getCommentPlayList(params).then(res => {
+					if (res.code === this.$code.code_status) {
+						if (val === '推荐') {
+							this.commentList = res.hotComments;
+						} else if (val === '最热') {
+							// if (res.moreHot) {
+							// 	this.offset += 40;
+							// }
+							this.commentList = res.hotComments;
+						} else if (val === '最新') {
+							// if (res.more) {
+							// if (res.more) {
+							// 	this.offset += 40;
+							// }
+							this.commentList = res.comments;
+						}
+					}
+				});
+			}
 		},
 
 		// 切换评论类型
