@@ -16,10 +16,6 @@ function findIndex(list, song) {
 	})
 }
 
-// // 播放器实例
-// const audioPlayer = uni.createInnerAudioContext()
-// // 自动播放
-// audioPlayer.loop = true;
 
 // state
 const state = () => ({
@@ -40,6 +36,9 @@ const state = () => ({
 
 	// 播放历史记录列表
 	historyList: [],
+
+	// 播放器底部显示显示
+	showPlayTabBar: false
 
 })
 
@@ -68,50 +67,17 @@ const getters = {
 	// 播放历史记录
 	historyList: (state) => {
 		return state.historyList
+	},
+
+	// 获取底部展示状态
+	showPlayTabBar: (state) => {
+		let showPlayTabBar = uni.getStorageSync('showPlayTabBar');
+		return showPlayTabBar
 	}
 }
 
 // actions 
 const actions = {
-	// // 创建音乐实例
-	// playMusic({
-	// 	state,
-	// 	commit,
-
-	// }) {
-	// 	// 是否创建音乐实例
-	// 	if (!audioPlayer) return;
-
-	// 	if (state.playing) {
-	// 		console.log('播放');
-	// 		audioPlayer.play()
-	// 	} else {
-	// 		console.log('暂停');
-	// 		audioPlayer.pause()
-	// 	}
-
-	// 	audioPlayer.onPause(() => {
-	// 		console.log('暂停音乐');
-	// 	})
-	// 	audioPlayer.onPlay(() => {
-	// 		console.log('开始播放音乐');
-	// 	})
-	// 	audioPlayer.onError((res) => {
-	// 		console.log(res)
-	// 	})
-	// },
-
-	// // 销毁
-	// desPlayMusic({
-	// 	state,
-	// 	commit,
-	// }) {
-	// 	audioPlayer.src = ''
-	// 	audioPlayer.stop()
-	// 	audioPlayer.destroy()
-	// 	console.log('销毁背景音乐实例');
-	// },
-
 
 	// 选择播放
 	selectPlay({
@@ -211,10 +177,15 @@ const mutations = {
 	// 播放列表
 	PLAY_LIST(state, list) {
 		state.playList = list
+		uni.setStorageSync('showPlayTabBar', true);
 	},
 	// 播放历史记录
 	HISTORY_LIST(state, list) {
 		state.historyList = list
+	},
+	// 底部状态改变
+	SHOW_PLAY_TBABAR(state, flag) {
+		state.showPlayTabBar = flag
 	},
 }
 
