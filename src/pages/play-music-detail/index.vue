@@ -140,7 +140,8 @@ export default {
 			this.$Router.push({
 				name: 'Comment',
 				params: {
-					id: this.playListId
+					id: this.playListId,
+					type: 2
 				}
 			});
 		},
