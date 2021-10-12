@@ -1,7 +1,7 @@
 <template>
-	<view class="music-player" v-if="playList.length > 0">
+	<view class="music-player" v-if="showPlayTabBar">
 		<view class="music-player-box">
-			<view class="music-play-wrap" @click="openMusciDetail">
+			<view class="music-play-wrap" @click="openMusciDetail('open')">
 				<view class="cover"><image class="image-cover" :src="currentSong.image" mode="aspectFit"></image></view>
 				<view class="music-name-info">
 					<view class="musci-name">
@@ -14,7 +14,7 @@
 				<view class="music-button">
 					<u-icon custom-prefix="iconfont" :name="playIcon" size="58" @click="togglePlaying"></u-icon>
 				</view>
-				<view class="music-list"><u-icon name="grid" size="46"></u-icon></view>
+				<view class="music-list" @click="openPopup"><u-icon name="grid" size="52"></u-icon></view>
 			</view>
 		</view>
 		<view class="musci-player-detail" v-if="showMusicDetail">
@@ -33,7 +33,7 @@
 							name="iconfont icon-zhankai"
 							size="48"
 							custom-prefix="iconfont"
-							@click="openMusciDetail"
+							@click="openMusciDetail('close')"
 						></u-icon>
 					</view>
 					<view class="center">
@@ -57,23 +57,50 @@
 							mode="aspectFit"
 						></image>
 					</view>
+
 					<view
 						class="musci-content-lyric"
 						@click="openLyric"
 						:style="{ display: !showLyric ? 'none' : 'block' }"
 					>
-						<lyric ref="lyricRef" :currentLyric="currentLyric" :currentLyricNum="currentLyricNum"></lyric>
+						<scroll class="lyric" ref="lyricList" :data="currentLyric && currentLyric.lines">
+							<view class="lyric-wrapper" v-if="currentLyric">
+								<view
+									ref="lyricLine"
+									class="lyric-text"
+									v-for="(item, index) in currentLyric.lines"
+									:class="currentLyricNum === index ? 'active' : ''"
+									:key="index"
+								>
+									{{ item.txt }}
+								</view>
+							</view>
+							<view class="no-lyric" v-else>暂无歌词,请搜索重试</view>
+						</scroll>
 					</view>
 				</view>
 				<view class="musci-tools">
 					<view class="musci-like">
-						<u-icon size="52" name="iconfont icon-shoucang" custom-prefix="iconfont"></u-icon>
+						<u-icon size="48" name="iconfont icon-shoucang" custom-prefix="iconfont"></u-icon>
 					</view>
 					<view class="musci-like">
 						<u-icon size="54" name="iconfont icon-xiazai" custom-prefix="iconfont"></u-icon>
 					</view>
 					<view class="musci-like">
-						<u-icon size="54" name="iconfont icon-pinglun" custom-prefix="iconfont"></u-icon>
+						<u-badge
+							class="badge"
+							:count="commentTotal"
+							:offset="[-10, -30]"
+							bgColor="#000000"
+							:is-center="true"
+							:overflow-count="1000000000"
+						></u-badge>
+						<u-icon
+							size="54"
+							name="iconfont icon-pinglun"
+							custom-prefix="iconfont"
+							@click="toComment(currentSong.id)"
+						></u-icon>
 					</view>
 					<view class="musci-like">
 						<u-icon size="54" name="iconfont icon-sandian" custom-prefix="iconfont"></u-icon>
@@ -86,8 +113,8 @@
 					<view class="musci-tools-progress">
 						<slider
 							class="musci-slider"
-							activeColor="#FFCC33"
-							backgroundColor="#000000"
+							activeColor="#000000"
+							backgroundColor="#004cff"
 							block-color="#8A6DE9"
 							block-size="8"
 							:value="progressBar"
@@ -123,11 +150,58 @@
 						></u-icon>
 					</view>
 					<view class="music-play-btn-list">
-						<u-icon size="46" name="iconfont icon-bofangliebiao" custom-prefix="iconfont"></u-icon>
+						<u-icon
+							size="46"
+							name="iconfont icon-bofangliebiao"
+							custom-prefix="iconfont"
+							@click="openPopup"
+						></u-icon>
 					</view>
 				</view>
 			</view>
 		</view>
+		<!-- 播放历史 -->
+		<u-popup v-model="showPopup" mode="bottom" border-radius="16" width="100%" height="60%">
+			<view class="popup-box">
+				<view class="header">
+					<view class="header-title">历史记录</view>
+					<view class="header-tools">
+						<view class="tools-left">列表循环</view>
+						<view class="tools-right">
+							<view class="tools-right-collect">
+								<u-icon name="checkmark-circle" size="46" label="收藏全部"></u-icon>
+							</view>
+							<view class="tools-right-del">
+								<u-icon name="trash" size="46" @click="clearHistory"></u-icon>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="scroll-box">
+					<u-cell-group class="search-cell-group">
+						<scroll-view style="height: 600rpx" scroll-y="true">
+							<u-cell-item
+								class="u-cell"
+								:arrow="false"
+								v-for="(item, index) of historyList"
+								:key="item.id"
+								:class="currentSong.id === item.id && playing ? 'playing' : ''"
+								@click="playSong(index)"
+							>
+								<view slot="icon" class="slot-icon">{{ utils.formatZero(index + 1, 2) }}</view>
+								<view slot="title" class="singer-title">
+									<view class="songs-name">{{ item.name }} --</view>
+									<view class="singer-name">{{ item.singer }}</view>
+								</view>
+								<view slot="right-icon">
+									<u-icon name="close" @click="deleteSong(item, index)"></u-icon>
+								</view>
+							</u-cell-item>
+						</scroll-view>
+					</u-cell-group>
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -170,7 +244,13 @@ export default {
 			// 歌词行数
 			currentLyricNum: 0,
 			// 是否能通过歌词播放
-			canLyricPlay: false
+			canLyricPlay: false,
+			// 打开播放历史记录
+			showPopup: false,
+			limit: 40,
+			offset: 0,
+			// 评论总数
+			commentTotal: ''
 		};
 	},
 
@@ -182,7 +262,8 @@ export default {
 			'currentIndex',
 			'mode',
 			'sequenceList',
-			'historyList'
+			'historyList',
+			'showPlayTabBar'
 		]),
 		playIcon() {
 			return this.playing ? 'iconfont icon-zanting' : 'iconfont icon-bofang';
@@ -216,7 +297,7 @@ export default {
 			}
 
 			// 歌词id加载
-			this.getLyric(newVal.id);
+			// this.getLyric(newVal.id);
 			this.$nextTick(function() {
 				Vue.prototype.cusPlay = this.onPlay;
 				Vue.prototype.cusTimeUpdate = this.onTimeUpdate;
@@ -226,9 +307,10 @@ export default {
 				Vue.prototype.cusOnPause = this.onPause;
 				this.$audio_player.url = newVal.url;
 				this.$audio_player.autoplay = true;
-				this.$audio_player.play();
 				this.$audio_player.src = newVal.url;
 			});
+			this.getLyric(newVal.id);
+			this.getCommentMusic(newVal.id);
 			// 保存播放记录
 			this.saveHistoryList(newVal);
 			// 假若歌曲为播放，就认为超时，做超时处理
@@ -254,6 +336,52 @@ export default {
 
 	mounted() {},
 	methods: {
+		// 去评论列表
+		toComment(id) {
+			this.$Router.push({
+				name: 'Comment',
+				params: {
+					id: id,
+					type: 1
+				}
+			});
+		},
+
+		// 获取歌曲评论
+		getCommentMusic(id) {
+			let params = {
+				id: id,
+				limit: this.limit,
+				offset: this.offset
+			};
+			this.$api.getCommentMusic(params).then(res => {
+				if (res.code === this.$code.code_status) {
+					this.commentTotal = this.utils.tranNumber(res.total);
+				}
+			});
+		},
+		// 删除历史播放记录
+		deleteSong(item) {
+			this.deleteHistoryList(item);
+		},
+
+		// 清除全部播放历史
+		clearHistory() {
+			this.clearHistoryList();
+		},
+
+		// 播放音乐
+		playSong(index) {
+			this.selectPlay({
+				list: this.historyList,
+				index
+			});
+		},
+		// 打开历史
+		openPopup() {
+			this.showPopup = !this.showPopup;
+		},
+
 		// 获取歌词
 		async getLyric(id) {
 			try {
@@ -261,10 +389,9 @@ export default {
 				if (res.code === this.$code.code_status) {
 					let lyric = res.lrc.lyric;
 					this.currentLyric = new Lyric(lyric, this.lyricHandle);
-					if (this.playing && this.canLyricPlay) {
-						this.currentLyric.play(this.currentTime);
+					if (this.playing) {
+						this.currentLyric.play();
 						this.currentLyricNum = 0;
-						this.currentLyric.seek(this.currentTime * 1000);
 					}
 				}
 			} catch (error) {
@@ -277,35 +404,33 @@ export default {
 		},
 
 		lyricHandle({ lineNum, txt }) {
-			if (!this.$refs.lyricRef.$refs.lyricList) {
+			if (!this.$refs.lyricList) {
 				return;
 			}
 			this.currentLyricNum = lineNum;
-			this.playingLyric = txt;
 			if (lineNum > 5) {
-				let line = this.$refs.lyricRef.$refs.lyricLine[lineNum - 5];
-				if (this.$refs.lyricRef.$refs.lyricList) {
+				let lineEl = this.$refs.lyricLine[lineNum - 5];
+				if (this.$refs.lyricList) {
 					this.$nextTick(() => {
-						this.$refs.lyricRef.$refs.lyricList.scrollToElement(line, 1000);
+						this.$refs.lyricList.scrollToElement(lineEl, 1000);
 					});
 				}
 			} else {
-				if (this.$refs.lyricRef.$refs.lyricList) {
+				if (this.$refs.lyricList) {
 					this.$nextTick(() => {
-						this.$refs.lyricRef.$refs.lyricList.scrollTo(0, 0, 1000);
+						this.$refs.lyricList.scrollTo(0, 0, 1000);
 					});
 				}
 			}
+			this.playingLyric = txt;
 		},
 
 		// 更新播放器时间
 		onTimeUpdate() {
-			this.$audio_player.onTimeUpdate(() => {
-				if (!this.progressState) {
-					this.currentTime = this.$audio_player.currentTime;
-					this.progressBar = (this.$audio_player.currentTime / this.currentSong.duration) * 100;
-				}
-			});
+			if (!this.progressState) {
+				this.currentTime = this.$audio_player.currentTime;
+				this.progressBar = (this.$audio_player.currentTime / this.currentSong.duration) * 100;
+			}
 		},
 
 		// 打开歌词
@@ -314,13 +439,19 @@ export default {
 		},
 
 		// 打开播放器页面
-		openMusciDetail() {
-			this.showMusicDetail = !this.showMusicDetail;
+		openMusciDetail(type) {
+			if (type === 'open') {
+				this.showMusicDetail = true;
+				uni.hideTabBar();
+			} else if (type === 'close') {
+				this.showMusicDetail = false;
+				uni.showTabBar();
+			}
 		},
 
 		// 改变进度条
 		sliderChange(val) {
-			const currentTime = ((val.detail.value / 100) * this.currentSong.duration) / 1000;
+			let currentTime = ((val.detail.value / 100) * this.currentSong.duration) / 1000;
 			this.$audio_player.currentTime = currentTime * 1000;
 			this.currentTime = currentTime * 1000;
 			this.progressState = false;
@@ -332,7 +463,7 @@ export default {
 		// 进度条移动
 		sliderChanging(val) {
 			this.progressState = true;
-			const currentTime = (val.detail.value / 100) * this.currentSong.duration;
+			let currentTime = (val.detail.value / 100) * this.currentSong.duration;
 			this.currentTime = currentTime;
 			this.progressBar = val.detail.value;
 			if (!this.playing) {
@@ -489,7 +620,8 @@ export default {
 			setPlayingState: 'PLAYING_STATE',
 			setCurrentIndex: 'CURRENT_INDEX',
 			setPlayMode: 'PLAY_MODE',
-			setPlayList: 'PLAY_LIST'
+			setPlayList: 'PLAY_LIST',
+			setPlayTabBar: 'SHOW_PLAY_TBABAR'
 		}),
 		...mapActions('player', {
 			selectPlay: 'selectPlay',
@@ -512,6 +644,68 @@ export default {
 	z-index: 9888;
 	background-color: #ffffff;
 	padding: 10rpx 10rpx;
+	.popup-box {
+		width: 100%;
+		height: 100%;
+		.header {
+			width: 100%;
+			position: fixed;
+			padding: 20rpx 25rpx;
+			display: flex;
+			flex-direction: column;
+			z-index: 6;
+			top: 0;
+			background-color: #ffffff;
+			.header-title {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-size: 36rpx;
+				margin-bottom: 20rpx;
+			}
+			.header-tools {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				.tools-left {
+					font-size: 28rpx;
+				}
+				.tools-right {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					.tools-right-collect {
+						margin-right: 40rpx;
+					}
+				}
+			}
+		}
+		.scroll-box {
+			width: 100%;
+			margin-top: 140rpx;
+			.search-cell-group {
+				.u-cell {
+					&.playing {
+						color: #ff0000;
+					}
+					.slot-icon {
+						margin-right: 20rpx;
+					}
+					.singer-title {
+						display: flex;
+						align-items: center;
+						.songs-name {
+							font-size: 32rpx;
+						}
+						.singer-name {
+							font-size: 26rpx;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	.music-player-box {
 		display: flex;
 		justify-content: space-between;
@@ -555,117 +749,151 @@ export default {
 			}
 		}
 	}
-}
-.musci-player-detail {
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	z-index: 9999;
-	background-color: #f1f1f1;
-	.bg-wrapper {
-		.image-bg {
-			width: 100%;
-			height: 100%;
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			filter: blur(50px);
-			opacity: 0.4;
-		}
-	}
-	.musci-player-box {
-		padding: 16rpx 26rpx;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		height: 100%;
+	.musci-player-detail {
 		width: 100%;
-		.musci-header {
-			margin-top: 10rpx;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-		}
-		.musci-content {
-			flex: 11;
-			.musci-content-cover {
-				width: 400rpx;
-				height: 500rpx;
-				margin: 0 auto;
-				.image-cover {
-					position: fixed;
-					top: 20%;
-					width: 400rpx;
-					height: 400rpx;
-					border-radius: 50%;
-					animation-duration: 6s;
-					animation-delay: 6s;
-					animation: loading 6s linear infinite;
-					// &.playing {
-					// 	animation-duration: 6s;
-					// 	animation-delay: 6s;
-					// 	animation: loading 6s linear infinite;
-					// }
-					&.stoped {
-						animation-play-state: paused;
-					}
-				}
-				@keyframes loading {
-					0% {
-						transform: rotate(0deg);
-					}
-					100% {
-						transform: rotate(360deg);
-					}
-				}
-			}
-			.musci-content-lyric {
+		height: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		z-index: 9999;
+		background-color: #f1f1f1;
+		.bg-wrapper {
+			.image-bg {
 				width: 100%;
-				border-radius: 8rpx;
-				font-size: 38rpx;
-				color: #ffffff;
-				margin-top: 30rpx;
 				height: 100%;
-				overflow: hidden;
-				overflow-y: scroll;
-				position: relative;
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				filter: blur(50px);
+				opacity: 0.4;
 			}
 		}
-		.musci-tools {
-			flex: 1;
+		.musci-player-box {
+			padding: 16rpx 26rpx;
 			display: flex;
+			flex-direction: column;
 			justify-content: space-between;
-			align-items: center;
-			padding: 10rpx 10rpx;
-			.musci-like {
-				color: #000000;
-			}
-		}
-		.musci-tools-progress {
-			display: flex;
-			justify-content: space-between;
-			flex: 1;
-			align-items: center;
-			padding: 10rpx 10rpx;
-			.musci-slider {
-				width: 100%;
+			height: 100%;
+			width: 100%;
+			.musci-header {
+				margin-top: 10rpx;
+				display: flex;
+				justify-content: space-between;
 				align-items: center;
-				margin: 0 10rpx;
 			}
-		}
-		.music-play-btn {
-			padding: 10rpx 10rpx;
-			display: flex;
-			flex: 1;
-			justify-content: space-between;
-			align-items: center;
-			.music-play-btn-list {
+			.musci-content {
+				flex: 11;
+				.musci-content-cover {
+					width: 400rpx;
+					height: 500rpx;
+					margin: 0 auto;
+					.image-cover {
+						position: fixed;
+						top: 20%;
+						width: 400rpx;
+						height: 400rpx;
+						border-radius: 50%;
+						animation-duration: 6s;
+						animation-delay: 6s;
+						animation: loading 6s linear infinite;
+						// &.playing {
+						// 	animation-duration: 6s;
+						// 	animation-delay: 6s;
+						// 	animation: loading 6s linear infinite;
+						// }
+						&.stoped {
+							animation-play-state: paused;
+						}
+					}
+					@keyframes loading {
+						0% {
+							transform: rotate(0deg);
+						}
+						100% {
+							transform: rotate(360deg);
+						}
+					}
+				}
+
+				.musci-content-lyric {
+					position: fixed;
+					top: 120rpx;
+					height: 100%;
+					width: 100%;
+					left: 0;
+					right: 0;
+
+					.lyric {
+						width: 100%;
+						height: 66%;
+						.lyric-wrapper {
+							width: 100%;
+							height: 100%;
+							overflow: hidden;
+							overflow-y: scroll;
+							.lyric-text {
+								line-height: 60rpx;
+								height: 60rpx;
+								border-radius: 16rpx;
+								font-size: 30rpx;
+								font-weight: 500;
+								text-align: center;
+								color: #000000;
+								&:hover {
+									background-color: #f9fffc;
+									color: #000000;
+								}
+								&.active {
+									color: #e10003;
+								}
+								&::after {
+									color: #ffffff;
+								}
+							}
+						}
+						.no-lyric {
+							text-align: center;
+							font-size: 36rpx;
+							color: #000000;
+						}
+					}
+				}
+			}
+			.musci-tools {
+				flex: 1;
+				display: flex;
+				justify-content: space-between;
 				align-items: center;
+				padding: 10rpx 10rpx;
+				.musci-like {
+					position: relative;
+					color: #000000;
+				}
+			}
+			.musci-tools-progress {
+				display: flex;
+				justify-content: space-between;
+				flex: 1;
+				align-items: center;
+				padding: 10rpx 10rpx;
+				.musci-slider {
+					width: 100%;
+					align-items: center;
+					margin: 0 10rpx;
+				}
+			}
+			.music-play-btn {
+				padding: 10rpx 10rpx;
+				display: flex;
+				flex: 1;
+				justify-content: space-between;
+				align-items: center;
+				.music-play-btn-list {
+					align-items: center;
+				}
 			}
 		}
 	}
