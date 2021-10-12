@@ -25,28 +25,37 @@ export default {
 		Vue.prototype.$audio_player.onPlay(() => {
 			console.log('playing');
 			Vue.prototype.cusPlay && Vue.prototype.cusPlay();
+			clearInterval(timer)
+			timer = setInterval(()=>{ //安卓和ios app 下onTimeUpdate事件在替换资源和seek之后不会触发，这里做手动触发
+				console.log('update')
+				Vue.prototype.cusTimeUpdate()
+			},200)
 		});
 
 		// 播放进度更新
 		Vue.prototype.$audio_player.onTimeUpdate(() => {
 			Vue.prototype.cusTimeUpdate && Vue.prototype.cusTimeUpdate();
+			clearInterval(timer)
 		});
 
 		// 播放结束
 		Vue.prototype.$audio_player.onEnded(() => {
 			Vue.prototype.cusEnded && Vue.prototype.cusEnded();
+			clearInterval(timer)
 		});
 
 		// 播放错误
 		Vue.prototype.$audio_player.onError(err => {
 			Vue.prototype.cusOnError && Vue.prototype.cusOnError();
 			console.log('play err:' + err);
+			clearInterval(timer)
 		});
 
 		// 暂停
 		Vue.prototype.$audio_player.onPause(() => {
 			console.log('play onPause:');
 			Vue.prototype.cusOnPause && Vue.prototype.cusOnPause();
+			clearInterval(timer)
 		});
 
 		// #ifdef APP-PLUS
