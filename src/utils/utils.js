@@ -116,6 +116,7 @@ export default {
 			return parseFloat(parseInt(num / 10000) + '.' + decimal) + '万'
 		}
 	},
+
 	// 格式化时间毫秒转分秒
 	formatTime(time) {
 		// 取整
