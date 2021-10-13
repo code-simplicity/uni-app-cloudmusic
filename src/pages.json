@@ -61,13 +61,29 @@
 			}
 		},
 		{
-			"path": "pages/live/index",
-			"name": "Home",
+			"path": "pages/video/index",
+			"name": "Video",
 			"meta": {
-				"title": "直播"
+				"title": "视频"
 			},
 			"style": {
-				"navigationBarTitleText": "直播",
+				"navigationBarTitleText": "视频",
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/video/video-detail/index",
+			"name": "VideoDetail",
+			"meta": {
+				"title": "视频详情"
+			},
+			"style": {
+				"navigationBarTitleText": "视频详情",
 				"h5": {
 					"titleNView": false
 				},
@@ -78,7 +94,7 @@
 		},
 		{
 			"path": "pages/user/index",
-			"name": "Home",
+			"name": "User",
 			"meta": {
 				"title": "我的"
 			},
@@ -94,7 +110,7 @@
 		},
 		{
 			"path": "pages/focus/index",
-			"name": "Home",
+			"name": "Focus",
 			"meta": {
 				"title": "关注"
 			},
@@ -110,7 +126,7 @@
 		},
 		{
 			"path": "pages/square/index",
-			"name": "Home",
+			"name": "Square",
 			"meta": {
 				"title": "广场"
 			},
@@ -289,10 +305,10 @@
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/live/index",
+				"pagePath": "pages/video/index",
 				"iconPath": "static/images/live_press.png",
 				"selectedIconPath": "static/images/live_normal.png",
-				"text": "直播"
+				"text": "视频"
 			},
 			{
 				"pagePath": "pages/user/index",
