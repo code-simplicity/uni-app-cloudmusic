@@ -33,3 +33,15 @@ export const getLoginStatus = () => api.get(`/login/status`, {})
  * 退出登录
  */
 export const logout = () => api.get(`/logout`, {})
+
+/**
+ * 获取用户关注列表
+ */
+export const getUserFollows = params => api.get(`/user/follows`, {
+	params
+})
+
+/**
+ * 获取动态信息
+ */
+export const getEvent = pagesize => api.get(`/event?pagesize=${pagesize}`, {})

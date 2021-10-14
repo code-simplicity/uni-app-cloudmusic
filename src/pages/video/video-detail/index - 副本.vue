@@ -9,11 +9,12 @@
 				:vertical="true"
 				:current="currentVideo"
 				@change="handleSwipeVertical"
+				style="height: 100%;"
 			>
 				<swiper-item class="" v-for="(item, index) in videoList" :key="index">
 					<view class="">123</view>
 					<!-- 视频区域 -->
-					<!-- <view class="video-swiper-item">
+					<view class="video-swiper-item">
 						<video
 							id="'videoPlayer' + index"
 							class="video-style"
@@ -28,7 +29,7 @@
 								<u-icon class="play-circle" name="play-circle" color="#000000" size="60"></u-icon>
 							</view>
 						</view>
-					</view> -->
+					</view>
 					<!-- 内容列表 -->
 					<view class="video-info">
 						<view class="video-info-box">
@@ -147,7 +148,6 @@ export default {
 		height: 100%;
 		.video-detail-swiper {
 			width: 100%;
-			height: 1200rpx;
 			background-color: #f1d9f1;
 			.video-swiper-item {
 				width: 100%;

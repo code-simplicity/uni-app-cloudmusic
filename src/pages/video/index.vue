@@ -96,7 +96,7 @@ export default {
 		this.getVideoTimelineRecommend();
 	},
 	methods: {
-		// 去适配列表
+		// 去视频列表
 		toVideoDetail(id) {
 			this.$Router.push({
 				name: 'VideoDetail',

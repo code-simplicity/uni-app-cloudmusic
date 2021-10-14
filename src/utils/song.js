@@ -55,7 +55,7 @@ export function createSong(musicData) {
 		url: `https://music.163.com/song/media/outer/url?id=${musicData.id}.mp3`,
 		playCount: musicData.playCount || '',
 		score: musicData.score || '',
-		albumId: musicData.al.id
+		albumId: musicData.al ? musicData.al.id : musicData.album.id
 	})
 }
 
