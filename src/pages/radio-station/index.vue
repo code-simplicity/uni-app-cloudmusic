@@ -1,6 +1,6 @@
 <template>
-	<view class="focus-box">
-		<view class="focus-top">
+	<view class="radio-station">
+		<view class="radio-station-top">
 			<u-navbar :is-back="false" title="">
 				<user-setting></user-setting>
 				<view class="u-tabs">
@@ -27,15 +27,11 @@
 		>
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
-					<!-- 用户动态 -->
-					<focus-dynamics></focus-dynamics>
+					<radio-station-recommend></radio-station-recommend>
 				</scroll-view>
 			</swiper-item>
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
-					<!-- 云圈 -->
-					<focus-cloud></focus-cloud>
-				</scroll-view>
+				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom"></scroll-view>
 			</swiper-item>
 		</swiper>
 		<!-- 底部播放器 -->
@@ -46,21 +42,23 @@
 <script>
 /**
  * author	bugdr
- * time     2021-9-24 9:31:41 ?F10: PM?
+ * time     2021-9-24 9:32:38 ?F10: PM?
  * description
  */
-import { mapGetters, mapActions } from 'vuex';
-import { createSong } from '@/utils/song.js';
+
 export default {
-	name: 'Focus',
+	name: 'radio-station',
 	data() {
 		return {
 			listTabs: [
 				{
-					name: '动态'
+					name: '推荐'
 				},
 				{
-					name: '云圈'
+					name: '分类'
+				},
+				{
+					name: '听听'
 				}
 			],
 			currentIndex: 0,
@@ -69,10 +67,6 @@ export default {
 		};
 	},
 	component: {},
-	computed: {
-		...mapGetters('user', ['userInfo'])
-	},
-
 	mounted() {},
 	methods: {
 		// 切换tabs
@@ -99,19 +93,15 @@ export default {
 		// scroll-view到底部加载更多
 		onreachBottom() {
 			console.log('没有更多了!');
-		},
-
-		...mapActions('player', {
-			selectPlay: 'selectPlay'
-		})
+		}
 	}
 };
 </script>
 
 <style lang="scss" scoped>
-.focus-box {
+.radio-station {
 	width: 100%;
-	.focus-top {
+	.radio-station-top {
 		display: flex;
 		flex-direction: row;
 		align-items: center;

@@ -125,13 +125,29 @@
 			}
 		},
 		{
-			"path": "pages/square/index",
+			"path": "pages/radio-station/index",
 			"name": "Square",
 			"meta": {
-				"title": "广场"
+				"title": "电台"
 			},
 			"style": {
-				"navigationBarTitleText": "广场",
+				"navigationBarTitleText": "电台",
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/radio-station/radio-station-detail/index",
+			"name": "radio-station-detail",
+			"meta": {
+				"title": "电台详情"
+			},
+			"style": {
+				"navigationBarTitleText": "电台详情",
 				"h5": {
 					"titleNView": false
 				},
@@ -323,10 +339,10 @@
 				"text": "关注"
 			},
 			{
-				"pagePath": "pages/square/index",
+				"pagePath": "pages/radio-station/index",
 				"iconPath": "static/images/yun_cun_press.png",
 				"selectedIconPath": "static/images/yun_cun_normal.png",
-				"text": "广场"
+				"text": "电台"
 			}
 		]
 	},
@@ -352,7 +368,9 @@
 			"^user-(.*)": "@/components/user/user-$1/user-$1.vue", // 匹配components目录内的vue文件
 			"^play-(.*)": "@/components/play-list/play-$1/play-$1.vue", // 匹配components目录内的vue文件
 			"^search-(.*)": "@/components/search/search-$1/search-$1.vue", // 匹配components目录内的vue文件
-			"^comment-(.*)": "@/components/comment/comment-$1/comment-$1.vue" // 匹配components目录内的vue文件
+			"^comment-(.*)": "@/components/comment/comment-$1/comment-$1.vue", // 匹配components目录内的vue文件
+			"^focus-(.*)": "@/components/focus/focus-$1/focus-$1.vue", // 匹配components目录内的vue文件
+			"^radio-station-(.*)": "@/components/radio-station/radio-station-$1/radio-station-$1.vue" // 匹配components目录内的vue文件
 		}
 
 	}

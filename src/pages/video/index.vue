@@ -2,13 +2,49 @@
 	<view class="video-box">
 		<!-- 头部固定 -->
 		<my-search :searchShow="searchShow" :micShow="micShow"></my-search>
-		<scroll-view
+		<!-- 		<scroll-view
 			scroll-y="true"
 			:refresher-enabled="true"
 			:refresher-triggered="triggered"
 			@refresherrefresh="onRefresh"
 			@refresherrestore="onRestore"
 		>
+			<view class="video-list">
+				<view
+					class="video-wrap"
+					v-for="(item, index) in videoList"
+					:key="index"
+					@click="toVideoDetail(item.id)"
+				>
+					<view class="video-conent">
+						<view class="image-cover">
+							<image class="image" :src="item.image" mode="aspectFill"></image>
+							<view class="user">
+								<view class="user-avatar"><u-avatar :src="item.avatar" size="60"></u-avatar></view>
+								<view class="duration">{{ item.duration }}</view>
+							</view>
+						</view>
+						<view class="video-wrap-bottom">
+							<view class="video-name">{{ item.name }}</view>
+							<view class="video-singer">
+								<view class="video-left">
+									<view class="play-circle">
+										<u-icon name="play-circle" size="38"></u-icon>
+										{{ utils.tranNumber(item.playCount, 1) }}
+									</view>
+									<view class="thumb-up">
+										<u-icon name="thumb-up" size="38"></u-icon>
+										{{ item.praisedCount }}
+									</view>
+								</view>
+								<view class="video-right">{{ item.nickName }}</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</scroll-view> -->
+		<scroll-view scroll-y="true" :refresher-enabled="true" :refresher-triggered="triggered">
 			<view class="video-list">
 				<view
 					class="video-wrap"
@@ -75,9 +111,9 @@ export default {
 		};
 	},
 	onLoad() {
-		setTimeout(() => {
-			this.triggered = true;
-		}, 1000);
+		// setTimeout(() => {
+		// 	this.triggered = true;
+		// }, 1000);
 	},
 	// 上拉刷新
 	onReachBottom() {
@@ -107,30 +143,30 @@ export default {
 		},
 
 		// 自定义下拉刷新
-		onRefresh() {
-			setTimeout(() => {
-				this.triggered = false;
-			}, 1000);
-			// 重新请求数据
-			this.offset += 1;
-			let params = {
-				offset: this.offset
-			};
-			this.$api.getVideoTimelineRecommend(params).then(res => {
-				if (res.code === this.$code.code_status) {
-					// 刷新之后出现数据
-					this.videoList = this._normalizeVideos(res.datas);
-					if (res.hasmore) {
-						this.hasmore = res.hasmore;
-					}
-				}
-			});
-		},
+		// onRefresh() {
+		// 	setTimeout(() => {
+		// 		this.triggered = false;
+		// 	}, 1000);
+		// 	// 重新请求数据
+		// 	this.offset += 1;
+		// 	let params = {
+		// 		offset: this.offset
+		// 	};
+		// 	this.$api.getVideoTimelineRecommend(params).then(res => {
+		// 		if (res.code === this.$code.code_status) {
+		// 			// 刷新之后出现数据
+		// 			this.videoList = this._normalizeVideos(res.datas);
+		// 			if (res.hasmore) {
+		// 				this.hasmore = res.hasmore;
+		// 			}
+		// 		}
+		// 	});
+		// },
 
-		// 重置复位
-		onRestore() {
-			this.triggered = 'restore'; // 需要重置
-		},
+		// // 重置复位
+		// onRestore() {
+		// 	this.triggered = 'restore'; // 需要重置
+		// },
 
 		// 获取视频
 		getVideoTimelineRecommend() {

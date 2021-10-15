@@ -174,7 +174,9 @@ export default {
 		.read-more-lyric {
 			.rich-text {
 				margin-top: 40rpx;
-				font-size: 16rpx;
+				font-size: 22rpx;
+				white-space: pre-line;
+				line-height: 36rpx;
 			}
 		}
 	}

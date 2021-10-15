@@ -1,20 +1,16 @@
 <template>
-	<view class="">
-		广场
-		<!-- 底部播放器 -->
-		<music-player></music-player>
-	</view>
+	<view class="focus-cloud-box">云圈</view>
 </template>
 
 <script>
 /**
  * author	bugdr
- * time     2021-9-24 9:32:38 ?F10: PM?
+ * time     2021-10-15 10:12:36 ?F10: AM?
  * description
  */
 
 export default {
-	name: 'Square',
+	name: 'focus-cloud',
 	data() {
 		return {};
 	},
