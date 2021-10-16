@@ -27,7 +27,7 @@
 		<view class="radio-category-recommend">
 			<u-grid :col="4">
 				<u-grid-item v-for="(item, index) in categoryRecommendList" :key="index" :custom-style="customStyle">
-					<u-icon :name="categoryIcon[index]" :size="50"></u-icon>
+					<u-icon :name="categoryIcon[index]" :size="50" color="#ff0e06"></u-icon>
 					<view class="grid-text">{{ item.categoryName }}</view>
 				</u-grid-item>
 			</u-grid>

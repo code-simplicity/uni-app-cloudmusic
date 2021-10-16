@@ -1,23 +1,27 @@
 <template>
 	<view class="radio-station-songs">
-		<view class="radio-top">
-			<view class="left">
-				<u-tabs-swiper
-					active-color="#ff0004"
-					inactive-color="#000000"
-					:is-scroll="false"
-					:current="currentIndex"
-					@change="changeTabs"
-					ref="uTabs"
-					:list="listTabs"
-					font-size="26"
-				></u-tabs-swiper>
+		<u-sticky offset-top="0">
+			<!-- 只能有一个根元素 -->
+			<view class="radio-top">
+				<view class="left">
+					<u-tabs-swiper
+						active-color="#ff0004"
+						inactive-color="#000000"
+						:is-scroll="false"
+						:current="currentIndex"
+						@change="changeTabs"
+						ref="uTabs"
+						:list="listTabs"
+						font-size="26"
+					></u-tabs-swiper>
+				</view>
+				<view class="right" v-if="currentIndex === 0">
+					<view class="right-sort"><u-icon name="list" size="50"></u-icon></view>
+					<view class="right-choose"><u-icon name="checkmark-circle" size="50"></u-icon></view>
+				</view>
 			</view>
-			<view class="right" v-if="currentIndex === 0">
-				<view class="right-sort"><u-icon name="list" size="50"></u-icon></view>
-				<view class="right-choose"><u-icon name="checkmark-circle" size="50"></u-icon></view>
-			</view>
-		</view>
+		</u-sticky>
+
 		<swiper
 			class="search-swiper"
 			:current="swiperCurrent"
@@ -32,6 +36,7 @@
 							:arrow="false"
 							v-for="(item, index) in radioSongsList.radioMusicList"
 							:key="index"
+							@click="playDj(index)"
 						>
 							<view slot="icon" class="left-icon">
 								<u-image border-radius="16" width="100rpx" height="100rpx" :src="item.image"></u-image>
@@ -75,6 +80,7 @@
  * time     2021-10-15 5:59:33 ?F10: PM?
  * description
  */
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
 	name: 'radio-station-songs',
 	data() {
@@ -104,11 +110,21 @@ export default {
 		}
 	},
 
-	computed: {},
+	computed: {
+		...mapGetters('player', ['currentIndex', 'currentSong', 'playing'])
+	},
 
 	component: {},
 	mounted() {},
 	methods: {
+		// 播放dj
+		playDj(index) {
+			this.selectPlay({
+				list: this.radioSongsList.radioMusicList,
+				index
+			});
+		},
+
 		// 切换tabs
 		changeTabs(index) {
 			this.swiperCurrent = index;
@@ -133,7 +149,9 @@ export default {
 		// scroll-view到底部加载更多
 		onreachBottom() {
 			console.log('没有更多了!');
-		}
+		},
+
+		...mapActions('player', ['selectPlay', 'pausePlay', 'playAll'])
 	}
 };
 </script>

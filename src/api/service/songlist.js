@@ -32,3 +32,15 @@ export const getPlayListHot = () => api.get(`/playlist/hot`, {})
 export const playlistSubscribe = params => api.get(`/playlist/subscribe`, {
 	params
 })
+
+/**
+ * 创建歌单
+ */
+export const createPlayList = params => api.get(`/playlist/create`, {
+	params
+})
+
+/**
+ * 删除歌单
+ */
+export const deletePlayList = id => api.get(`/playlist/delete?id=${id}`, {})

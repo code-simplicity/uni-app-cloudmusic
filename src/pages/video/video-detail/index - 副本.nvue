@@ -26,10 +26,10 @@
 						></video>
 						<view class="video-control">
 							<u-icon
-								:class="isPlaying ? 'active' : ''"
+								:class="isPlaying ? 'playing' : ''"
 								class="play-circle"
 								name="play-circle"
-								color="#ffffff"
+								color="#b3b3b3"
 								size="140"
 							></u-icon>
 						</view>
@@ -40,10 +40,10 @@
 					<view class="video-info-box">
 						<view class="video-info-top">
 							<view class="image-avatar"><u-avatar src="src" size="80"></u-avatar></view>
-							<text class="user-name">jian</text>
+							<view class="user-name">jian</view>
 							<view class="collect"><u-icon name="plus" color="#ffffff"></u-icon></view>
 						</view>
-						<view class="video-info-bottom"><text class="video-detail">我是一个视频</text></view>
+						<view class="video-info-bottom"><view class="video-detail">我是一个视频</view></view>
 						<view class="video-progress"><u-slider v-model="videoProgress"></u-slider></view>
 					</view>
 					<view class="video-info-right">
@@ -105,7 +105,7 @@ export default {
 			success: res => {
 				let windowHeight = res.screenHeight;
 				let windowWidth = res.windowWidth;
-				that.windowHeight = windowHeight; //将计算好的高度给定义好的值
+				that.windowHeight = windowHeight - 60; //将计算好的高度给定义好的值
 				this.windowWidth = windowWidth;
 			}
 		});
@@ -182,118 +182,102 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .video-detail-box {
-	display: flex;
+	width: 100%;
 	background-color: #000000;
-	flex-direction: row;
-	color: #ffffff;
-}
-.video-detail-swiper {
-	display: flex;
-	flex-direction: row;
-	color: #ffffff;
-}
-.video-swiper-item {
-	display: flex;
-	color: #ffffff;
-}
-.video-style {
-	display: flex;
-	/* width: 1200px; */
-	height: 400px;
-	position: relative;
-}
-.video-class {
-	display: flex;
-	width: 1200px;
-	height: 400px;
-}
-.video-control {
-	display: flex;
-	color: #ffffff;
-}
-.play-circle {
-	display: flex;
-	z-index: 9999;
-	color: #ffffff;
-}
-.play-circle:active {
-	display: flex;
-	z-index: 9999;
-	color: #ffffff;
-}
-/* .play-circle:hover {
-	display: none;
-} */
-.video-info {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	position: absolute;
-	bottom: 80rpx;
-	padding: 0 20rpx;
-	color: #ffffff;
-}
-.video-info-box {
-	display: flex;
-	flex-direction: column;
-	color: #ffffff;
-}
-.video-info-top {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	margin-bottom: 20rpx;
-	color: #ffffff;
-}
-.image-avatar {
-	margin-right: 20rpx;
-	color: #ffffff;
-}
-.user-name {
-	color: #ffffff;
-	font-size: 36rpx;
-	margin-right: 16rpx;
-}
-.collect {
-	width: 60rpx;
-	padding: 2rpx;
-	display: flex;
-	align-items: center;
-	border-radius: 16rpx;
-	background-color: #ff0000;
-	color: #ffffff;
-}
-.video-info-bottom {
-	color: #ffffff;
-}
-.video-detail {
-	color: #ffffff;
-}
-.video-progress {
-	margin-top: 20rpx;
-	color: #ffffff;
-}
-.video-info-right {
-	display: flex;
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	color: #ffffff;
-}
-.video-info-tools {
-	display: flex;
-	flex-direction: column;
-	margin-right: 20rpx;
-	color: #ffffff;
-}
-.video-tools {
-	margin: 30rpx 0;
-	color: #ffffff;
-}
-.video-tools,
-.bookmark-fill {
-	color: #ffffff;
+	.video-detail-swiper {
+		width: 100%;
+		.video-swiper-item {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			.video-style {
+				width: 100%;
+				position: relative;
+				.video-class {
+					top: 25%;
+					width: 100%;
+					// position: absolute;
+				}
+				.video-control {
+					top: 42%;
+					left: 42%;
+					position: absolute;
+					z-index: 9999;
+					.play-circle {
+						display: flex;
+						z-index: 9999;
+						&.playing {
+							display: flex;
+							z-index: 9999;
+						}
+					}
+					&:hover {
+						display: none;
+					}
+				}
+			}
+		}
+
+		.video-info {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			position: absolute;
+			bottom: 80rpx;
+			width: 100%;
+			padding: 0 20rpx;
+			.video-info-box {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				.video-info-top {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					margin-bottom: 20rpx;
+					.image-avatar {
+						margin-right: 20rpx;
+					}
+					.user-name {
+						color: #ffffff;
+						font-size: 36rpx;
+						margin-right: 16rpx;
+					}
+					.collect {
+						width: 60rpx;
+						padding: 2rpx;
+						display: flex;
+						align-items: center;
+						border-radius: 16rpx;
+						background-color: #ff0000;
+					}
+				}
+				.video-info-bottom {
+					.video-detail {
+						color: #ffffff;
+					}
+				}
+				.video-progress {
+					margin-top: 20rpx;
+					width: 100%;
+				}
+			}
+			.video-info-right {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				.video-info-tools {
+					display: flex;
+					flex-direction: column;
+					margin-right: 20rpx;
+					.video-tools {
+						margin: 30rpx 0;
+					}
+				}
+			}
+		}
+	}
 }
 </style>

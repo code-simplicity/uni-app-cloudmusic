@@ -2,8 +2,8 @@
 	<view class="play-music-detail">
 		<play-list-navbar></play-list-navbar>
 		<view class="play-music-wrap">
+			<image class="image-bg" mode="aspectFill" :src="playlistDetail.coverImgUrl" />
 			<view class="play-musci-header">
-				<image class="image-bg" mode="aspectFill" :src="playlistDetail.coverImgUrl" />
 				<view class="play-musci-header-content">
 					<view class="play-musci-info-left">
 						<image
@@ -29,7 +29,7 @@
 						<u-icon
 							:name="likedIcon"
 							custom-prefix="iconfont"
-							:color="playlistDetail.subscribed ? '#ff0000' : '#000000'"
+							:color="playlistDetail.subscribed ? '#ff0000' : '#ffffff'"
 							size="48"
 						></u-icon>
 						<text class="title">{{ playlistDetail.subscribedCount }}</text>
@@ -38,7 +38,7 @@
 						<u-icon
 							name="iconfont icon-pinglun"
 							custom-prefix="iconfont"
-							color="#000000"
+							color="#ffffff"
 							size="48"
 						></u-icon>
 						<text class="title">{{ playlistDetail.commentCount }}</text>
@@ -47,7 +47,7 @@
 						<u-icon
 							name="iconfont icon-fenxiang1"
 							custom-prefix="iconfont"
-							color="#000000"
+							color="#ffffff"
 							size="58"
 						></u-icon>
 						<text class="title">{{ playlistDetail.shareCount }}</text>
@@ -252,20 +252,19 @@ export default {
 	height: 100%;
 	.play-music-wrap {
 		width: 100%;
+		position: relative;
+		.image-bg {
+			width: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 400rpx;
+			filter: brightness(40%) opacity(1);
+		}
 		.play-musci-header {
 			width: 100%;
 			height: 400rpx;
 			padding: 30rpx;
-			.image-bg {
-				width: 100%;
-				position: absolute;
-				top: 0;
-				left: 0;
-				bottom: 0;
-				opacity: 0.3;
-				filter: blur(110rpx) drop-shadow(0rpx 8rpx 16rpx #111111);
-			}
-
 			.play-musci-header-content {
 				display: flex;
 				flex-direction: row;
@@ -273,8 +272,8 @@ export default {
 				justify-content: space-between;
 				margin-top: 10rpx;
 				.play-musci-info-left {
-					width: 280rpx;
-					height: 280rpx;
+					width: 240rpx;
+					height: 240rpx;
 					flex: 1;
 					.image-cover {
 						width: 240rpx;
@@ -289,17 +288,20 @@ export default {
 					justify-content: space-between;
 					margin-left: 20rpx;
 					width: 0;
+					z-index: 1;
 					.music-title {
 						font-size: 32rpx;
 						margin-bottom: 30rpx;
+						color: #ffffff;
 					}
 					.music-username {
 						margin-bottom: 30rpx;
 						display: flex;
 						align-items: center;
+						z-index: 1;
 						.music-user-name {
 							font-size: 30rpx;
-							color: #21327f;
+							color: #00d1ff;
 							margin-left: 28rpx;
 						}
 					}
@@ -311,6 +313,7 @@ export default {
 						text-overflow: ellipsis;
 						overflow: hidden;
 						word-break: break-all;
+						color: #ffffff;
 					}
 				}
 			}
@@ -322,31 +325,34 @@ export default {
 				.play-musci-tools-collect {
 					display: flex;
 					align-items: center;
+					z-index: 1;
 					.title {
 						margin-left: 10rpx;
 						text-align: center;
 						font-size: 26rpx;
-						color: #000000;
+						color: #ffffff;
 					}
 				}
 				.play-musci-tools-comment {
 					display: flex;
 					align-items: center;
+					z-index: 1;
 					.title {
 						margin-left: 10rpx;
 						text-align: center;
 						font-size: 26rpx;
-						color: #000000;
+						color: #ffffff;
 					}
 				}
 				.play-musci-tools-share {
 					display: flex;
 					align-items: center;
+					z-index: 1;
 					.title {
 						margin-left: 10rpx;
 						text-align: center;
 						font-size: 26rpx;
-						color: #000000;
+						color: #ffffff;
 					}
 				}
 			}

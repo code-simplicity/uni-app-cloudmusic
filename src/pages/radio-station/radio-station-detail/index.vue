@@ -2,8 +2,8 @@
 	<view class="radio-station-detail">
 		<play-list-navbar></play-list-navbar>
 		<view class="play-music-wrap">
+			<image class="image-bg" mode="aspectFill" :src="radioStationList.dj.backgroundUrl" />
 			<view class="play-musci-header">
-				<image class="image-bg" mode="aspectFill" :src="radioStationList.dj.backgroundUrl" />
 				<view class="play-musci-header-content">
 					<view class="play-musci-info-left">
 						<image class="image-cover image-border" :src="radioStationList.picUrl" mode="aspectFit"></image>
@@ -25,7 +25,7 @@
 						<u-icon
 							:name="likedIcon"
 							custom-prefix="iconfont"
-							:color="radioStationList.subed ? '#ff0000' : '#000000'"
+							:color="radioStationList.subed ? '#ff0000' : '#ffffff'"
 							size="48"
 						></u-icon>
 						<text class="title">{{ radioStationList.subCount }}</text>
@@ -34,7 +34,7 @@
 						<u-icon
 							name="iconfont icon-pinglun"
 							custom-prefix="iconfont"
-							color="#000000"
+							color="#ffffff"
 							size="48"
 						></u-icon>
 						<text class="title">{{ radioStationList.commentCount }}</text>
@@ -43,7 +43,7 @@
 						<u-icon
 							name="iconfont icon-fenxiang1"
 							custom-prefix="iconfont"
-							color="#000000"
+							color="#ffffff"
 							size="58"
 						></u-icon>
 						<text class="title">{{ radioStationList.shareCount }}</text>
@@ -52,8 +52,13 @@
 			</view>
 		</view>
 		<view class="radio-station-content">
-			<radio-station-songs :radioSongsList="radioSongsList" :radioStationList="radioStationList"></radio-station-songs>
+			<radio-station-songs
+				:radioSongsList="radioSongsList"
+				:radioStationList="radioStationList"
+			></radio-station-songs>
 		</view>
+		<!-- 播放器 -->
+		<music-player></music-player>
 	</view>
 </template>
 
@@ -89,6 +94,19 @@ export default {
 				: 'iconfont icon-shoucang2';
 		}
 	},
+	// 设置沉浸式导航栏
+	onShow() {
+		setTimeout(() => {
+			uni.setNavigationBarColor({
+				backgroundColor: '#6a6a6a',
+				frontColor: '#ffffff'
+			}),
+				uni.setNavigationBarTitle({
+					title: this.radioStationList.name
+				});
+		}, 1000);
+	},
+
 	component: {},
 	mounted() {
 		let id = this.$Route.query.id;
@@ -146,20 +164,19 @@ export default {
 	width: 100%;
 	.play-music-wrap {
 		width: 100%;
+		position: relative;
+		.image-bg {
+			width: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 400rpx;
+			filter: brightness(40%) opacity(1);
+		}
 		.play-musci-header {
 			width: 100%;
 			height: 400rpx;
-			padding: 30rpx;
-			.image-bg {
-				width: 100%;
-				position: absolute;
-				top: 0;
-				left: 0;
-				bottom: 0;
-				opacity: 0.6;
-				filter: blur(50rpx) drop-shadow(0rpx 8rpx 16rpx #9a9a9a);
-			}
-
+			padding: 20rpx 30rpx;
 			.play-musci-header-content {
 				display: flex;
 				flex-direction: row;
@@ -167,8 +184,8 @@ export default {
 				justify-content: space-between;
 				margin-top: 10rpx;
 				.play-musci-info-left {
-					width: 280rpx;
-					height: 280rpx;
+					width: 240rpx;
+					height: 240rpx;
 					flex: 1;
 					.image-cover {
 						width: 240rpx;
@@ -183,9 +200,12 @@ export default {
 					justify-content: space-between;
 					margin-left: 20rpx;
 					width: 0;
+					z-index: 1;
 					.music-title {
 						font-size: 32rpx;
 						margin-bottom: 30rpx;
+						color: #ffffff;
+						font-weight: 500;
 					}
 					.music-username {
 						margin-bottom: 30rpx;
@@ -193,7 +213,7 @@ export default {
 						align-items: center;
 						.music-user-name {
 							font-size: 30rpx;
-							color: #21327f;
+							color: #10ffec;
 							margin-left: 28rpx;
 						}
 					}
@@ -205,6 +225,7 @@ export default {
 						text-overflow: ellipsis;
 						overflow: hidden;
 						word-break: break-all;
+						color: #ffffff;
 					}
 				}
 			}
@@ -212,35 +233,39 @@ export default {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 20rpx 60rpx;
+				margin-top: 26rpx;
+				padding: 10rpx 60rpx;
 				.play-musci-tools-collect {
 					display: flex;
 					align-items: center;
+					z-index: 1;
 					.title {
 						margin-left: 10rpx;
 						text-align: center;
 						font-size: 26rpx;
-						color: #000000;
+						color: #ffffff;
 					}
 				}
 				.play-musci-tools-comment {
 					display: flex;
 					align-items: center;
+					z-index: 1;
 					.title {
 						margin-left: 10rpx;
 						text-align: center;
 						font-size: 26rpx;
-						color: #000000;
+						color: #ffffff;
 					}
 				}
 				.play-musci-tools-share {
 					display: flex;
 					align-items: center;
+					z-index: 1;
 					.title {
 						margin-left: 10rpx;
 						text-align: center;
 						font-size: 26rpx;
-						color: #000000;
+						color: #ffffff;
 					}
 				}
 			}

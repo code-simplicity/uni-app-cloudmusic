@@ -1,6 +1,6 @@
 <template>
 	<view class="play-list-music">
-		<u-cell-group :border="false" class="search-cell-group">
+		<u-sticky offset-top="0">
 			<view class="play-list-header">
 				<view class="play-list-play-left">
 					<view class="play-list-left-circle" @click="playAll">
@@ -20,35 +20,39 @@
 					</view>
 				</view>
 			</view>
-			<u-cell-item
-				:arrow="false"
-				v-for="(item, index) in songs"
-				:key="index"
-				@click="playMusci(item, index)"
-				class="u-cell"
-			>
-				<view slot="icon" class="slot-icon">
-					<view class="index">{{ utils.formatZero(index + 1, 2) }}</view>
-					<image class="image-cover image-border" :src="item.image" mode="aspectFit"></image>
-				</view>
-				<view slot="title" class="slot-title">
-					<view class="singer-name">{{ utils.strslice(item.name) }}</view>
-					<view class="singer-num">
-						<text>{{ item.singer }}</text>
+		</u-sticky>
+		<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+			<u-cell-group :border="false" class="search-cell-group">
+				<u-cell-item
+					:arrow="false"
+					v-for="(item, index) in songs"
+					:key="index"
+					@click="playMusci(item, index)"
+					class="u-cell"
+				>
+					<view slot="icon" class="slot-icon">
+						<view class="index">{{ utils.formatZero(index + 1, 2) }}</view>
+						<image class="image-cover image-border" :src="item.image" mode="aspectFit"></image>
 					</view>
-				</view>
-				<view slot="right-icon" class="slot-right">
-					<u-icon
-						v-if="item.mv"
-						class="video"
-						custom-prefix="iconfont"
-						name="iconfont icon-shipin"
-						size="40"
-					></u-icon>
-					<u-icon class="tools" name="more-dot-fill" size="40"></u-icon>
-				</view>
-			</u-cell-item>
-		</u-cell-group>
+					<view slot="title" class="slot-title">
+						<view class="singer-name">{{ utils.strslice(item.name) }}</view>
+						<view class="singer-num">
+							<text>{{ item.singer }}</text>
+						</view>
+					</view>
+					<view slot="right-icon" class="slot-right">
+						<u-icon
+							v-if="item.mv"
+							class="video"
+							custom-prefix="iconfont"
+							name="iconfont icon-shipin"
+							size="40"
+						></u-icon>
+						<u-icon class="tools" name="more-dot-fill" size="40"></u-icon>
+					</view>
+				</u-cell-item>
+			</u-cell-group>
+		</scroll-view>
 	</view>
 </template>
 
@@ -77,6 +81,11 @@ export default {
 	component: {},
 	mounted() {},
 	methods: {
+		// scroll-view到底部加载更多
+		onreachBottom() {
+			console.log('没有更多了!');
+		},
+
 		// 播放全部音乐
 		playAll() {
 			this.playAll();
@@ -113,40 +122,41 @@ export default {
 <style lang="scss" scoped>
 .play-list-music {
 	width: 100%;
-	.search-cell-group {
-		width: auto;
-		padding: 16rpx 10rpx;
-		margin-top: 16rpx;
-		box-sizing: border-box;
+	.play-list-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0 20rpx;
+		line-height: 60rpx;
+		padding: 10rpx 0;
 		background-color: #ffffff;
-		.play-list-header {
+		.play-list-play-left {
 			display: flex;
-			justify-content: space-between;
 			align-items: center;
-			flex-direction: row;
-			margin: 10rpx 14rpx;
-			.play-list-play-left {
-				display: flex;
-				align-items: center;
-				.play-list-left-circle {
-					margin-right: 40rpx;
-				}
-				.play-list-left-all {
-					font-size: 32rpx;
-					text {
-						margin-left: 16rpx;
-						font-size: 20rpx;
-						text-align: center;
-					}
-				}
+			.play-list-left-circle {
+				margin-right: 40rpx;
 			}
-			.play-list-play-right {
-				display: flex;
-				.play-list-right-checkmark {
-					margin-left: 30rpx;
+			.play-list-left-all {
+				font-size: 32rpx;
+				text {
+					margin-left: 16rpx;
+					font-size: 20rpx;
+					text-align: center;
 				}
 			}
 		}
+		.play-list-play-right {
+			display: flex;
+			.play-list-right-checkmark {
+				margin-left: 30rpx;
+			}
+		}
+	}
+	.search-cell-group {
+		width: auto;
+		padding: 10rpx;
+		box-sizing: border-box;
+		background-color: #ffffff;
 		.u-cell {
 			padding: 10rpx;
 			.slot-icon {

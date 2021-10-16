@@ -1,11 +1,18 @@
 <template>
 	<view class="play-list-navbar">
-		<u-navbar :is-back="true" back-text="返回" :title="title" :background="background">
-			<view class="play-musci-header-top">
-				<view class="header-right">
-					<u-icon name="search" color="#3b3b3b" size="50" @click="toSearch"></u-icon>
-					<u-icon class="tools" name="more-dot-fill" color="#3b3b3b" size="50"></u-icon>
-				</view>
+		<u-navbar
+			ref="navbarRef"
+			:is-back="true"
+			title=""
+			:border-bottom="false"
+			:background="background"
+			back-icon-color="#ffffff"
+			back-icon-size="50"
+		>
+			<view slot="" class="header-title">{{ title }}</view>
+			<view slot="right" class="header-right">
+				<u-icon name="search" color="#ffffff" size="50" @click="toSearch"></u-icon>
+				<u-icon class="tools" name="more-dot-fill" color="#ffffff" size="50"></u-icon>
 			</view>
 		</u-navbar>
 	</view>
@@ -23,8 +30,7 @@ export default {
 	data() {
 		return {
 			background: {
-				// 渐变色
-				backgroundImage: 'linear-gradient(45deg, rgb(227, 227, 227), rgb(206, 201, 201))'
+				backgroundColor: 'rgb(111, 121, 130)'
 			}
 		};
 	},
@@ -52,22 +58,19 @@ export default {
 
 <style lang="scss" scoped>
 .play-list-navbar {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: space-between;
 	width: 100%;
-	.play-musci-header-top {
-		margin-left: auto;
-		.header-right {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-between;
-			.tools {
-				margin-left: 30rpx;
-				transform: rotate(90deg);
-			}
+	display: flex;
+	justify-content: space-between;
+	.header-title {
+	}
+	.header-right {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-direction: row;
+		.tools {
+			margin-left: 30rpx;
+			transform: rotate(90deg);
 		}
 	}
 }

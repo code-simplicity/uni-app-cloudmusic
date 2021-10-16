@@ -2,8 +2,8 @@
     "name" : "音乐播放器",
     "appid" : "__UNI__F62601B",
     "description" : "音乐播放器",
-    "versionName" : "1.0.15",
-    "versionCode" : 115,
+    "versionName" : "1.0.17",
+    "versionCode" : 117,
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */

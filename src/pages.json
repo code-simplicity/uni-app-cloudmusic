@@ -82,6 +82,8 @@
 			"meta": {
 				"title": "视频详情"
 			},
+			"navigationStyle": "custom", // 隐藏系统导航栏
+			"navigationBarTextStyle": "white", // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
 			"style": {
 				"navigationBarTitleText": "视频详情",
 				"h5": {
@@ -148,6 +150,8 @@
 			},
 			"style": {
 				"navigationBarTitleText": "电台详情",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"navigationBarTextStyle": "white", // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
 				"h5": {
 					"titleNView": false
 				},
@@ -310,8 +314,8 @@
 
 	// 底部导航菜单
 	"tabBar": {
-		"color": "#7A7E83",
-		"selectedColor": "#3cc51f",
+		"color": "#000000",
+		"selectedColor": "#000000",
 		"borderStyle": "black",
 		"backgroundColor": "#ffffff",
 		"list": [{
@@ -350,8 +354,8 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#ffffff"
 	},
 	// 自动引入comments文件夹下的组件，根目录
 	"easycom": {
