@@ -374,7 +374,8 @@
 			"^search-(.*)": "@/components/search/search-$1/search-$1.vue", // 匹配components目录内的vue文件
 			"^comment-(.*)": "@/components/comment/comment-$1/comment-$1.vue", // 匹配components目录内的vue文件
 			"^focus-(.*)": "@/components/focus/focus-$1/focus-$1.vue", // 匹配components目录内的vue文件
-			"^radio-station-(.*)": "@/components/radio-station/radio-station-$1/radio-station-$1.vue" // 匹配components目录内的vue文件
+			"^radio-station-(.*)": "@/components/radio-station/radio-station-$1/radio-station-$1.vue", // 匹配components目录内的vue文件
+			"^video-(.*)": "@/components/video/video-$1/video-$1.vue" // 匹配components目录内的vue文件
 		}
 
 	}

@@ -1,0 +1,262 @@
+<template>
+	<view class="video-detail-box">
+		<!-- <play-list-navbar></play-list-navbar> -->
+		<!-- 处理视频上下切换 -->
+		<video-vertical-scroll
+			@change="onChange"
+			:style="{ width: '750px', height: windowHeight + 'px', background: '#000000' }"
+		>
+			<cell :recycle="false" class="list-item" :style="{ height: windowHeight + 'px' }">
+				<!-- 视频组件 -->
+				<view class="video-box">
+					<video
+						id="'videoPlayer' + index"
+						:src="videoUrl"
+						class="video-class"
+						:style="{ height: windowHeight + 'px' }"
+						:autoplay="true"
+						:loop="true"
+						:controls="false"
+						:show-center-play-btn="false"
+						objectFit="contain"
+					>
+						<cover-view class="video-info-box">
+							<u-icon
+								:class="isPlaying ? 'active' : ''"
+								class="play-circle"
+								name="play-circle"
+								color="#ffffff"
+								size="140"
+							></u-icon>
+						</cover-view>
+						<!-- 底部展示区 -->
+						<cover-view class="video-info-bottom">
+							<view class="video-info-top">
+								<view class="image-avatar"><u-avatar src="src" size="80"></u-avatar></view>
+								<text class="user-name">jian</text>
+								<view class="collect"><u-icon name="plus" color="#ffffff"></u-icon></view>
+							</view>
+							<view class="video-info-detail"><text class="video-detail">我是一个视频</text></view>
+							<view class="video-progress"><u-slider v-model="videoProgress"></u-slider></view>
+						</cover-view>
+						<!-- 右侧功能栏 -->
+						<cover-view class="video-info-right">
+							<view class="video-tools">
+								<u-icon class="thumb-up-fill" name="thumb-up-fill" color="#ffffff" size="56"></u-icon>
+							</view>
+							<view class="video-tools">
+								<u-icon class="chat-fill" name="chat-fill" color="#ffffff" size="56"></u-icon>
+							</view>
+							<view class="video-tools">
+								<u-icon class="zhuanfa" name="zhuanfa" color="#ffffff" size="56"></u-icon>
+							</view>
+							<view class="video-tools">
+								<u-icon class="bookmark-fill" name="bookmark-fill" color="#ffffff" size="56"></u-icon>
+							</view>
+						</cover-view>
+					</video>
+				</view>
+			</cell>
+		</video-vertical-scroll>
+	</view>
+</template>
+
+<script>
+/**
+ * author	bugdr
+ * time     2021-10-13 3:05:32 ?F10: PM?
+ * description
+ */
+
+export default {
+	name: 'video-detail',
+	data() {
+		return {
+			// 视频播放地址
+			videoUrl: '',
+			// 视频id
+			videoId: '',
+			// 视频播放的索引
+			currentVideo: 0,
+			// 视频是否正在播放
+			isPlaying: true,
+			// 视频
+			videoList: [],
+			// 屏幕窗口高度
+			windowHeight: 0,
+			// 屏幕宽度
+			windowWidth: 0,
+			// 视频进度条
+			videoProgress: 10
+		};
+	},
+
+	onLoad() {
+		let that = this;
+		// 获取屏幕宽高
+		uni.getSystemInfo({
+			success: res => {
+				let windowHeight = res.screenHeight;
+				let windowWidth = res.windowWidth;
+				that.windowHeight = windowHeight; //将计算好的高度给定义好的值
+				this.windowWidth = windowWidth;
+			}
+		});
+	},
+
+	component: {},
+	mounted() {
+		let id = this.$Route.query.id;
+		if (id) {
+			this.videoId = id;
+			this._initialize(id);
+		}
+	},
+	methods: {
+		// 创建失败播放实例
+		getVideo() {
+			return uni.createVideoContext('videoPlayer' + this.currentVideo, this);
+		},
+
+		// 控制垂直切换视频
+		handleSwipeVertical(e) {
+			let index = e.target.current;
+			this.isPlaying = false;
+			let video = this.getVideo();
+			if (!video) {
+				return;
+			}
+			// 暂停
+			video.pause();
+			// 视频进度从0开始
+			video.seek(0);
+			// 播放索引的赋值
+			this.currentVideo = index;
+			// 自动播放
+			video.handlePlay();
+		},
+
+		// 控制播放
+		handlePlay() {
+			let video = this.getVideo();
+			if (!video) {
+				return;
+			}
+			// 播放
+			video.play();
+			this.isPlaying = true;
+		},
+
+		// 控制暂停
+		handlePause() {
+			let video = this.getVideo();
+			if (!video) {
+				return;
+			}
+			// 暂停
+			video.pause();
+			this.isPlaying = false;
+		},
+
+		// 获取视频播放地址
+		getVideoUrl(id) {
+			this.$api.getVideoUrl(id).then(res => {
+				if (res.code === this.$code.code_status) {
+					this.videoUrl = res.urls[0].url;
+				}
+			});
+		},
+
+		// 初始化
+		_initialize(id) {
+			this.getVideoUrl(id);
+		}
+	}
+};
+</script>
+
+<style>
+.list-item {
+	
+}
+.video-box {
+	width: 750px;
+	position: relative;
+}
+
+.video-box {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.video-class {
+	width: 750px;
+}
+.video-info {
+	display: flex;
+	position: relative;
+}
+.video-info-box {
+	display: flex;
+	align-items: center;
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+.video-info-bottom {
+	position: absolute;
+	left: 10px;
+	bottom: 20px;
+}
+
+.video-info-top {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 18px;
+}
+
+.user-name {
+	margin: 0 20px;
+	font-size: 16px;
+	color: #ffffff;
+}
+
+.collect {
+	width: 40px;
+	padding: 4px;
+	display: flex;
+	align-items: center;
+	border-radius: 16px;
+	background-color: #ff0000;
+}
+
+.video-info-detail {
+	color: #ffffff;
+	font-size: 16px;
+	margin-bottom: 18px;
+}
+
+.video-progress {
+	width: 710px;
+}
+
+.video-info-right {
+	position: absolute;
+	/* left: 370px; */
+	bottom: 50px;
+}
+
+.video-tools {
+	margin-bottom: 20rpx;
+}
+</style>
