@@ -243,11 +243,11 @@ export default {
 		.video-wrap {
 			flex: 0 0 50%;
 			max-width: 50%;
-			padding: 10rpx;
+			padding: 6rpx 10rpx;
 			.video-conent {
 				width: 100%;
 				border-radius: 16rpx;
-				margin-bottom: 20rpx;
+				margin-bottom: 10rpx;
 				background-color: #ffffff;
 				.image-cover {
 					width: 340rpx;

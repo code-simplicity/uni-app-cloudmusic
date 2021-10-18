@@ -8,7 +8,7 @@
 		>
 			<cell
 				v-for="(item, index) of videoList"
-				:key="index"
+				:key="item.id"
 				:data-index="index"
 				:recycle="false"
 				class="list-item"
@@ -41,6 +41,9 @@
 						@pause="onPause"
 						@controlstoggle="controlstoggle"
 					>
+						<cover-view class="nv-title-bar" :style="{ marginTop: statusBarHeight + 'px' }">
+							<view class="nv-back-icon" @click="onClickBack"></view>
+						</cover-view>
 						<cover-view class="video-info-box" v-if="!isPlaying">
 							<u-icon class="play-circle" name="play-circle" color="#ffffff" size="140"></u-icon>
 						</cover-view>
@@ -131,7 +134,8 @@ export default {
 			// 屏幕宽度
 			windowWidth: 0,
 			// 视频进度条
-			videoProgress: 10
+			videoProgress: 10,
+			statusBarHeight: 0
 		};
 	},
 
@@ -144,6 +148,7 @@ export default {
 				let windowWidth = res.windowWidth;
 				that.windowHeight = windowHeight; //将计算好的高度给定义好的值
 				this.windowWidth = windowWidth;
+				this.statusBarHeight = res.statusBarHeight
 			}
 		});
 	},
@@ -157,6 +162,10 @@ export default {
 		}
 	},
 	methods: {
+		onClickBack(){
+			uni.navigateBack();
+		},
+		
 		// 控制视频上下切换
 		onChange(current) {
 			console.log('onChange:', current);
@@ -437,4 +446,14 @@ export default {
 .video-tools {
 	margin-bottom: 20px;
 }
+
+.nv-title-bar {
+		background-color: transparent;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 750rpx;
+		height: 55rpx;
+		z-index: 999;
+	}
 </style>

@@ -21,3 +21,8 @@ export const getVideoDetail = id => api.get(`/video/detail?id=${id}`, {})
  * 获取相关视频
  */
 export const getRelatedAllvideo = id => api.get(`/related/allvideo?id=${id}`, {})
+
+/**
+ * 获取视频点赞转发评论数据
+ */
+export const getVideoDetailInfo = vid => api.get(`/video/detail/info?vid=${vid}`, {})
