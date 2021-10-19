@@ -1,6 +1,6 @@
 <template>
 	<view class="play-list-music">
-		<u-sticky offset-top="0">
+		<u-sticky offset-top="0" v-if="songs && songs.length > 0">
 			<view class="play-list-header">
 				<view class="play-list-play-left">
 					<view class="play-list-left-circle" @click="playAll">
@@ -21,7 +21,12 @@
 				</view>
 			</view>
 		</u-sticky>
-		<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+		<scroll-view
+			scroll-y
+			style="width: 100%; height: 100%;"
+			@scrolltolower="onreachBottom"
+			v-if="songs && songs.length > 0"
+		>
 			<u-cell-group :border="false" class="search-cell-group">
 				<u-cell-item
 					:arrow="false"
@@ -93,13 +98,6 @@ export default {
 
 		// 播放音乐
 		playMusci(item, index) {
-			// this.$Router.push({
-			// 	name: 'Player',
-			// 	params: {
-			// 		newSong: this.songs,
-			// 		index: index
-			// 	}
-			// });
 			this.selectPlay({
 				list: this.songs,
 				index

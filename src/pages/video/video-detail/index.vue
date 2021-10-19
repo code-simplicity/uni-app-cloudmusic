@@ -452,11 +452,9 @@ export default {
 	top: 0;
 	left: 0;
 	background-color: #000000;
-	z-index: 9999;
 	.swiper {
 		width: 100%;
 		position: relative;
-		z-index: 9999;
 		.video-box {
 			width: 100%;
 			height: 100%;

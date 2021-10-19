@@ -1,3 +1,4 @@
+s
 <template>
 	<view class="music-player" v-if="showPlayTabBar">
 		<view class="music-player-box">
@@ -17,15 +18,9 @@
 				<view class="music-list" @click="openPopup"><u-icon name="grid" size="52"></u-icon></view>
 			</view>
 		</view>
-		<view class="musci-player-detail" v-if="showMusicDetail">
-			<view class="bg-wrapper">
-				<image
-					class="image-bg"
-					style="width: 100%;height: 100%;"
-					:src="currentSong.image"
-					mode="aspectFit"
-				></image>
-			</view>
+		<view class="musci-player-detail" v-if="showMusicDetail" :style="{ background: '#878787' }">
+			<image class="image-bg" style="width: 100%;height: 100%;" :src="currentSong.image"></image>
+
 			<view class="musci-player-box">
 				<view class="musci-header">
 					<view class="left">
@@ -49,7 +44,6 @@
 						@click="openLyric"
 						:style="{ display: showLyric ? 'none' : 'flex' }"
 					>
-						<view class=""></view>
 						<image
 							class="image-cover  animate__animated animate__bounceIn"
 							:class="playing ? '' : 'stoped'"
@@ -63,20 +57,7 @@
 						@click="openLyric"
 						:style="{ display: !showLyric ? 'none' : 'block' }"
 					>
-						<scroll class="lyric" ref="lyricList" :data="currentLyric && currentLyric.lines">
-							<view class="lyric-wrapper" v-if="currentLyric">
-								<view
-									ref="lyricLine"
-									class="lyric-text"
-									v-for="(item, index) in currentLyric.lines"
-									:class="currentLyricNum === index ? 'active' : ''"
-									:key="index"
-								>
-									{{ item.txt }}
-								</view>
-							</view>
-							<view class="no-lyric" v-else>暂无歌词,请搜索重试</view>
-						</scroll>
+						<lyric-scroll :currentLyric="currentLyric" ref="lyricList"></lyric-scroll>
 					</view>
 				</view>
 				<view class="musci-tools">
@@ -107,24 +88,20 @@
 					</view>
 				</view>
 				<view class="musci-tools-progress">
-					<view class="musci-tools-timel">
-						<text>{{ formatTime(currentTime) }}</text>
-					</view>
+					<view class="musci-tools-timer">{{ formatTime(currentTime) }}</view>
 					<view class="musci-tools-progress">
 						<slider
 							class="musci-slider"
-							activeColor="#000000"
-							backgroundColor="#004cff"
-							block-color="#8A6DE9"
+							activeColor="#ff0000"
+							backgroundColor="#ffffff"
+							block-color="#ff0000"
 							block-size="8"
 							:value="progressBar"
 							@change="sliderChange"
 							@changing="sliderChanging"
 						/>
 					</view>
-					<view class="musci-tools-timer">
-						<text>{{ formatTime(currentSong.duration) }}</text>
-					</view>
+					<view class="musci-tools-timer">{{ formatTime(currentSong.duration) }}</view>
 				</view>
 				<view class="music-play-btn">
 					<view class="music-play-btn-list">
@@ -188,9 +165,19 @@
 								:class="currentSong.id === item.id && playing ? 'playing' : ''"
 								@click="playSong(index)"
 							>
-								<view slot="icon" class="slot-icon">{{ utils.formatZero(index + 1, 2) }}</view>
+								<view slot="icon" class="slot-icon">
+									<view class="">{{ utils.formatZero(index + 1, 2) }}</view>
+									<view class="image">
+										<u-image
+											width="100"
+											height="100"
+											border-radius="16"
+											:src="item.image"
+										></u-image>
+									</view>
+								</view>
 								<view slot="title" class="singer-title">
-									<view class="songs-name">{{ item.name }} --</view>
+									<view class="songs-name">{{ item.name }}</view>
 									<view class="singer-name">{{ item.singer }}</view>
 								</view>
 								<view slot="right-icon">
@@ -216,6 +203,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 import { playMode } from '@/utils/playmode.js';
 import Lyric from 'lyric-parser';
+
 export default {
 	name: 'music-detail',
 	data() {
@@ -237,12 +225,6 @@ export default {
 			isPureMusic: false,
 			// 当前歌词
 			currentLyric: null,
-			// 歌词文本
-			currentLyricTxt: '',
-			// 正在播放的歌词
-			playingLyric: '',
-			// 歌词行数
-			currentLyricNum: 0,
 			// 是否能通过歌词播放
 			canLyricPlay: false,
 			// 打开播放历史记录
@@ -287,17 +269,6 @@ export default {
 			this.songReady = false;
 			// 歌词处理
 			this.isPureMusic = false;
-			if (this.currentLyric) {
-				this.currentLyric.stop();
-				// 重置为null
-				this.currentLyric = null;
-				this.currentTime = 0;
-				this.playingLyric = '';
-				this.currentLyricNum = 0;
-			}
-
-			// 歌词id加载
-			// this.getLyric(newVal.id);
 			this.$nextTick(function() {
 				Vue.prototype.cusPlay = this.onPlay;
 				Vue.prototype.cusTimeUpdate = this.onTimeUpdate;
@@ -308,8 +279,9 @@ export default {
 				this.$audio_player.url = newVal.url;
 				this.$audio_player.autoplay = true;
 				this.$audio_player.src = newVal.url;
+				this.getLyric(newVal.id);
 			});
-			this.getLyric(newVal.id);
+
 			this.getCommentMusic(newVal.id);
 			// 保存播放记录
 			this.saveHistoryList(newVal);
@@ -384,45 +356,11 @@ export default {
 
 		// 获取歌词
 		async getLyric(id) {
-			try {
-				let res = await this.$api.getLyric(id);
-				if (res.code === this.$code.code_status) {
-					let lyric = res.lrc.lyric;
-					this.currentLyric = new Lyric(lyric, this.lyricHandle);
-					if (this.playing) {
-						this.currentLyric.play();
-						this.currentLyricNum = 0;
-					}
-				}
-			} catch (error) {
-				this.currentLyric = null;
-				this.playingLyric = '';
-				this.currentLyricNum = 0;
-				this.isPureMusic = true;
-				console.log('获取歌词失败');
+			let res = await this.$api.getLyric(id);
+			if (res.code === this.$code.code_status) {
+				this.currentLyric = res.lrc.lyric;
+				console.log('this.currentLyric', this.currentLyric);
 			}
-		},
-
-		lyricHandle({ lineNum, txt }) {
-			if (!this.$refs.lyricList) {
-				return;
-			}
-			this.currentLyricNum = lineNum;
-			if (lineNum > 5) {
-				let lineEl = this.$refs.lyricLine[lineNum - 5];
-				if (this.$refs.lyricList) {
-					this.$nextTick(() => {
-						this.$refs.lyricList.scrollToElement(lineEl, 1000);
-					});
-				}
-			} else {
-				if (this.$refs.lyricList) {
-					this.$nextTick(() => {
-						this.$refs.lyricList.scrollTo(0, 0, 1000);
-					});
-				}
-			}
-			this.playingLyric = txt;
 		},
 
 		// 更新播放器时间
@@ -430,6 +368,8 @@ export default {
 			if (!this.progressState) {
 				this.currentTime = this.$audio_player.currentTime;
 				this.progressBar = (this.$audio_player.currentTime / this.currentSong.duration) * 100;
+				// 传递时间个歌词组件
+				this.$refs.lyricList.update(this.$audio_player.currentTime);
 			}
 		},
 
@@ -469,9 +409,6 @@ export default {
 			if (!this.playing) {
 				this.togglePlaying();
 			}
-			if (this.currentLyric) {
-				this.currentLyric.seek(currentTime * 1000);
-			}
 		},
 
 		// 播放准备完成
@@ -479,9 +416,6 @@ export default {
 			clearTimeout(this.timer);
 			this.songReady = true;
 			this.canLyricPlay = false;
-			if (this.currentLyric && !this.isPureMusic) {
-				this.currentLyric.seek(this.currentTime * 1000);
-			}
 		},
 
 		// // 歌曲播放
@@ -494,9 +428,6 @@ export default {
 		// 歌曲暂停
 		onPause() {
 			this.setPlayingState(false);
-			if (this.currentLyric && !this.isPureMusic) {
-				this.currentLyric.seek(this.currentTime * 1000);
-			}
 		},
 
 		// 单曲循环
@@ -505,9 +436,6 @@ export default {
 			this.$audio_player.play();
 			InnerAudioContext.loop = true;
 			this.setPlayingState(true);
-			if (this.currentLyric !== '') {
-				this.currentLyric.seek(0);
-			}
 		},
 
 		// 播放结束
@@ -601,10 +529,6 @@ export default {
 		// 播放/暂停
 		togglePlaying() {
 			this.setPlayingState(!this.playing);
-			// 切换歌词播放状态
-			if (this.currentLyric) {
-				this.currentLyric.togglePlay();
-			}
 		},
 
 		// 格式化时间
@@ -689,16 +613,28 @@ export default {
 						color: #ff0000;
 					}
 					.slot-icon {
-						margin-right: 20rpx;
+						display: flex;
+						align-items: center;
+						margin-right: 30rpx;
+						.image {
+							margin-left: 16rpx;
+						}
 					}
 					.singer-title {
 						display: flex;
-						align-items: center;
+						flex-direction: column;
 						.songs-name {
-							font-size: 32rpx;
+							font-size: 30rpx;
+							-webkit-line-clamp: 1; // 用来限制在一个块元素显示的文本的行数
+							display: -webkit-box; // 将对象作为弹性伸缩盒模型显示
+							-webkit-box-orient: vertical; //设置或检查伸缩盒对象的子元素的排列方式
+							text-overflow: ellipsis; // 在多行文本的情况下，用...隐藏超出范围的文本
+							overflow: hidden;
 						}
 						.singer-name {
 							font-size: 26rpx;
+							display: flex;
+							align-items: center;
 						}
 					}
 				}
@@ -756,20 +692,18 @@ export default {
 		top: 0;
 		left: 0;
 		bottom: 0;
-		z-index: 9999;
-		background-color: #f1f1f1;
-		.bg-wrapper {
-			.image-bg {
-				width: 100%;
-				height: 100%;
-				position: fixed;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				filter: blur(50px);
-				opacity: 0.4;
-			}
+		z-index: 999;
+		color: #ffffff;
+		.image-bg {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			filter: brightness(20%) opacity(1);
+			background-size: cover;
 		}
 		.musci-player-box {
 			padding: 16rpx 26rpx;
@@ -841,10 +775,10 @@ export default {
 								font-size: 30rpx;
 								font-weight: 500;
 								text-align: center;
-								color: #000000;
+								color: #ffffff;
 								&:hover {
 									background-color: #f9fffc;
-									color: #000000;
+									color: #ffffff;
 								}
 								&.active {
 									color: #e10003;
@@ -857,7 +791,7 @@ export default {
 						.no-lyric {
 							text-align: center;
 							font-size: 36rpx;
-							color: #000000;
+							color: #ffffff;
 						}
 					}
 				}
@@ -870,7 +804,7 @@ export default {
 				padding: 10rpx 10rpx;
 				.musci-like {
 					position: relative;
-					color: #000000;
+					color: #ffffff;
 				}
 			}
 			.musci-tools-progress {
@@ -883,6 +817,10 @@ export default {
 					width: 100%;
 					align-items: center;
 					margin: 0 10rpx;
+				}
+				.musci-tools-timer {
+					color: #ffffff;
+					z-index: 1;
 				}
 			}
 			.music-play-btn {

@@ -54,7 +54,13 @@
 					</view>
 				</view>
 			</view>
-			<view class="play-music-content"><play-list-music :songs="songs"></play-list-music></view>
+			<view class="play-music-content">
+				<play-list-music :songs="songs"></play-list-music>
+				<!-- 没有音乐添加音乐 -->
+				<view class="add-music" v-if="songs.length === 0">
+					<view class="add-music-box" @click="addMusic">添加歌曲</view>
+				</view>
+			</view>
 		</view>
 		<!-- 播放器 -->
 		<music-player></music-player>
@@ -115,6 +121,16 @@ export default {
 		}
 	},
 	methods: {
+		// 添加歌曲
+		addMusic() {
+			this.$Router.push({
+				name: 'playMusicSearch',
+				params: {
+					pid: this.playListId
+				}
+			});
+		},
+
 		// 收藏
 		PlaylistSubscribe(t, id) {
 			let params = {
@@ -358,6 +374,24 @@ export default {
 			}
 		}
 		.play-music-content {
+			.add-music {
+				display: flex;
+				margin-top: 20rpx;
+				.add-music-box {
+					display: flex;
+					align-items: center;
+					margin: 0 auto;
+					border: 1px solid #9e9e9e;
+					padding: 16rpx 120rpx;
+					font-size: 30rpx;
+					color: #ff0000;
+					border-radius: 40rpx;
+					&:active {
+						background-color: #ff0000;
+						color: #ffffff;
+					}
+				}
+			}
 		}
 	}
 }

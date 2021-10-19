@@ -5,6 +5,7 @@ import {
 import utils from '../../utils/utils.js'
 
 import {
+	getHistory,
 	saveHistory,
 	deleteHistory,
 	clearHistory,
@@ -35,7 +36,7 @@ const state = () => ({
 	mode: playMode.sequence,
 
 	// 播放历史记录列表
-	historyList: [],
+	historyList: getHistory(),
 
 	// 播放器底部显示显示
 	showPlayTabBar: false

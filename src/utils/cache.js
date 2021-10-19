@@ -48,6 +48,18 @@ export function saveHistory(song) {
 	return songs
 }
 
+// 读取最近播放历史记录
+export function getHistory() {
+	let songs = []
+	uni.getStorage({
+		key: HISTORY_KEY,
+		success: function(res) {
+			songs = res.data
+		}
+	})
+	return songs
+}
+
 // 删除最近播放历史记录
 export function deleteHistory(song) {
 	let songs = []

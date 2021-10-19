@@ -120,7 +120,7 @@
 			</u-popup>
 			<!-- 弹窗删除框 -->
 			<u-modal v-model="showDelete" :mask-close-able="true" :show-cancel-button="true" @confirm="deletePlayList">
-				<view class="slot-content"><rich-text :nodes="content"></rich-text></view>
+				<view class="slot-content"><rich-text class="rich-text" :nodes="content"></rich-text></view>
 			</u-modal>
 		</view>
 	</view>
@@ -340,6 +340,13 @@ export default {
 			.checkbox {
 				margin-bottom: 20rpx;
 			}
+		}
+	}
+	.slot-content {
+		display: flex;
+		align-items: center;
+		.rich-text {
+			margin: 0 auto;
 		}
 	}
 	.user-play-header {
