@@ -1,29 +1,18 @@
 <template>
-	<view class="play-music-detail">
+	<view class="leader-board-detail">
 		<play-list-navbar></play-list-navbar>
-		<view class="play-music-wrap">
-			<image class="image-bg" mode="aspectFill" :src="playlistDetail.coverImgUrl" />
-			<view class="play-musci-header">
-				<view class="play-musci-header-content">
-					<view class="play-musci-info-left">
-						<image
-							class="image-cover image-border"
-							:src="playlistDetail.coverImgUrl"
-							mode="aspectFit"
-						></image>
-					</view>
-					<view class="play-musci-info-right">
-						<view class="music-title">{{ playlistDetail.name }}</view>
-						<view class="music-username" @click="toUserDetail(creatorInfo.userId)">
-							<u-avatar :src="creatorInfo.avatarUrl" size="50"></u-avatar>
-							<view class="music-user-name">{{ creatorInfo.nickname }}</view>
-						</view>
-						<view class="music-detail">{{ playlistDetail.description }}</view>
-					</view>
-				</view>
-				<view class="play-musci-tools">
+		<view class="leader-board-detail-wrap">
+			<u-image
+				class="image-bg"
+				width="100%"
+				height="400rpx"
+				:src="playlistDetail.coverImgUrl"
+				mode="aspectFill"
+			></u-image>
+			<view class="header">
+				<view class="tools">
 					<view
-						class="play-musci-tools-collect"
+						class="tools-collect"
 						@click="PlaylistSubscribe(playlistDetail.subscribed, playlistDetail.id)"
 					>
 						<u-icon
@@ -34,7 +23,7 @@
 						></u-icon>
 						<text class="title">{{ utils.tranNumber(playlistDetail.subscribedCount, 1) }}</text>
 					</view>
-					<view class="play-musci-tools-comment" @click="toComment">
+					<view class="tools-comment" @click="toComment">
 						<u-icon
 							name="iconfont icon-pinglun"
 							custom-prefix="iconfont"
@@ -43,7 +32,7 @@
 						></u-icon>
 						<text class="title">{{ utils.tranNumber(playlistDetail.commentCount, 1) }}</text>
 					</view>
-					<view class="play-musci-tools-share">
+					<view class="tools-share">
 						<u-icon
 							name="iconfont icon-fenxiang1"
 							custom-prefix="iconfont"
@@ -54,30 +43,22 @@
 					</view>
 				</view>
 			</view>
-			<view class="play-music-content">
-				<play-list-music :songs="songs"></play-list-music>
-				<!-- 没有音乐添加音乐 -->
-				<view class="add-music" v-if="songs.length === 0">
-					<view class="add-music-box" @click="addMusic">添加歌曲</view>
-				</view>
-			</view>
+			<view class="content"><play-list-music :songs="songs"></play-list-music></view>
 		</view>
-		<!-- 播放器 -->
-		<music-player></music-player>
 	</view>
 </template>
 
 <script>
 /**
  * author	bugdr
- * time     2021-10-2 5:52:10 ?F10: PM?
- * description
+ * time     2021-10-22 2:42:38 ?F10: PM?
+ * description 榜单详情
  */
-
 import { mapGetters } from 'vuex';
 import { createSong } from '@/utils/song.js';
+
 export default {
-	name: 'play-music-detail',
+	name: 'leader-board-detail',
 	data() {
 		return {
 			// 歌单收藏者人数
@@ -92,8 +73,6 @@ export default {
 			playListId: ''
 		};
 	},
-	component: {},
-
 	computed: {
 		...mapGetters('user', ['userInfo', 'loginState']),
 		likedIcon() {
@@ -113,6 +92,7 @@ export default {
 		}
 	},
 
+	component: {},
 	mounted() {
 		let id = this.$Route.query.id;
 		if (id) {
@@ -121,57 +101,6 @@ export default {
 		}
 	},
 	methods: {
-		// 添加歌曲
-		addMusic() {
-			this.$Router.push({
-				name: 'playMusicSearch',
-				params: {
-					pid: this.playListId
-				}
-			});
-		},
-
-		// 收藏
-		PlaylistSubscribe(t, id) {
-			let params = {
-				id
-			};
-			if (t) {
-				params.t = 2;
-			} else {
-				params.t = 1;
-			}
-			let title = t ? '取消收藏' : '收藏成功';
-			this.$api.playlistSubscribe(params).then(res => {
-				if (res.code === this.$code.code_status) {
-					uni.showToast({
-						title: title,
-						icon: 'success'
-					});
-				}
-			});
-		},
-		// 去评论列表
-		toComment() {
-			this.$Router.push({
-				name: 'Comment',
-				params: {
-					id: this.playListId,
-					type: 2
-				}
-			});
-		},
-
-		// 去用户信息
-		toUserDetail(id) {
-			this.$Router.push({
-				name: 'UserInfoDetail',
-				params: {
-					id: id
-				}
-			});
-		},
-
 		// 获取歌单详情
 		getPlaylistDetail(id, s) {
 			this.$api.getPlaylistDetail(id, s).then(res => {
@@ -247,7 +176,6 @@ export default {
 			return resArr;
 		},
 
-		// 初始化
 		_initIaLize(id) {
 			this.getPlaylistDetail(id, this.s);
 		}
@@ -256,82 +184,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.play-music-detail {
+.leader-board-detail {
 	width: 100%;
-	height: 100%;
-	.play-music-wrap {
+	.leader-board-detail-wrap {
 		width: 100%;
 		position: relative;
 		.image-bg {
-			width: 100%;
 			position: absolute;
 			top: 0;
 			left: 0;
-			height: 400rpx;
-			filter: brightness(40%) opacity(1);
+			filter: brightness(70%) opacity(1);
 		}
-		.play-musci-header {
+		.header {
 			width: 100%;
 			height: 400rpx;
 			padding: 30rpx;
-			.play-musci-header-content {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: space-between;
-				margin-top: 10rpx;
-				.play-musci-info-left {
-					width: 240rpx;
-					height: 240rpx;
-					flex: 1;
-					.image-cover {
-						width: 240rpx;
-						height: 240rpx;
-						position: relative;
-					}
-				}
-				.play-musci-info-right {
-					flex: 2;
-					display: flex;
-					flex-direction: column;
-					justify-content: space-between;
-					margin-left: 20rpx;
-					width: 0;
-					z-index: 1;
-					.music-title {
-						font-size: 32rpx;
-						margin-bottom: 30rpx;
-						color: #ffffff;
-					}
-					.music-username {
-						margin-bottom: 30rpx;
-						display: flex;
-						align-items: center;
-						z-index: 1;
-						.music-user-name {
-							font-size: 30rpx;
-							color: #00d1ff;
-							margin-left: 28rpx;
-						}
-					}
-					.music-detail {
-						font-size: 24rpx;
-						margin-bottom: 30rpx;
-						flex-wrap: nowrap;
-						white-space: nowrap;
-						text-overflow: ellipsis;
-						overflow: hidden;
-						word-break: break-all;
-						color: #ffffff;
-					}
-				}
-			}
-			.play-musci-tools {
+			.tools {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding: 20rpx 60rpx;
-				.play-musci-tools-collect {
+				padding: 0 60rpx;
+				margin-top: 300rpx;
+				.tools-collect {
 					display: flex;
 					align-items: center;
 					z-index: 1;
@@ -342,7 +216,7 @@ export default {
 						color: #ffffff;
 					}
 				}
-				.play-musci-tools-comment {
+				.tools-comment {
 					display: flex;
 					align-items: center;
 					z-index: 1;
@@ -353,7 +227,7 @@ export default {
 						color: #ffffff;
 					}
 				}
-				.play-musci-tools-share {
+				.tools-share {
 					display: flex;
 					align-items: center;
 					z-index: 1;
@@ -366,25 +240,7 @@ export default {
 				}
 			}
 		}
-		.play-music-content {
-			.add-music {
-				display: flex;
-				margin-top: 20rpx;
-				.add-music-box {
-					display: flex;
-					align-items: center;
-					margin: 0 auto;
-					border: 1px solid #9e9e9e;
-					padding: 16rpx 120rpx;
-					font-size: 30rpx;
-					color: #ff0000;
-					border-radius: 40rpx;
-					&:active {
-						background-color: #ff0000;
-						color: #ffffff;
-					}
-				}
-			}
+		.content {
 		}
 	}
 }

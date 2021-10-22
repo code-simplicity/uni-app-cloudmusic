@@ -14,13 +14,16 @@
 			<view class="home-recommend-board">
 				<view class="home-recommend-board-header">
 					<text class="home-recommend-board-text">排行榜</text>
-					<text class="home-recommend-board-more">更多</text>
+					<text class="home-recommend-board-more">
+						更多
+						<u-icon name="arrow-right"></u-icon>
+					</text>
 				</view>
 				<view class="home-recommend-board-swiper">
 					<swiper :indicator-dots="false" class="swiper">
-						<swiper-item class="swiper-item"><board-new-song></board-new-song></swiper-item>
-						<swiper-item><board-original-list></board-original-list></swiper-item>
-						<swiper-item><board-hot-video></board-hot-video></swiper-item>
+						<swiper-item v-for="(item, index) in boardList" :key="index">
+							<board-list :boardList="item"></board-list>
+						</swiper-item>
 					</swiper>
 				</view>
 			</view>
@@ -45,7 +48,9 @@ export default {
 			// 音乐返回数量
 			limit: 9,
 			// 新歌
-			newSong: []
+			newSong: [],
+			// 榜单
+			boardList: []
 		};
 	},
 	component: {},
@@ -53,9 +58,21 @@ export default {
 	mounted() {
 		this.getPersonalized();
 		this.getPersonalizedNewSong();
+		this.getTopListDetail();
 	},
 
 	methods: {
+		// 获取榜单的列表
+		getTopListDetail() {
+			this.$api.getTopListDetail().then(res => {
+				if (res.code === this.$code.code_status) {
+					// 截取新歌榜，热歌榜以及原创榜
+					let boardList = res.list;
+					this.boardList = boardList.slice(1, 4);
+				}
+			});
+		},
+
 		// 获取新歌
 		getPersonalizedNewSong() {
 			this.$api
@@ -128,7 +145,8 @@ export default {
 .home-box {
 	width: 100%;
 	display: flex;
-	bottom: calc(var(--window-bottom));
+	padding-bottom: 100rpx;
+	// bottom: calc(var(--window-bottom - 120));
 	// .home-header {
 	// 	width: 100%;
 	// }
@@ -156,8 +174,9 @@ export default {
 			display: flex;
 			flex-direction: column;
 			margin-top: 16rpx;
-			background-color: #ffffff;
+			background-color: #fdfdfd;
 			padding: 20rpx;
+			border-radius: 16rpx;
 			.home-recommend-board-header {
 				display: flex;
 				flex: 1;
@@ -168,19 +187,24 @@ export default {
 				}
 				.home-recommend-board-more {
 					border-radius: 16rpx;
-					border: 1px solid #000000;
-					padding: 6rpx;
+					border: 1px solid #c2c2c2;
+					padding: 4rpx 8rpx;
+					font-size: 26rpx;
+					&:active {
+						background-color: #dd4816;
+						color: #ffffff;
+					}
 				}
 			}
 			.home-recommend-board-swiper {
-				border: 1px solid #c3c3c3;
 				padding: 10rpx;
 				border-radius: 16rpx;
-				box-shadow: 0rpx 0rpx 5rpx rgba(0, 0, 0, 0.5);
+				box-shadow: 0rpx 0rpx 0rpx 2rpx rgba(182, 182, 182, 1);
 				height: 100%;
-
+				background-color: #ffffff;
 				.swiper {
-					height: 340rpx;
+					display: flex;
+					height: 380rpx;
 					.swiper-item {
 						height: 100%;
 					}

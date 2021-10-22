@@ -57,7 +57,23 @@ s
 						@click="openLyric"
 						:style="{ display: !showLyric ? 'none' : 'block' }"
 					>
-						<lyric-scroll :currentLyric="currentLyric" ref="lyricList"></lyric-scroll>
+						<!-- <lyric-scroll :currentLyric="currentLyric" ref="lyricList"></lyric-scroll>ssss -->
+						<view class="lyric-wrap">
+							<scroll-view
+								scroll-y="true"
+								:scroll-top="scrollTop"
+								scroll-with-animation="true"
+								class="lyric-scroll"
+							>
+								<view class="lyric-panel">
+									<block v-for="(item, index) in lyricList" :key="index">
+										<view :class="index === nowLyricIndex ? 'hightlight-lyric' : ''" class="lyric">
+											{{ item.txt }}
+										</view>
+									</block>
+								</view>
+							</scroll-view>
+						</view>
 					</view>
 				</view>
 				<view class="musci-tools">
@@ -71,9 +87,8 @@ s
 						<u-badge
 							class="badge"
 							:count="commentTotal"
-							:offset="[-10, -30]"
+							:offset="[-20, -80]"
 							bgColor="#000000"
-							:is-center="true"
 							:overflow-count="1000000000"
 						></u-badge>
 						<u-icon
@@ -232,7 +247,15 @@ export default {
 			limit: 40,
 			offset: 0,
 			// 评论总数
-			commentTotal: ''
+			commentTotal: '',
+			// 歌词高亮
+			nowLyricIndex: 0,
+			// 歌词移动高度
+			scrollTop: 0,
+			// 歌词
+			lyricList: [],
+			// 歌词高度
+			lyricHeight: 0
 		};
 	},
 
@@ -260,7 +283,32 @@ export default {
 		}
 	},
 
+	onShow() {
+		// 获取页面高度
+		uni.getSystemInfo({
+			success(res) {
+				this.lyricHeight = (res.screenWidth / 750) * 64;
+			}
+		});
+	},
+
 	watch: {
+		currentLyric(txt) {
+			if (txt === '') {
+				(this.lyricList = [
+					{
+						txt,
+						time: 0
+					}
+				]),
+					(this.nowLyricIndex = -1);
+			} else {
+				// 格式化歌词
+				this._parseLyric(txt);
+			}
+			immediate: true;
+		},
+
 		// 观察歌曲的变化，做出响应
 		currentSong(newVal, oldVal) {
 			if (!newVal.id || !newVal.url || newVal.id === oldVal.id) {
@@ -279,9 +327,8 @@ export default {
 				this.$audio_player.url = newVal.url;
 				this.$audio_player.autoplay = true;
 				this.$audio_player.src = newVal.url;
-				this.getLyric(newVal.id);
 			});
-
+			this.getLyric(newVal.id);
 			this.getCommentMusic(newVal.id);
 			// 保存播放记录
 			this.saveHistoryList(newVal);
@@ -308,6 +355,50 @@ export default {
 
 	mounted() {},
 	methods: {
+		update(currentTime) {
+			// 歌词高亮 从父组件拿到值
+			let lyricList = null;
+			if (this.lyricList) {
+				lyricList = this.lyricList;
+			}
+			if (lyricList.length === 0) {
+				return;
+			}
+			// 歌词滚动
+			if (currentTime > lyricList[lyricList.length - 1].time) {
+				if (this.nowLyricIndex !== -1) {
+					(this.nowLyricIndex = -1), (this.scrollTop = lyricList.length * this.lyricHeight);
+				}
+			}
+			for (let i = 0, len = lyricList.length; i < len; i++) {
+				if (currentTime <= lyricList[i].time) {
+					this.nowLyricIndex = i - 1;
+					this.scrollTop = (i - 1) * this.lyricHeight;
+					break;
+				}
+			}
+		},
+
+		// 格式化歌词
+		_parseLyric(sLyric) {
+			let line = sLyric.split('\n');
+			let _lrcList = [];
+			line.forEach(elem => {
+				let time = elem.match(/\[(\d{2,}):(\d{2})(?:\.(\d{2,3}))?]/g);
+				if (time != null) {
+					let txt = elem.split(time)[1]; //获取到歌词
+					let timeReg = time[0].match(/(\d{2,}):(\d{2})(?:\.(\d{2,3}))?/); //获取到时间
+					// 吧时间转换成秒
+					let time2Senconds = parseInt(timeReg[1]) * 60 + parseInt(timeReg[2]) + parseInt(timeReg[3]) / 1000;
+					_lrcList.push({
+						txt,
+						time: time2Senconds
+					});
+				}
+			});
+			this.lyricList = _lrcList;
+		},
+
 		// 去评论列表
 		toComment(id) {
 			this.$Router.push({
@@ -328,7 +419,7 @@ export default {
 			};
 			this.$api.getCommentMusic(params).then(res => {
 				if (res.code === this.$code.code_status) {
-					this.commentTotal = this.utils.tranNumber(res.total);
+					this.commentTotal = this.utils.tranNumber(res.total, 1);
 				}
 			});
 		},
@@ -359,7 +450,6 @@ export default {
 			let res = await this.$api.getLyric(id);
 			if (res.code === this.$code.code_status) {
 				this.currentLyric = res.lrc.lyric;
-				console.log('this.currentLyric', this.currentLyric);
 			}
 		},
 
@@ -369,7 +459,7 @@ export default {
 				this.currentTime = this.$audio_player.currentTime;
 				this.progressBar = (this.$audio_player.currentTime / this.currentSong.duration) * 100;
 				// 传递时间个歌词组件
-				this.$refs.lyricList.update(this.$audio_player.currentTime);
+				this.update(this.$audio_player.currentTime);
 			}
 		},
 
@@ -398,10 +488,13 @@ export default {
 			if (!this.playing) {
 				this.togglePlaying();
 			}
+			// 进度条结束之后手动seek
+			this.$audio_player.seek(currentTime);
 		},
 
 		// 进度条移动
 		sliderChanging(val) {
+			// 进度条正在移动
 			this.progressState = true;
 			let currentTime = (val.detail.value / 100) * this.currentSong.duration;
 			this.currentTime = currentTime;
@@ -664,9 +757,13 @@ export default {
 				display: flex;
 				margin-left: 20rpx;
 				align-items: center;
-
+				-webkit-line-clamp: 1; // 用来限制在一个块元素显示的文本的行数
+				display: -webkit-box; // 将对象作为弹性伸缩盒模型显示
+				-webkit-box-orient: vertical; //设置或检查伸缩盒对象的子元素的排列方式
+				text-overflow: ellipsis; // 在多行文本的情况下，用...隐藏超出范围的文本
+				overflow: hidden;
 				.musci-name {
-					font-size: 32rpx;
+					font-size: 28rpx;
 					.musci-singer {
 						font-size: 24rpx;
 					}
@@ -759,39 +856,30 @@ export default {
 					width: 100%;
 					left: 0;
 					right: 0;
-
-					.lyric {
+					.lyric-wrap {
+						position: fixed;
 						width: 100%;
-						height: 66%;
-						.lyric-wrapper {
+						height: 100%;
+						top: 80rpx;
+						left: 0;
+						right: 0;
+						.lyric-scroll {
 							width: 100%;
-							height: 100%;
-							overflow: hidden;
-							overflow-y: scroll;
-							.lyric-text {
-								line-height: 60rpx;
-								height: 60rpx;
-								border-radius: 16rpx;
-								font-size: 30rpx;
-								font-weight: 500;
+							height: 68%;
+							color: #ccc;
+							font-size: 30rpx;
+							.lyric-panel {
+								position: relative;
+								top: 20%;
 								text-align: center;
-								color: #ffffff;
-								&:hover {
-									background-color: #f9fffc;
-									color: #ffffff;
+								.lyric {
+									min-height: 70rpx;
 								}
-								&.active {
-									color: #e10003;
-								}
-								&::after {
-									color: #ffffff;
+
+								.hightlight-lyric {
+									color: #d43c33;
 								}
 							}
-						}
-						.no-lyric {
-							text-align: center;
-							font-size: 36rpx;
-							color: #ffffff;
 						}
 					}
 				}
@@ -805,6 +893,10 @@ export default {
 				.musci-like {
 					position: relative;
 					color: #ffffff;
+					.badge {
+						width: 120rpx;
+						background-color: rgb(255, 255, 255, 0) !important;
+					}
 				}
 			}
 			.musci-tools-progress {

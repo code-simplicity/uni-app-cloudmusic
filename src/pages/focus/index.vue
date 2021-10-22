@@ -111,6 +111,7 @@ export default {
 <style lang="scss" scoped>
 .focus-box {
 	width: 100%;
+	padding-bottom: 100rpx;
 	.focus-top {
 		display: flex;
 		flex-direction: row;

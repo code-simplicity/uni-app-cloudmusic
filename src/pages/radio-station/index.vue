@@ -101,6 +101,7 @@ export default {
 <style lang="scss" scoped>
 .radio-station {
 	width: 100%;
+	padding-bottom: 100rpx;
 	.radio-station-top {
 		display: flex;
 		flex-direction: row;

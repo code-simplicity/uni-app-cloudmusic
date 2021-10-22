@@ -326,6 +326,40 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/leader-board/leader-board-detail/index",
+			"name": "LeaderBoardDetail",
+			"meta": {
+				"title": "排行榜详情"
+			},
+			"style": {
+				"navigationBarTitleText": "排行榜详情",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/leader-board/index",
+			"name": "LeaderBoard",
+			"meta": {
+				"title": "排行榜页面"
+			},
+			"style": {
+				"navigationBarTitleText": "排行榜页面",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 

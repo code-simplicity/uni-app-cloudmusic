@@ -255,6 +255,7 @@ export default {
 .user-info {
 	width: 100%;
 	height: 100%;
+	padding-bottom: 100rpx;
 	.user-info-header {
 		width: 100%;
 	}

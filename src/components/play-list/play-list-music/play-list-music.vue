@@ -34,10 +34,27 @@
 					:key="index"
 					@click="playMusci(item, index)"
 					class="u-cell"
+					:class="index === currentIndex && currentSong.id === item.id && playing ? 'playing' : ''"
 				>
 					<view slot="icon" class="slot-icon">
 						<view class="index">{{ utils.formatZero(index + 1, 2) }}</view>
 						<image class="image-cover image-border" :src="item.image" mode="aspectFit"></image>
+						<u-icon
+							class="play-btn"
+							custom-prefix="iconfont"
+							name="iconfont icon-bofang1"
+							size="62"
+							color="#ffffff"
+							@click="playMusci(item, index)"
+						></u-icon>
+						<u-icon
+							class="pause-btn"
+							custom-prefix="iconfont"
+							name="iconfont icon-zanting1"
+							size="62"
+							color="#ffffff"
+							@click="pauseMusci"
+						></u-icon>
 					</view>
 					<view slot="title" class="slot-title">
 						<view class="singer-name">{{ utils.strslice(item.name) }}</view>
@@ -170,6 +187,29 @@ export default {
 					width: 90rpx;
 					height: 90rpx;
 					margin: 0 20rpx;
+				}
+				.play-btn {
+					margin: 20rpx 110rpx;
+					cursor: pointer;
+					position: absolute;
+					align-items: center;
+				}
+				.pause-btn {
+					margin: 10rpx 110rpx;
+					display: none;
+					cursor: pointer;
+					position: absolute;
+					text-align: center;
+				}
+			}
+			&.playing {
+				.slot-icon {
+					.play-btn {
+						display: none;
+					}
+					.pause-btn {
+						display: block;
+					}
 				}
 			}
 			.slot-title {

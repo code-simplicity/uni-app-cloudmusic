@@ -1,22 +1,20 @@
 <template>
-	<view class="board-new-song">
-		<view class="board-new-header"><text>新歌榜</text></view>
-		<view class="board-new-content">
-			<view
-				class="board-new-warp"
-				v-for="(item, index) of hotSong"
-				:key="item.id"
+	<view class="board-list">
+		<view class="header" @click="toLeaderBoardDetail(boardList.id)">
+			{{ boardList.name }}
+			<u-icon name="arrow-right"></u-icon>
+		</view>
+		<u-cell-group>
+			<u-cell-item
+				:arrow="false"
+				v-for="(item, index) in hotSong"
+				:key="index"
+				class="u-cell"
 				:class="index === currentIndex && currentSong.id === item.id && playing ? 'playing' : ''"
+				@click="playMusci(item, index)"
 			>
-				<view class="board-new-image">
-					<view class="board-new-cover">
-						<image
-							class="image-cover image-border"
-							:src="item.image"
-							mode="aspectFit"
-							lazy-load="true"
-						></image>
-					</view>
+				<view slot="icon" class="slot-icon">
+					<u-image width="80" height="80" border-radius="1" :src="item.image" mode="aspectFit"></u-image>
 					<u-icon
 						class="play-btn"
 						custom-prefix="iconfont"
@@ -34,40 +32,42 @@
 						@click="pauseMusci"
 					></u-icon>
 				</view>
-
-				<view class="board-new-index" @click="playMusci(item, index)">{{ index + 1 }}</view>
-				<view class="board-new-info" @click="playMusci(item, index)">
-					<view class="song-name">{{ item.name }}</view>
-					<view>--</view>
-					<view class="singer-name">{{ item.singer }}</view>
+				<view slot="title" class="slot-title">
+					<text>{{ index + 1 }}</text>
+					<text class="center-text">{{ item.name }} -</text>
+					<text class="left-text">{{ item.singer }}</text>
 				</view>
-			</view>
-		</view>
+				<view slot="right-icon" class="right-icon">new</view>
+			</u-cell-item>
+		</u-cell-group>
 	</view>
 </template>
 
 <script>
 /**
  * author	bugdr
- * time     2021-9-30 6:29:14 ?F10: PM?
- * description 新歌榜
+ * time     2021-10-22 12:59:45 ?F10: PM?
+ * description
  */
-
 import { createSong } from '@/utils/song.js';
 
 import { mapGetters, mapActions } from 'vuex';
-
 export default {
-	name: 'board-new-song',
+	name: 'board-list',
 	data() {
 		return {
 			// 榜单id
 			topId: '',
 			// 收藏该榜单的人
 			s: 8,
-			// 歌曲
 			songs: []
 		};
+	},
+	props: {
+		// 榜单列表
+		boardList: {
+			type: Object
+		}
 	},
 
 	computed: {
@@ -80,18 +80,21 @@ export default {
 
 	component: {},
 	mounted() {
-		this.getTopListDetail();
+		this.getPlayListDetail();
 	},
 	methods: {
+		// 去排行榜页面
+		toLeaderBoardDetail(id) {
+			this.$Router.push({
+				name: 'LeaderBoardDetail',
+				params: {
+					id
+				}
+			});
+		},
+
 		// 播放音乐
 		playMusci(item, index) {
-			// this.$Router.push({
-			// 	name: 'Player',
-			// 	params: {
-			// 		newSong: this.hotSong,
-			// 		index: index
-			// 	}
-			// });
 			this.selectPlay({
 				list: this.songs,
 				index
@@ -104,21 +107,11 @@ export default {
 			this.$audio_player.pause();
 		},
 
-		// 获取新歌榜单的id
-		getTopListDetail() {
-			this.$api.getTopListDetail().then(res => {
-				if (res.code === this.$code.code_status) {
-					this.topId = res.list[1].id;
-					this.getPlayListDetail(this.topId);
-				}
-			});
-		},
-
 		// 获取歌单详情
-		getPlayListDetail(id) {
+		getPlayListDetail() {
 			let timestamp = new Date().valueOf();
 			let params = {
-				id,
+				id: this.boardList.id,
 				s: this.s,
 				timestamp
 			};
@@ -201,96 +194,65 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.board-new-song {
-	background-color: #ffffff;
-	border-radius: 16rpx;
-	.board-new-header {
+.board-list {
+	width: 100%;
+	padding: 10rpx;
+	.header {
 		text-align: center;
-		margin-bottom: 10rpx;
 		font-size: 30rpx;
+		margin-bottom: 10rpx;
 	}
-	.board-new-content {
-		width: 100%;
-		height: 100%;
-		.board-new-warp {
+	.u-cell {
+		padding: 16rpx;
+		.slot-icon {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			flex-direction: row;
-			.board-new-image {
-				width: 100rpx;
-				height: 100rpx;
-				flex: 1;
-				.board-new-cover {
-					.image-cover {
-						width: 80rpx;
-						height: 80rpx;
-						position: absolute;
-					}
-				}
-			}
+			margin-right: 16rpx;
 			.play-btn {
 				margin: 10rpx 10rpx;
 				cursor: pointer;
-				position: relative;
+				position: absolute;
 				align-items: center;
 			}
 			.pause-btn {
 				margin: 10rpx 10rpx;
 				display: none;
 				cursor: pointer;
-				position: relative;
+				position: absolute;
 				text-align: center;
 			}
-			.board-new-index {
+		}
+		&.playing {
+			.slot-icon {
+				.play-btn {
+					display: none;
+				}
+				.pause-btn {
+					display: block;
+				}
+			}
+		}
+		.slot-title {
+			-webkit-line-clamp: 1; // 用来限制在一个块元素显示的文本的行数
+			display: -webkit-box; // 将对象作为弹性伸缩盒模型显示
+			-webkit-box-orient: vertical; //设置或检查伸缩盒对象的子元素的排列方式
+			text-overflow: ellipsis; // 在多行文本的情况下，用...隐藏超出范围的文本
+			overflow: hidden;
+			.center-text {
 				margin-left: 16rpx;
-				flex: 1;
+				font-size: 26rpx;
 			}
-			.board-new-info {
-				flex: 6;
-				display: flex;
-				flex-wrap: nowrap;
-				flex-direction: row;
-				align-items: center;
-				text-overflow: ellipsis;
-				overflow: hidden;
-				.song-name {
-					font-size: 30rpx;
-				}
-				.singer-name {
-					font-size: 26rpx;
-				}
+			.left-text {
+				font-size: 22rpx;
+				margin-left: 6rpx;
 			}
-			&.playing {
-				.board-new-image {
-					.play-btn {
-						display: none;
-					}
-					.pause-btn {
-						display: block;
-					}
-				}
-			}
-			&:hover {
-				.board-new-image {
-					.play-btn {
-						display: block;
-					}
-				}
-				&.playing {
-					.board-new-image {
-						.play-btn {
-							display: none;
-						}
-						.play-icon {
-							display: none;
-						}
-						.pause-btn {
-							display: block;
-						}
-					}
-				}
-			}
+		}
+		.right-icon {
+			font-size: 26rpx;
+			color: #0e12ff;
+			font-family: 华文楷体;
 		}
 	}
 }

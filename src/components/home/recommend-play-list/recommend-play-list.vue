@@ -2,7 +2,10 @@
 	<view class="recommend-play-list">
 		<view class="recommend-play-header">
 			<text class="recommend-play-title">推荐歌单</text>
-			<text class="recommend-play-title-more">更多</text>
+			<text class="recommend-play-title-more">
+				更多
+				<u-icon name="arrow-right"></u-icon>
+			</text>
 		</view>
 		<view class="recommend-play-content scroll-x-box">
 			<scroll-view scroll-x="true" class="scroll-x">
@@ -78,12 +81,13 @@ export default {
 			padding: 0 10rpx;
 		}
 		.recommend-play-title-more {
-			padding: 0 10rpx;
 			border-radius: 16rpx;
-			border: 1rpx solid #000000;
-			height: 46rpx;
-			&:hover {
-				background-color: #eaeaea;
+			border: 1px solid #c2c2c2;
+			padding: 4rpx 8rpx;
+			font-size: 26rpx;
+			&:active {
+				background-color: #dd4816;
+				color: #ffffff;
 			}
 		}
 	}
