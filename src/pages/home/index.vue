@@ -14,7 +14,7 @@
 			<view class="home-recommend-board">
 				<view class="home-recommend-board-header">
 					<text class="home-recommend-board-text">排行榜</text>
-					<text class="home-recommend-board-more">
+					<text class="home-recommend-board-more" @click="toLeaderBoard">
 						更多
 						<u-icon name="arrow-right"></u-icon>
 					</text>
@@ -62,6 +62,13 @@ export default {
 	},
 
 	methods: {
+		// 去更多页面
+		toLeaderBoard() {
+			this.$Router.push({
+				name: 'LeaderBoard'
+			});
+		},
+
 		// 获取榜单的列表
 		getTopListDetail() {
 			this.$api.getTopListDetail().then(res => {
@@ -146,10 +153,6 @@ export default {
 	width: 100%;
 	display: flex;
 	padding-bottom: 100rpx;
-	// bottom: calc(var(--window-bottom - 120));
-	// .home-header {
-	// 	width: 100%;
-	// }
 	.home-content {
 		padding: 0 22rpx;
 		width: 100%;

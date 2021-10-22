@@ -4,7 +4,7 @@
 			{{ boardList.name }}
 			<u-icon name="arrow-right"></u-icon>
 		</view>
-		<u-cell-group>
+		<u-cell-group :border="false">
 			<u-cell-item
 				:arrow="false"
 				v-for="(item, index) in hotSong"
