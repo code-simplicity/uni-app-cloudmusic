@@ -1,25 +1,29 @@
 <template>
 	<view class="play-list">
 		<play-list-navbar></play-list-navbar>
-
 		<view class="play-list-box">
-			<view class="wrap">
-				<view class="left">
-					<u-tabs-swiper
-						ref="uTabs"
-						:list="playList"
-						:current="currentTab"
-						@change="tabChange"
-						:is-scroll="true"
-						active-color="#e51419"
-					></u-tabs-swiper>
+			<u-sticky>
+				<view class="wrap">
+					<view class="left">
+						<u-tabs-swiper
+							ref="uTabs"
+							:list="playList"
+							:current="currentTab"
+							@change="tabChange"
+							:is-scroll="true"
+							active-color="#e51419"
+						></u-tabs-swiper>
+					</view>
+					<view class="right" @click="toPlayListBox">
+						<u-icon name="grid" size="50" color="#626262"></u-icon>
+					</view>
 				</view>
-				<view class="right"><u-icon name="grid" size="50" color="#626262"></u-icon></view>
-			</view>
+			</u-sticky>
 		</view>
 
 		<swiper
 			class="search-swiper"
+			:style="{ height: screenHeight + 'px' }"
 			:current="swiperCurrent"
 			@transition="transition"
 			@animationfinish="animationfinish"
@@ -109,6 +113,7 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+		<music-player></music-player>
 	</view>
 </template>
 
@@ -145,20 +150,33 @@ export default {
 			// 官方榜单
 			officialList: [],
 			//
-			officialTitle: '懂你的官方榜'
+			officialTitle: '懂你的官方榜',
+			// 屏幕高度
+			screenHeight: 0
 		};
 	},
 	component: {},
+	onReady() {
+		uni.getSystemInfo({
+			success: res => {
+				this.screenHeight = res.screenHeight;
+			}
+		});
+	},
 	mounted() {
 		this.getPlayListHot();
 		this.getPersonalized();
 		this.getTopPlayList();
 		this.getPlayList(this.playLists, this.swiperCurrent - 1);
 	},
-	// onReady() {
-	// 	this.getPlayList(this.playLists, this.swiperCurrent);
-	// },
 	methods: {
+		// 去所有歌单列表
+		toPlayListBox() {
+			this.$Router.push({
+				name: 'PlayListBox'
+			});
+		},
+
 		// 传递cat的值，调用给子组件，传递index，通知tabs更新
 		getPlayList(playLists, index) {
 			switch (index) {
@@ -281,10 +299,8 @@ export default {
 <style lang="scss" scoped>
 .play-list {
 	width: 100%;
+	margin-bottom: 80rpx;
 	.play-list-box {
-		top: 80rpx;
-		position: sticky;
-		z-index: 99;
 		.wrap {
 			width: 100%;
 			position: relative;
@@ -304,7 +320,6 @@ export default {
 	}
 	.search-swiper {
 		padding: 16rpx;
-		height: 1200rpx;
 		.swiper-item {
 			flex: 1;
 			.play-board {

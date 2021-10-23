@@ -17,7 +17,7 @@
 				<scroll-view
 					scroll-y="true"
 					class="scroll-Y"
-					style="height: 1200rpx;width: 100%;"
+					style="height: 100%"
 					@scroll="scroll"
 					:scroll-into-view="tabId"
 					scroll-with-animation

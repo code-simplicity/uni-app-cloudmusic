@@ -1,9 +1,9 @@
 {
-    "name" : "音乐播放器",
+    "name" : "my-music",
     "appid" : "__UNI__F62601B",
-    "description" : "音乐播放器",
-    "versionName" : "1.0.20",
-    "versionCode" : 120,
+    "description" : "my-music",
+    "versionName" : "1.0.21",
+    "versionCode" : 121,
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */
@@ -65,6 +65,11 @@
             },
             "splashscreen" : {
                 "androidStyle" : "common"
+            },
+            "icons" : {
+                "android" : {
+                    "xxhdpi" : "D:/桌面/logo/HatchfulExport-All/pinterest_profile_image.png"
+                }
             }
         }
     },

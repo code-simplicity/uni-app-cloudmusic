@@ -61,3 +61,8 @@ export const addPlaylistTracks = params => api.get(`/playlist/tracks`, {
 export const getTopPlayList = params => api.get(`/top/playlist`, {
 	params
 })
+
+/**
+ * 全部歌单 歌单分类
+ */
+export const getplayListCatlist = () => api.get(`/playlist/catlist`, {})

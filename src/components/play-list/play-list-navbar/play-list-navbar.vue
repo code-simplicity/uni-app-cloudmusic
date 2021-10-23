@@ -6,13 +6,13 @@
 			title=""
 			:border-bottom="false"
 			:background="background"
-			back-icon-color="#ffffff"
+			back-icon-color="#000000"
 			back-icon-size="50"
 		>
 			<view slot="" class="header-title">{{ title }}</view>
 			<view slot="right" class="header-right">
-				<u-icon name="search" color="#ffffff" size="50" @click="toSearch"></u-icon>
-				<u-icon class="tools" name="more-dot-fill" color="#ffffff" size="50"></u-icon>
+				<u-icon name="search" color="#000000" size="50" @click="toSearch"></u-icon>
+				<u-icon class="tools" name="more-dot-fill" color="#000000" size="50"></u-icon>
 			</view>
 		</u-navbar>
 	</view>
@@ -30,7 +30,7 @@ export default {
 	data() {
 		return {
 			background: {
-				backgroundColor: 'rgb(111, 121, 130)'
+				backgroundColor: 'rgb(255, 255, 255)'
 			}
 		};
 	},

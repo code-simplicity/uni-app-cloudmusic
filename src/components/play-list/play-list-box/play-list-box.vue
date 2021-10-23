@@ -72,6 +72,7 @@ export default {
 <style lang="scss" scoped>
 .play-list-box {
 	width: 100%;
+	padding: 0 15rpx;
 	.play-list-wrap {
 		display: flex;
 		flex-wrap: wrap;
@@ -79,7 +80,7 @@ export default {
 		.play-list {
 			display: flex;
 			flex-direction: column;
-			margin-left: 28rpx;
+			margin-left: 26rpx;
 			.image {
 				position: relative;
 				margin-top: 30rpx;

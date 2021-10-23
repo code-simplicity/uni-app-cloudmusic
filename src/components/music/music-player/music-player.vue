@@ -814,6 +814,10 @@ export default {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+				.center {
+					color: #FFFFFF;
+					z-index: 1;
+				}
 			}
 			.musci-content {
 				flex: 11;
