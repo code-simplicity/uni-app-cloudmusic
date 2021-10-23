@@ -54,3 +54,10 @@ export const deletePlayList = id => api.get(`/playlist/delete?id=${id}`, {})
 export const addPlaylistTracks = params => api.get(`/playlist/tracks`, {
 	params
 })
+
+/**
+ * 歌单 ( 网友精选碟 )
+ */
+export const getTopPlayList = params => api.get(`/top/playlist`, {
+	params
+})

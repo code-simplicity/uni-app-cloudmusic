@@ -83,7 +83,11 @@ export default {
 			// 歌单收藏者人数
 			s: 20,
 			// 歌单详情
-			playlistDetail: [],
+			playlistDetail: {
+				subscribedCount: Number,
+				commentCount: Number,
+				shareCount: Number
+			},
 			// 创作者信息
 			creatorInfo: [],
 			// 歌曲

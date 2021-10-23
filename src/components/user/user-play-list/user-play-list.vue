@@ -1,6 +1,6 @@
 <template>
 	<view class="user-play-list">
-		<u-cell-group>
+		<u-cell-group :border="false">
 			<view class="user-play-header">
 				<view class="user-play-header-text">{{ header }}</view>
 				<view class="user-play-header-tools">

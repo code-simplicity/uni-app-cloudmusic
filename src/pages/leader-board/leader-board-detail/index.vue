@@ -45,6 +45,7 @@
 			</view>
 			<view class="content"><play-list-music :songs="songs"></play-list-music></view>
 		</view>
+		<music-player></music-player>
 	</view>
 </template>
 
@@ -64,7 +65,11 @@ export default {
 			// 歌单收藏者人数
 			s: 20,
 			// 歌单详情
-			playlistDetail: [],
+			playlistDetail: {
+				subscribedCount: Number,
+				commentCount: Number,
+				shareCount: Number
+			},
 			// 创作者信息
 			creatorInfo: [],
 			// 歌曲
@@ -85,7 +90,7 @@ export default {
 	watch: {
 		$Route(newId, oldId) {
 			console.log(newId, oldId);
-			let id = this.$route.query.id || this.userInfo.userId || newId;
+			let id = this.$route.query.id || this.userInfo.userId;
 			if (id) {
 				this._initIaLize(id);
 			}

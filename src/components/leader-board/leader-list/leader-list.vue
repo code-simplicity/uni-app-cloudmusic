@@ -61,7 +61,11 @@ export default {
 	data() {
 		return {
 			// 歌曲
-			songs: [],
+			songs: [
+				{
+					images: ''
+				}
+			],
 			// 收藏该榜单的人
 			s: 8,
 			// 背景颜色
@@ -105,6 +109,7 @@ export default {
 			type: Number
 		}
 	},
+	computed: {},
 
 	component: {},
 	mounted() {

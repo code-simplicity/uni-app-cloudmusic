@@ -1,7 +1,7 @@
 <template>
 	<view class="recommend-play-list">
 		<view class="recommend-play-header">
-			<text class="recommend-play-title">推荐歌单</text>
+			<text class="recommend-play-title">{{ title }}</text>
 			<text class="recommend-play-title-more">
 				更多
 				<u-icon name="arrow-right"></u-icon>
@@ -20,9 +20,9 @@
 							class="image-border"
 							mode="widthFix"
 							border-radius="10"
-							:src="item.picUrl + '?param=270y270'"
+							:src="item.picUrl ? item.picUrl : item.coverImgUrl"
 						></u-image>
-						<view class="play-count">{{ utils.tranNumber(item.playCount) }}</view>
+						<view class="play-count">{{ utils.tranNumber(item.playCount, 1) }}</view>
 					</view>
 					<view class="play-name u-line-1">{{ item.name }}</view>
 				</view>
@@ -47,6 +47,9 @@ export default {
 	props: {
 		songlist: {
 			type: Array
+		},
+		title: {
+			type: String
 		}
 	},
 

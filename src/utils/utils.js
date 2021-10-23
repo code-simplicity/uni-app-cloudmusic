@@ -97,6 +97,10 @@ export default {
 	 */
 	tranNumber(num, point) {
 		let numStr = num.toString()
+		// if (typeof(num)) {
+		// 	numStr = num.toString()
+		// }
+
 		// 十万以内直接返回
 		if (numStr.length < 6) {
 			return numStr

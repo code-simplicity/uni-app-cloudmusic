@@ -1,6 +1,6 @@
 <template>
 	<view class="play-list-music">
-		<u-sticky offset-top="0" v-if="songs && songs.length > 0">
+		<u-sticky v-if="songs && songs.length > 0">
 			<view class="play-list-header">
 				<view class="play-list-play-left">
 					<view class="play-list-left-circle" @click="playAll">
@@ -57,7 +57,7 @@
 						></u-icon>
 					</view>
 					<view slot="title" class="slot-title">
-						<view class="singer-name">{{ utils.strslice(item.name) }}</view>
+						<view class="singer-name">{{ item.name }}</view>
 						<view class="singer-num">
 							<text>{{ item.singer }}</text>
 						</view>
@@ -178,7 +178,7 @@ export default {
 				display: flex;
 				align-items: center;
 				.index {
-					font-size: 32rpx;
+					font-size: 26rpx;
 					margin: 0 19rpx;
 					text-align: center;
 				}
@@ -213,8 +213,21 @@ export default {
 				}
 			}
 			.slot-title {
+				.singer-name {
+					font-size: 26rpx;
+					-webkit-line-clamp: 1;
+					display: -webkit-box;
+					-webkit-box-orient: vertical;
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
 				.singer-num {
-					font-size: 22rpx;
+					font-size: 20rpx;
+					-webkit-line-clamp: 1;
+					display: -webkit-box;
+					-webkit-box-orient: vertical;
+					text-overflow: ellipsis;
+					overflow: hidden;
 				}
 			}
 			.slot-right {

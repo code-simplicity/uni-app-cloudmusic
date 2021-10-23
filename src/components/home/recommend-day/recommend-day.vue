@@ -74,6 +74,10 @@ export default {
 				this.$Router.push({
 					name: 'PlayList'
 				});
+			} else if (lable === '排行榜') {
+				this.$Router.push({
+					name: 'LeaderBoard'
+				});
 			}
 		}
 	}

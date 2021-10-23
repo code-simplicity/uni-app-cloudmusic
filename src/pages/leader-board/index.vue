@@ -7,35 +7,63 @@
 					<u-tabs
 						:list="listTabs"
 						gutter="46"
-						:is-scroll="true"
 						:current="currentIndex"
 						@change="changeTabs"
+						:is-scroll="false"
 					></u-tabs>
 				</u-sticky>
 			</view>
 			<view class="content-wrap">
-				<!-- 官方歌单 -->
-				<view class="leader-list">
-					<view class="header">
-						<u-icon name="kefu-ermai" size="40" color="#ff060a"></u-icon>
-						官方榜
+				<scroll-view
+					scroll-y="true"
+					class="scroll-Y"
+					style="height: 1200rpx;width: 100%;"
+					@scroll="scroll"
+					:scroll-into-view="tabId"
+					scroll-with-animation
+				>
+					<!-- 官方歌单 -->
+					<view class="leader-list list" :id="'list' + 0">
+						<view class="header">
+							<u-icon name="kefu-ermai" size="40" color="#ff060a"></u-icon>
+							官方榜
+						</view>
+						<leader-list
+							v-for="(item, index) in leaderList"
+							:key="index"
+							:leaderList="item"
+							:indexs="index"
+						></leader-list>
 					</view>
-					<leader-list
-						v-for="(item, index) in leaderList"
-						:key="index"
-						:leaderList="item"
-						:indexs="index"
-					></leader-list>
-				</view>
-
-				<!-- 精选榜 -->
-				<leader-recomd :featuredLeaderList="featuredLeaderList" :title="featuredTitle"></leader-recomd>
-				<!-- 曲风榜 -->
-				<leader-recomd :featuredLeaderList="genreList" :title="genreLTitle"></leader-recomd>
-				<!-- 全球榜 -->
-				<leader-recomd :featuredLeaderList="worldList" :title="worldTitle"></leader-recomd>
-				<!-- 特色榜 -->
-				<leader-recomd :featuredLeaderList="traitList" :title="traitTitle"></leader-recomd>
+					<!-- 精选榜 -->
+					<leader-recomd
+						class="list"
+						:id="'list' + 1"
+						:featuredLeaderList="featuredLeaderList"
+						:title="featuredTitle"
+					></leader-recomd>
+					<!-- 曲风榜 -->
+					<leader-recomd
+						class="list"
+						:id="'list' + 2"
+						:featuredLeaderList="genreList"
+						:title="genreLTitle"
+					></leader-recomd>
+					<!-- 全球榜 -->
+					<leader-recomd
+						class="list"
+						:id="'list' + 3"
+						:featuredLeaderList="worldList"
+						:title="worldTitle"
+					></leader-recomd>
+					<!-- 特色榜 -->
+					<leader-recomd
+						class="list"
+						:id="'list' + 4"
+						:featuredLeaderList="traitList"
+						:title="traitTitle"
+					></leader-recomd>
+				</scroll-view>
 			</view>
 		</view>
 		<music-player></music-player>
@@ -68,13 +96,13 @@ export default {
 					name: '全球'
 				},
 				{
-					name: 'MV'
-				},
-				{
 					name: '特色'
 				}
 			],
+			// tabs切换
 			currentIndex: 0,
+			// swiper切换
+			swiperCurrent: 0,
 			// 官方歌单
 			leaderList: {},
 			// 精选榜
@@ -92,12 +120,19 @@ export default {
 			// 特色榜
 			traitList: [],
 			// 特色榜title
-			traitTitle: '特色榜'
+			traitTitle: '特色榜',
+			// 滑动的id
+			tabId: '',
+			// 滑块高度
+			scrollTop: 0,
+			topList: []
 		};
 	},
 	component: {},
+
 	mounted() {
 		this.getTopListDetail();
+		this.getNodeInfo();
 	},
 	methods: {
 		// 获取榜单的列表
@@ -127,9 +162,59 @@ export default {
 			});
 		},
 		// 改变tabs
-		changeTabs(val) {
-			this.currentIndex = val;
+		changeTabs(index) {
+			this.currentIndex = index;
+			this.tabId = 'list' + index;
+			// 获取DOM 取得每个标题间的高度。exec执行
+			// let query = uni.createSelectorQuery().in(this);
+			// query
+			// 	.selectAll('.list')
+			// 	.boundingClientRect(data => {
+			// 		console.log('得到布局位置信息', data);
+					
+			// 		let arr = [];
+			// 		data.map(item => {
+			// 			arr.push(item.top);
+			// 		});
+			// 		this.topList = arr;
+			// 	})
+			// 	.exec();
+		},
+
+		// 滚动 获取每个标题间的距离，判断滚动的高度在哪个区间内
+		scroll(e) {
+			// console.log(e);
+			let scrollTop = e.target.scrollTop + 1;
+			for (let i = 0; i < this.topList.length; i++) {
+				const h1 = this.topList[i];
+				let h2 = this.topList[i + 1];
+				if (scrollTop >= h1 && scrollTop < h2) {
+					this.currentIndex = i;
+				}
+			}
+			// this.scrollTop = e.detail.scrollTop;
+		},
+		getNodeInfo() {
+			// 获取DOM 取得每个标题间的高度。exec执行
+			let query = uni.createSelectorQuery().in(this);
+			query
+				.selectAll('.list')
+				.boundingClientRect(data => {
+					console.log('得到布局位置信息', data);
+					let arr = [];
+					data.map(item => {
+						arr.push(item.top);
+					});
+					this.topList = arr;
+				})
+				.exec();
 		}
+		// scrollToLower() {
+		// 	// 滚动到底部触发
+		// 	setTimeout(() => {
+		// 		this.currentIndex = this.list.length - 1;
+		// 	}, 80);
+		// }
 	}
 };
 </script>
@@ -137,16 +222,20 @@ export default {
 <style lang="scss" scoped>
 .leader-board {
 	width: 100%;
-	padding-bottom: 80rpx;
+	padding-bottom: 90rpx;
 	.leader-board-wrap {
 		width: 100%;
 		position: relative;
 		.content-wrap {
-			.leader-list {
-				.header {
-					padding: 20rpx 30rpx 10rpx;
-					font-size: 38rpx;
-					font-weight: 600;
+			.scroll-Y {
+				height: 100%;
+				width: 100%;
+				.leader-list {
+					.header {
+						padding: 20rpx 30rpx 10rpx;
+						font-size: 38rpx;
+						font-weight: 600;
+					}
 				}
 			}
 		}

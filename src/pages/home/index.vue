@@ -7,7 +7,7 @@
 			<my-banner></my-banner>
 			<view class="home-recommend-day"><recommend-day></recommend-day></view>
 			<view class="home-recommend-playlist">
-				<recommend-play-list :songlist="songlist"></recommend-play-list>
+				<recommend-play-list :songlist="songlist" :title="songTitle"></recommend-play-list>
 			</view>
 			<view class="home-recommend-new-song"><recommend-new-song :newSong="newSong"></recommend-new-song></view>
 			<!-- 排行榜 -->
@@ -45,6 +45,7 @@ export default {
 			micShow: true,
 			// 热门歌单
 			songlist: [],
+			songTitle: '推荐歌单',
 			// 音乐返回数量
 			limit: 9,
 			// 新歌
@@ -62,7 +63,7 @@ export default {
 	},
 
 	methods: {
-		// 去更多页面
+		// 去排行榜更多页面
 		toLeaderBoard() {
 			this.$Router.push({
 				name: 'LeaderBoard'

@@ -10,7 +10,7 @@
 					<view class="singer-num">
 						<text>{{ item.trackCount }}首</text>
 						<text>, by. {{ item.creator.nickname }}</text>
-						<text>播放：{{ utils.tranNumber(item.playCount) }}次</text>
+						<text>播放：{{ utils.tranNumber(item.playCount, 1) }}次</text>
 					</view>
 				</view>
 			</u-cell-item>
@@ -77,7 +77,7 @@ export default {
 				}
 			}
 		}
-		
+
 		.u-cell {
 			padding: 18rpx 16rpx;
 		}

@@ -167,7 +167,6 @@ export default {
 					// 数组连接起来
 					let res = beforeRes.songs.concat(afterRes.songs);
 					this.songs = this._normaLizeSongs(res);
-					console.log('this.songs', this.songs);
 				} else {
 					let beforeRes = await this.$api.getSongDetail(params);
 					let res = beforeRes.songs;
