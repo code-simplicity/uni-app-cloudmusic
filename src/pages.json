@@ -1,9 +1,26 @@
 {
 	// pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-	"pages": [{
-			"path": "pages/index/index",
+	"pages": [
+		// {
+		// 	"path": "pages/index/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "my-music",
+		// 		"h5": {
+		// 			"titleNView": false
+		// 		},
+		// 		"app-plus": {
+		// 			"titleNView": false
+		// 		}
+		// 	}
+		// },
+		{
+			"path": "pages/home/index",
+			"name": "Home",
+			"meta": {
+				"title": "首页"
+			},
 			"style": {
-				"navigationBarTitleText": "my-music",
+				"navigationBarTitleText": "首页",
 				"h5": {
 					"titleNView": false
 				},
@@ -28,22 +45,7 @@
 				}
 			}
 		},
-		{
-			"path": "pages/home/index",
-			"name": "Home",
-			"meta": {
-				"title": "首页"
-			},
-			"style": {
-				"navigationBarTitleText": "首页",
-				"h5": {
-					"titleNView": false
-				},
-				"app-plus": {
-					"titleNView": false
-				}
-			}
-		},
+
 		{
 			"path": "uni_modules/uni-upgrade-center-app/pages/upgrade-popup",
 			"style": {
@@ -386,6 +388,57 @@
 			},
 			"style": {
 				"navigationBarTitleText": "歌单列表点击详情",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user/user-message/index",
+			"name": "UserMessage",
+			"meta": {
+				"title": "我的消息"
+			},
+			"style": {
+				"navigationBarTitleText": "我的消息",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user/user-notify/index",
+			"name": "UserNotify",
+			"meta": {
+				"title": "通知消息"
+			},
+			"style": {
+				"navigationBarTitleText": "通知消息",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user/user-at/index",
+			"name": "UserAt",
+			"meta": {
+				"title": "@我"
+			},
+			"style": {
+				"navigationBarTitleText": "@我",
 				"navigationStyle": "custom", // 隐藏系统导航栏
 				"h5": {
 					"titleNView": false

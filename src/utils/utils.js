@@ -79,6 +79,8 @@ export default {
 			return `${year}-${month}-${day} ${hour}:${minute}:${seconds}`
 		} else if (type === 'MM/DD  HH:MM:SS') {
 			return `${month}/${day} ${hour}:${minute}:${seconds}`
+		} else if (type === 'MM/DD') {
+			return `${month}月${day}日`
 		}
 	},
 	// 获取当前时间前后N天前后日期

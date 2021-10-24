@@ -13,11 +13,11 @@
 			<!-- 排行榜 -->
 			<view class="home-recommend-board">
 				<view class="home-recommend-board-header">
-					<text class="home-recommend-board-text">排行榜</text>
-					<text class="home-recommend-board-more" @click="toLeaderBoard">
+					<view class="home-recommend-board-text">排行榜</view>
+					<view class="home-recommend-board-more" @click="toLeaderBoard">
 						更多
 						<u-icon name="arrow-right"></u-icon>
-					</text>
+					</view>
 				</view>
 				<view class="home-recommend-board-swiper">
 					<swiper :indicator-dots="false" class="swiper">

@@ -17,7 +17,7 @@
 				<scroll-view
 					scroll-y="true"
 					class="scroll-Y"
-					style="height: 100%"
+					:style="{ height: screenHeight + 'px' }"
 					@scroll="scroll"
 					:scroll-into-view="tabId"
 					scroll-with-animation
@@ -76,7 +76,6 @@
  * time     2021-10-22 1:56:11 ?F10: PM?
  * description 排行榜页面
  */
-
 export default {
 	name: 'leader-board',
 	data() {
@@ -125,11 +124,19 @@ export default {
 			tabId: '',
 			// 滑块高度
 			scrollTop: 0,
-			topList: []
+			topList: [],
+			// 屏幕高度
+			screenHeight: 0
 		};
 	},
 	component: {},
-
+	onReady() {
+		uni.getSystemInfo({
+			success: res => {
+				this.screenHeight = res.screenHeight;
+			}
+		});
+	},
 	mounted() {
 		this.getTopListDetail();
 		this.getNodeInfo();
@@ -165,22 +172,7 @@ export default {
 		changeTabs(index) {
 			this.currentIndex = index;
 			this.tabId = 'list' + index;
-			// 获取DOM 取得每个标题间的高度。exec执行
-			// let query = uni.createSelectorQuery().in(this);
-			// query
-			// 	.selectAll('.list')
-			// 	.boundingClientRect(data => {
-			// 		console.log('得到布局位置信息', data);
-					
-			// 		let arr = [];
-			// 		data.map(item => {
-			// 			arr.push(item.top);
-			// 		});
-			// 		this.topList = arr;
-			// 	})
-			// 	.exec();
 		},
-
 		// 滚动 获取每个标题间的距离，判断滚动的高度在哪个区间内
 		scroll(e) {
 			// console.log(e);

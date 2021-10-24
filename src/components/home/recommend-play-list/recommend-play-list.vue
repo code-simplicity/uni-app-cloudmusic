@@ -1,11 +1,11 @@
 <template>
 	<view class="recommend-play-list">
 		<view class="recommend-play-header">
-			<text class="recommend-play-title">{{ title }}</text>
-			<text class="recommend-play-title-more">
+			<view class="recommend-play-title">{{ title }}</view>
+			<view class="recommend-play-title-more">
 				更多
 				<u-icon name="arrow-right"></u-icon>
-			</text>
+			</view>
 		</view>
 		<view class="recommend-play-content scroll-x-box">
 			<scroll-view scroll-x="true" class="scroll-x">

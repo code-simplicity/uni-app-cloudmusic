@@ -1,18 +1,20 @@
 <template>
 	<view class="recommend-day">
-		<view class="recommend-day-list">
-			<u-icon
-				v-for="(item, index) of list"
-				:key="item.value"
-				:name="item.name"
-				:label="item.label"
-				class="icon-style"
-				size="50"
-				label-size="26"
-				label-pos="bottom"
-				:custom-prefix="item.icon"
-				@click="toDetail(item.label)"
-			></u-icon>
+		<view class="user-grid">
+			<u-grid :col="5" :border="false">
+				<u-grid-item :key="index" v-for="(item, index) in userGridData" @click="toDetail(item.text)">
+					<view class="m-icon" :style="{ backgroundColor: item.backgroundColor }">
+						<u-icon
+							class="u-icon"
+							size="50"
+							:name="item.icon"
+							custom-prefix="iconfont"
+							color="#ffffff"
+						></u-icon>
+					</view>
+					<view class="m-text">{{ item.text }}</view>
+				</u-grid-item>
+			</u-grid>
 		</view>
 	</view>
 </template>
@@ -28,56 +30,38 @@ export default {
 	name: 'recommend-day',
 	data() {
 		return {
-			list: [
-				{
-					label: '每日推荐',
-					name: 'iconfont icon-calendar',
-					value: '每日推荐',
-					icon: 'iconfont'
-				},
-				{
-					label: '私人FM',
-					name: 'iconfont icon-diantai',
-					value: '私人FM',
-					icon: 'iconfont'
-				},
-				{
-					label: '歌单',
-					name: 'iconfont icon-zuixingedan',
-					value: '歌单',
-					icon: 'iconfont'
-				},
-				{
-					label: '排行榜',
-					name: 'iconfont icon-paixingbang',
-					value: '排行榜',
-					icon: 'iconfont'
-				},
-				{
-					label: '专辑',
-					name: 'iconfont icon-zhuanji',
-					value: '专辑',
-					icon: 'iconfont'
-				}
+			userGridData: [
+				{ text: '每日推荐', icon: 'iconfont icon-calendar', backgroundColor: '#e1262a' },
+				{ text: '私人FM', icon: 'iconfont icon-diantai', backgroundColor: '#cec437' },
+				{ text: '歌单', icon: 'iconfont icon-zuixingedan', backgroundColor: '#2f89e3' },
+				{ text: '排行榜', icon: 'iconfont icon-paixingbang', backgroundColor: '#7f63c1' },
+				{ text: '专辑', icon: 'iconfont icon-zhuanji', backgroundColor: '#c15726' }
 			]
 		};
 	},
 	component: {},
 	mounted() {},
 	methods: {
-		toDetail(lable) {
-			if (lable === '每日推荐') {
-				this.$Router.push({
-					name: 'RecommendSongs'
-				});
-			} else if (lable === '歌单') {
-				this.$Router.push({
-					name: 'PlayList'
-				});
-			} else if (lable === '排行榜') {
-				this.$Router.push({
-					name: 'LeaderBoard'
-				});
+		toDetail(text) {
+			switch (text) {
+				case '每日推荐': {
+					this.$Router.push({
+						name: 'RecommendSongs'
+					});
+					break;
+				}
+				case '歌单': {
+					this.$Router.push({
+						name: 'PlayList'
+					});
+					break;
+				}
+				case '排行榜': {
+					this.$Router.push({
+						name: 'LeaderBoard'
+					});
+					break;
+				}
 			}
 		}
 	}
@@ -89,18 +73,23 @@ export default {
 	width: 100%;
 	background-color: #ffffff;
 	border-radius: 16rpx;
-	padding: 10rpx;
-	.recommend-day-list {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
+	.user-grid {
 		width: 100%;
-		.icon-style {
-			height: 100rpx;
-			margin: 0 16rpx;
+		.m-icon {
 			border-radius: 50%;
-			color: #ff0000;
+			width: 80rpx;
+			height: 80rpx;
+			position: relative;
+			.u-icon {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 20%;
+			}
+		}
+		.m-text {
+			margin-top: 12rpx;
+			font-size: 24rpx;
 		}
 	}
 }

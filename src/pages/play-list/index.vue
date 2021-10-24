@@ -2,7 +2,7 @@
 	<view class="play-list">
 		<play-list-navbar></play-list-navbar>
 		<view class="play-list-box">
-			<u-sticky>
+			<u-sticky offset-top="0">
 				<view class="wrap">
 					<view class="left">
 						<u-tabs-swiper
@@ -34,11 +34,11 @@
 					<!-- 歌单排行榜 -->
 					<view class="play-board">
 						<view class="play-board-header">
-							<text class="play-board-text">排行榜</text>
-							<text class="play-board-more" @click="toLeaderBoard">
+							<view class="play-board-text">排行榜</view>
+							<view class="play-board-more" @click="toLeaderBoard">
 								更多
 								<u-icon name="arrow-right"></u-icon>
-							</text>
+							</view>
 						</view>
 						<view class="play-board-swiper">
 							<swiper :indicator-dots="false" class="swiper">
@@ -54,61 +54,61 @@
 			</swiper-item>
 			<!-- 华语 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
-					<play-list-box ref="ref0"></play-list-box>
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
+					<play-list-box ref="ref0" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 流行 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref1"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 摇滚 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref2"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 民谣 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref3"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 电子 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref4"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 另类 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref5"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 轻音乐 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref6"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 综艺 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref7"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 影视原声 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref8"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- ACG -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y="true" style="height: 100%;">
+				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
 					<play-list-box ref="ref9"></play-list-box>
 				</scroll-view>
 			</swiper-item>
@@ -152,7 +152,12 @@ export default {
 			//
 			officialTitle: '懂你的官方榜',
 			// 屏幕高度
-			screenHeight: 0
+			screenHeight: 0,
+			// 是否拥有更多
+			hasmore: true,
+			status: '',
+			// 偏移量
+			offset: 0
 		};
 	},
 	component: {},
@@ -163,11 +168,12 @@ export default {
 			}
 		});
 	},
+
 	mounted() {
 		this.getPlayListHot();
 		this.getPersonalized();
 		this.getTopPlayList();
-		this.getPlayList(this.playLists, this.swiperCurrent - 1);
+		this.getPlayList(this.playLists, this.swiperCurrent - 1, this.offset);
 	},
 	methods: {
 		// 去所有歌单列表
@@ -178,46 +184,46 @@ export default {
 		},
 
 		// 传递cat的值，调用给子组件，传递index，通知tabs更新
-		getPlayList(playLists, index) {
+		getPlayList(playLists, index, offset) {
 			switch (index) {
 				case 0: {
-					this.$refs.ref0.getTopPlayList(playLists[index].name);
+					this.$refs.ref0.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 1: {
-					this.$refs.ref1.getTopPlayList(playLists[index].name);
+					this.$refs.ref1.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 2: {
-					this.$refs.ref2.getTopPlayList(playLists[index].name);
+					this.$refs.ref2.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 3: {
-					this.$refs.ref3.getTopPlayList(playLists[index].name);
+					this.$refs.ref3.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 4: {
-					this.$refs.ref4.getTopPlayList(playLists[index].name);
+					this.$refs.ref4.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 5: {
-					this.$refs.ref5.getTopPlayList(playLists[index].name);
+					this.$refs.ref5.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 6: {
-					this.$refs.ref6.getTopPlayList(playLists[index].name);
+					this.$refs.ref6.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 7: {
-					this.$refs.ref7.getTopPlayList(playLists[index].name);
+					this.$refs.ref7.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 8: {
-					this.$refs.ref8.getTopPlayList(playLists[index].name);
+					this.$refs.ref8.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 				case 9: {
-					this.$refs.ref9.getTopPlayList(playLists[index].name);
+					this.$refs.ref9.getTopPlayList(playLists[index].name, offset);
 					break;
 				}
 			}
@@ -267,7 +273,9 @@ export default {
 		// tabs通知swiper切换
 		tabChange(index) {
 			this.swiperCurrent = index;
-			this.getPlayList(this.playLists, index - 1);
+			// 通知切换之后，分页偏移需要为0，从0开始
+			this.offset = 0;
+			this.getPlayList(this.playLists, index - 1, this.offset);
 		},
 
 		// swiper-item左右移动，通知tabs的滑块跟随移动
@@ -282,15 +290,27 @@ export default {
 			let current = e.detail.current;
 			this.$refs.uTabs.setFinishCurrent(current);
 			this.swiperCurrent = current;
-			if (this.currentTab !== current) {
-				this.getPlayList(this.playLists, current - 1);
-			}
 			this.currentTab = current;
+		},
+
+		// 获取状态
+		getStatus(state, hasmore) {
+			this.status = status;
+			this.hasmore = hasmore;
 		},
 
 		// scroll-view到底部加载更多
 		onreachBottom() {
-			console.log('没有更多了!');
+			if (this.hasmore === true) {
+				setTimeout(() => {
+					this.status = 'loading';
+					this.offset += 1;
+					this.getPlayList(this.playLists, this.swiperCurrent - 1, this.offset);
+				}, 1000);
+			} else if (this.hasmore === false) {
+				this.status = 'nomore';
+				console.log('没有更多了!');
+			}
 		}
 	}
 };
@@ -299,8 +319,9 @@ export default {
 <style lang="scss" scoped>
 .play-list {
 	width: 100%;
-	margin-bottom: 80rpx;
+	padding-bottom: 40rpx;
 	.play-list-box {
+		width: 100%;
 		.wrap {
 			width: 100%;
 			position: relative;
@@ -319,16 +340,17 @@ export default {
 		}
 	}
 	.search-swiper {
-		padding: 16rpx;
+		position: relative;
 		.swiper-item {
 			flex: 1;
 			.play-board {
 				display: flex;
 				flex-direction: column;
-				margin-top: 16rpx;
+				position: relative;
 				background-color: #fdfdfd;
 				padding: 20rpx;
 				border-radius: 16rpx;
+				margin-bottom: 16rpx;
 				.play-board-header {
 					display: flex;
 					flex: 1;

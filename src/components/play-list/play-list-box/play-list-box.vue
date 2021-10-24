@@ -1,7 +1,7 @@
 <template>
 	<view class="play-list-box">
 		<view class="play-list-wrap">
-			<view class="play-list" v-for="(item, index) in playListBox" :key="index" @click="toPlayList(item.id)">
+			<view class="play-list" v-for="(item, index) in playListBox" :key="item.id" @click="toPlayList(item.id)">
 				<view class="image">
 					<u-image
 						border-radius="16"
@@ -15,6 +15,9 @@
 				<view class="bottom-desc">{{ item.name }}</view>
 			</view>
 		</view>
+		<!-- 底部加载更多 -->
+		<!-- <u-loading color="red" size="40"></u-loading> -->
+		<u-loadmore :status="status" :icon="true" icon-color="#ff2a00" />
 	</view>
 </template>
 
@@ -33,15 +36,23 @@ export default {
 			playListBox: [],
 			// 返回数据
 			limit: 30,
-			// 偏移量
-			offset: 0
+			// 是否拥有更多
+			hasmore: true,
+			status: 'loadmore'
 		};
 	},
 	props: {},
 
 	component: {},
-	mounted() {},
+	mounted() {
+		this.getStatus();
+	},
 	methods: {
+		// 传递是否有更多信息给父组件
+		getStatus() {
+			this.$emit('getStatus', this.status, this.hasmore);
+		},
+
 		// 进入歌单详情
 		toPlayList(id) {
 			this.$Router.push({
@@ -53,15 +64,20 @@ export default {
 		},
 
 		// 获取歌单列表
-		getTopPlayList(cat) {
+		getTopPlayList(cat, offset) {
 			let params = {
 				cat: cat,
 				limit: this.limit,
-				offset: this.offset
+				offset: offset
 			};
 			this.$api.getTopPlayList(params).then(res => {
 				if (res.code === this.$code.code_status) {
-					this.playListBox = res.playlists;
+					// 刷新之后出现数据
+					this.playListBox = this.playListBox.concat(res.playlists);
+					if (res.hasmore) {
+						this.hasmore = res.hasmore;
+						this.limit += this.limit * offset;
+					}
 				}
 			});
 		}
@@ -73,10 +89,12 @@ export default {
 .play-list-box {
 	width: 100%;
 	padding: 0 15rpx;
+	padding-bottom: 100rpx;
 	.play-list-wrap {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+		margin-bottom: 26rpx;
 		.play-list {
 			display: flex;
 			flex-direction: column;

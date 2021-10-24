@@ -6,9 +6,14 @@ s
 		</u-navbar>
 		<view class="user-setting-wrap">
 			<view class="image-avatar flex-between" v-if="loginState">
-				<u-avatar :src="userInfo.avatarUrl" mode="square" size="70"></u-avatar>
-				<view class="user-name">{{ userInfo.nickname }}</view>
-				<u-button size="mini" shape="circle">签到 ></u-button>
+				<u-avatar
+					:src="userInfo.avatarUrl"
+					mode="circle"
+					size="70"
+					@click="toUserInfo(userInfo.userId)"
+				></u-avatar>
+				<view class="user-name" @click="toUserInfo(userInfo.userId)">{{ userInfo.nickname }}</view>
+				<u-button size="mini" shape="circle" @click="getDailySignin">{{ siginText }} ></u-button>
 			</view>
 			<view class="user-no-login" v-else @click="toLogin">
 				<view class="user-info-avatar"><u-avatar sex-icon="man" size="100" src="src"></u-avatar></view>
@@ -19,7 +24,7 @@ s
 			</view>
 			<view class="user-grid">
 				<u-grid :col="4" :border="false">
-					<u-grid-item :key="index" v-for="(item, index) in userGridData">
+					<u-grid-item :key="index" v-for="(item, index) in userGridData" @click="toPage(item.text)">
 						<view class="m-icon">
 							<u-badge
 								v-if="item.useBadge"
@@ -67,17 +72,17 @@ s
 		<view class="user-more">
 			<u-cell-group :border="true" style="padding: 0 0 16rpx 0;">
 				<u-cell-item :border-bottom="false" icon="order" title="我的订单" :arrow="true"></u-cell-item>
+				<u-cell-item :border-bottom="false" icon="fingerprint" title="数据缓存" :arrow="true"></u-cell-item>
 				<u-cell-item
 					:border-bottom="false"
-					icon="server-fill"
-					title="在线听歌免流量"
+					icon="download"
+					title="检查更新"
 					:arrow="true"
+					@click="doUpApp"
 				></u-cell-item>
-				<u-cell-item :border-bottom="false" icon="coupon" title="优惠券" :arrow="true"></u-cell-item>
-				<u-cell-item :border-bottom="false" icon="download" title="检查更新" :arrow="true" @click="doUpApp"></u-cell-item>
+				<u-cell-item :border-bottom="false" icon="android-fill" title="关于" :arrow="true"></u-cell-item>
 			</u-cell-group>
 		</view>
-
 		<view class="user-logout">
 			<u-popup v-model="showLogout" mode="bottom" border-radius="30" height="25%">
 				<u-cell-group title="退出登录/关闭" :title-style="titleStyle">
@@ -109,7 +114,8 @@ s
  * description
  */
 import { mapGetters, mapMutations } from 'vuex';
-import upApp from '@/uni_modules/uni-upgrade-center-app/utils/check-update'
+import upApp from '@/uni_modules/uni-upgrade-center-app/utils/check-update';
+import callCheckVersion from '@/uni_modules/uni-upgrade-center-app/utils/call-check-version';
 export default {
 	name: 'user-setting',
 	data() {
@@ -126,21 +132,108 @@ export default {
 			titleStyle: {
 				'font-size': '16rpx'
 			},
-			showLogoutModal: false
+			showLogoutModal: false,
+			// 用户信息
+			userDetailInfo: {}
 		};
 	},
 	computed: {
-		...mapGetters('user', ['userInfo', 'loginState'])
+		...mapGetters('user', ['userInfo', 'loginState']),
+		siginText() {
+			return this.userDetailInfo.mobileSign ? '已签到' : '签到';
+		}
 	},
 
 	component: {},
-	mounted() {},
+	mounted() {
+		this.getUserInfo();
+	},
 	methods: {
-		// 检查更新app
-		doUpApp() {
-			upApp()
+		// 去相关页面
+		toPage(item) {
+			switch (item) {
+				case '我的消息': {
+					this.$Router.push({
+						name: 'UserMessage',
+						params: {
+							id: this.userInfo.userId
+						}
+					});
+					break;
+				}
+				case '个人主页': {
+					this.$Router.push({
+						name: 'UserInfoDetail',
+						params: {
+							id: this.userInfo.userId
+						}
+					});
+					break;
+				}
+			}
 		},
-		
+
+		// 用户签到
+		getDailySignin() {
+			// 获取用户签到状态
+			let title = this.userDetailInfo.mobileSign ? '签到成功' : '重复签到';
+			this.$api.getDailySignin().then(res => {
+				uni.showToast({
+					title: title,
+					icon: 'success'
+				});
+			});
+		},
+
+		// 获取用户信息
+		getUserInfo() {
+			this.$api.getUserInfo(this.userInfo.userId).then(res => {
+				if (res.code === this.$code.code_status) {
+					this.userDetailInfo = res;
+				}
+			});
+		},
+
+		// 去用户中心
+		toUserInfo(id) {
+			this.$Router.push({
+				name: 'UserInfoDetail',
+				params: {
+					id
+				}
+			});
+		},
+
+		// 检查更新app
+		// #ifdef APP-PLUS
+		doUpApp() {
+			// 获取当前的app版本
+			// let req = {
+			// 	appid: plus.runtime.appid,
+			// 	version: plus.runtime.version,
+			// 	wgtVersion: plus.runtime.getProperty(plus.runtime.appid, wgtInfo => {
+			// 		wgtInfo.version;
+			// 	})
+			// };
+			// 请求云函数。拿到版本检测结果
+			// callCheckVersion().then(res => {
+			// 	if (res.code === 0) {
+			// 		uni.showModal({
+			// 			title: '暂无更新',
+			// 			content: '当前版本已经是最新的，不需要更新'
+			// 		});
+			// 	} else if (res.code === 102) {
+			// 		// 执行更新函数
+			// 		upApp();
+			// 	} else if (res.code === -101) {
+			// 		console.log('暂无更新或检查appid是否填写正确');
+			// 	}
+			// });
+			// 执行更新函数
+			upApp();
+		},
+		// #endif
+
 		// 跳转到登录页面
 		toLogin() {
 			this.$Router.push({

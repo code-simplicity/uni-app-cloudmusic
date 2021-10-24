@@ -177,8 +177,8 @@ export default {
 				if (res.code === this.$code.code_status) {
 					// 刷新之后出现数据
 					this.videoList = this.videoList.concat(this._normalizeVideos(res.datas));
-					if (res.hasmore) {
-						this.hasmore = res.hasmore;
+					if (res.more) {
+						this.hasmore = res.more;
 					}
 				}
 			});

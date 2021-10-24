@@ -45,3 +45,18 @@ export const getUserFollows = params => api.get(`/user/follows`, {
  * 获取动态信息
  */
 export const getEvent = pagesize => api.get(`/event?pagesize=${pagesize}`, {})
+
+/**
+ * 签到
+ */
+export const getDailySignin = () => api.get(`/daily_signin`, {})
+
+/**
+ * 获取私信
+ */
+export const getMsgPrivate = () => api.get(`/msg/private`, {})
+
+/**
+ * 获取通知
+ */
+export const getMsgNotices = (limit) => api.get(`/msg/notices?limit=${limit}`, {})
