@@ -1,7 +1,7 @@
 <template>
 	<view class="play-list-box">
 		<play-list-navbar></play-list-navbar>
-		<view class="wrap" v-for="item of categorieList" :key="item.key">
+		<view class="wrap" v-for="(item, index) in categorieList" :key="index">
 			<view class="header">{{ item.type }}</view>
 			<view class="list">
 				<view

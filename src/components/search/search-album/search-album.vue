@@ -3,11 +3,17 @@
 		<u-cell-group class="search-cell-group" :border="false" v-if="album && album.length > 0">
 			<u-cell-item class="u-cell" :arrow="false" v-for="(item, index) in album" :key="index">
 				<view slot="icon" class="singer-image">
-					<u-image width="100rpx" height="100rpx" :src="item.picUrl" mode="aspectFill"></u-image>
+					<u-image
+						border-radius="16"
+						width="100rpx"
+						height="100rpx"
+						:src="item.picUrl"
+						mode="aspectFill"
+					></u-image>
 				</view>
 				<view slot="title" class="singer-title">
-					<view class="singer-name">{{ item.name }}</view>
-					<view class="singer-num">
+					<view class="singer-name box-line1">{{ item.name }}</view>
+					<view class="singer-num box-line1">
 						<text>{{ item.artist.name }}</text>
 					</view>
 				</view>
@@ -65,15 +71,14 @@ export default {
 		background-color: #ffffff;
 		.singer-image {
 			margin-right: 20rpx;
-			.singer-title {
-				.singer-name {
-					font-size: 32rpx;
-					color: #000000;
-				}
-				.singer-num {
-					font-size: 22rpx;
-					color: #999;
-				}
+		}
+		.singer-title {
+			.singer-name {
+				font-size: 28rpx;
+			}
+			.singer-num {
+				font-size: 22rpx;
+				color: #999;
 			}
 		}
 

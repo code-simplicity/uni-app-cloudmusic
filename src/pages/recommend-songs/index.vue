@@ -1,6 +1,6 @@
 <template>
 	<view class="recommend-songs">
-		<play-list-navbar></play-list-navbar>
+		<play-list-navbar :titleHeader="titleHeader"></play-list-navbar>
 		<view class="recommend-songs-box">
 			<view class="image-cover">
 				<u-image
@@ -28,7 +28,9 @@ export default {
 	data() {
 		return {
 			// 歌曲
-			songs: []
+			songs: [],
+			// 顶部title
+			titleHeader: '每日推荐'
 		};
 	},
 	component: {},

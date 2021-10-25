@@ -1,7 +1,7 @@
 <template>
 	<view class="user-notify">
 		<u-navbar back-text="通知" title=""></u-navbar>
-		<view class="wrap">
+		<view class="wrap" v-if="notifyList && notifyList.length > 0">
 			<u-cell-group :border="false">
 				<u-cell-item class="u-cell" :arrow="false" v-for="(item, index) of notifyList" :key="index">
 					<view slot="icon" class="icon" @click="toUserInfo(item.notice.user.userId)">
@@ -26,6 +26,7 @@
 				</u-cell-item>
 			</u-cell-group>
 		</view>
+		<view class="no-notify" v-else>还没有评论哦</view>
 	</view>
 </template>
 
@@ -148,6 +149,10 @@ export default {
 				font-size: 22rpx;
 			}
 		}
+	}
+	.no-notify {
+		text-align: center;
+		margin-top: 40rpx;
 	}
 }
 </style>

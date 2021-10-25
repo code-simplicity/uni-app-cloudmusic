@@ -86,3 +86,21 @@ html {
 	position: relative;
 	border-radius: 8rpx;
 }
+
+/* 一行元素显示 */
+.box-line1 {
+	-webkit-line-clamp: 1;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+/* 两行元素显示 */
+.box-line2 {
+	-webkit-line-clamp: 2;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}

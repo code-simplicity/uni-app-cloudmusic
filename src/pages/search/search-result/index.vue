@@ -36,62 +36,63 @@
 		</view>
 		<swiper
 			class="search-swiper"
+			:style="{ height: screenHeight + 'px' }"
 			:current="swiperCurrent"
 			@transition="transition"
 			@animationfinish="animationfinish"
 		>
 			<!-- 综合 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+				<scroll-view scroll-y style="width: 100%; height: 94%;" @scrolltolower="onreachBottom">
 					<search-multiple ref="searchMultiple"></search-multiple>
 				</scroll-view>
 			</swiper-item>
-			
+
 			<!-- 单曲 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+				<scroll-view scroll-y style="width: 100%; height: 94%;" @scrolltolower="onreachBottom">
 					<search-song ref="searchSong"></search-song>
 				</scroll-view>
 			</swiper-item>
-			
+
 			<!-- 歌单 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+				<scroll-view scroll-y style="width: 100%; height: 94%;" @scrolltolower="onreachBottom">
 					<search-play-list ref="searchPlayList"></search-play-list>
 				</scroll-view>
 			</swiper-item>
-			
+
 			<!-- 视频 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+				<scroll-view scroll-y style="width: 100%; height: 94%;" @scrolltolower="onreachBottom">
 					<search-video ref="searchVideo"></search-video>
 				</scroll-view>
 			</swiper-item>
-			
+
 			<!-- 歌手 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+				<scroll-view scroll-y style="width: 100%; height: 94%;" @scrolltolower="onreachBottom">
 					<search-singer ref="searchSinger"></search-singer>
 				</scroll-view>
 			</swiper-item>
-			
+
 			<!-- 歌词 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+				<scroll-view scroll-y style="width: 100%; height: 94%;" @scrolltolower="onreachBottom">
 					<search-lyric ref="searchLyric"></search-lyric>
 				</scroll-view>
 			</swiper-item>
-			
+
 			<!-- 专辑 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+				<scroll-view scroll-y style="width: 100%; height: 94%;" @scrolltolower="onreachBottom">
 					<search-album ref="searchAlbum"></search-album>
 				</scroll-view>
 			</swiper-item>
-			
+
 			<!-- 用户 -->
 			<swiper-item class="swiper-item">
-				<scroll-view scroll-y style="width: 100%; height: 100%;" @scrolltolower="onreachBottom">
+				<scroll-view scroll-y style="width: 100%; height: 94%;" @scrolltolower="onreachBottom">
 					<search-user ref="searchUser"></search-user>
 				</scroll-view>
 			</swiper-item>
@@ -158,7 +159,9 @@ export default {
 			// 建议搜索
 			searchSuggest: [],
 			// 显示搜索建议
-			showSuggest: false
+			showSuggest: false,
+			// 屏幕高度
+			screenHeight: 0
 		};
 	},
 
@@ -174,6 +177,12 @@ export default {
 
 	onReady() {
 		this.getCloudSearch(this.searchKeyword, this.swiperCurrent);
+
+		uni.getSystemInfo({
+			success: res => {
+				this.screenHeight = res.screenHeight;
+			}
+		});
 	},
 
 	created() {},
@@ -183,7 +192,6 @@ export default {
 	},
 
 	methods: {
-				
 		// 搜索框获取焦点之后，出现搜索建议
 		onFocus() {
 			this.showSuggest = true;
@@ -297,10 +305,10 @@ export default {
 			}
 			this.currentTab = current;
 		},
-		
+
 		// scroll-view到底部加载更多
 		onreachBottom() {
-			console.log("没有更多了!");
+			console.log('没有更多了!');
 		}
 	}
 };
@@ -310,34 +318,30 @@ export default {
 .search-result {
 	width: 100%;
 	height: 100%;
-	top: 0;
-	left: 0;
-	right: 0;
-	position: absolute;
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-
+	position: relative;
 	.search-header {
 		width: 100%;
 	}
 	.search-suggest-box {
 		width: 100%;
 		position: absolute;
-		top: 0;
+		top: 80rpx;
 		left: 0;
 		right: 0;
 		bottom: 0;
 		background-color: #ffffff;
 		border: 1px solid #b0b0b0;
 		border-radius: 16rpx;
-		z-index: 666;
+		z-index: 1000;
 	}
 	.search-wrap {
 		width: 100%;
+		position: fixed;
+		z-index: 999;
 	}
 	.search-swiper {
 		flex: 1;
+		margin-top: 80rpx;
 	}
 }
 </style>

@@ -2,8 +2,8 @@
     "name" : "my-music",
     "appid" : "__UNI__F62601B",
     "description" : "my-music",
-    "versionName" : "1.0.22",
-    "versionCode" : 122,
+    "versionName" : "1.0.23",
+    "versionCode" : 123,
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */

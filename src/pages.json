@@ -447,6 +447,57 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/user/user-comment/index",
+			"name": "UserComment",
+			"meta": {
+				"title": "评论"
+			},
+			"style": {
+				"navigationBarTitleText": "评论",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user/user-list/index",
+			"name": "UserList",
+			"meta": {
+				"title": "用户列表"
+			},
+			"style": {
+				"navigationBarTitleText": "用户列表",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/user/user-message/user-message-detail/index",
+			"name": "UserMessageDetail",
+			"meta": {
+				"title": "用户消息详情"
+			},
+			"style": {
+				"navigationBarTitleText": "用户消息详情",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"h5": {
+					"titleNView": false
+				},
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}
 	],
 

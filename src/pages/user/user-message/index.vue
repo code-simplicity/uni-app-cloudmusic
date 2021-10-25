@@ -21,8 +21,16 @@
 			<view class="private-message">
 				<view class="title">私信对话</view>
 				<u-cell-group :border="false">
-					<u-cell-item class="u-cell" :arrow="false" v-for="(item, index) in messageInfo" :key="index">
-						<view slot="icon" class="icon"><u-avatar :src="item.fromUser.avatarUrl"></u-avatar></view>
+					<u-cell-item
+						class="u-cell"
+						:arrow="false"
+						v-for="(item, index) in messageInfo"
+						:key="index"
+						@click="toUserMessageDetail(item.fromUser.userId, item.fromUser.nickname)"
+					>
+						<view slot="icon" class="icon">
+							<u-avatar :src="item.fromUser.avatarUrl" size="70"></u-avatar>
+						</view>
 						<view slot="title" class="title">
 							<view class="nickname">{{ item.fromUser.nickname }}</view>
 							<view class="last-msg">{{ item.lastMsg.msg }}</view>
@@ -71,6 +79,17 @@ export default {
 		this.getMsgPrivate();
 	},
 	methods: {
+		// 去私信页面
+		toUserMessageDetail(uid, title) {
+			this.$Router.push({
+				name: 'UserMessageDetail',
+				params: {
+					uid,
+					title
+				}
+			});
+		},
+
 		// 去各种页面
 		toPage(text) {
 			switch (text) {
@@ -83,6 +102,21 @@ export default {
 				case '@我': {
 					this.$Router.push({
 						name: 'UserAt'
+					});
+					break;
+				}
+				case '评论': {
+					this.$Router.push({
+						name: 'UserComment'
+					});
+					break;
+				}
+				case '粉丝': {
+					this.$Router.push({
+						name: 'UserList',
+						params: {
+							index: 2
+						}
 					});
 					break;
 				}

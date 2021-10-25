@@ -1,7 +1,7 @@
 <template>
 	<view class="play-list-music">
-		<u-sticky v-if="songs && songs.length > 0">
-			<view class="play-list-header">
+		<u-sticky>
+			<view class="play-list-header" v-if="songs && songs.length > 0">
 				<view class="play-list-play-left">
 					<view class="play-list-left-circle" @click="playAll">
 						<u-icon name="play-circle-fill" color="#ff0000" size="50"></u-icon>

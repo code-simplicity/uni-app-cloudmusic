@@ -1,7 +1,7 @@
 <template>
 	<view class="play-list-box">
 		<view class="play-list-wrap">
-			<view class="play-list" v-for="(item, index) in playListBox" :key="item.id" @click="toPlayList(item.id)">
+			<view class="play-list" v-for="(item, index) in playListBox" :key="index" @click="toPlayList(item.id)">
 				<view class="image">
 					<u-image
 						border-radius="16"
@@ -89,7 +89,6 @@ export default {
 .play-list-box {
 	width: 100%;
 	padding: 0 15rpx;
-	padding-bottom: 100rpx;
 	.play-list-wrap {
 		display: flex;
 		flex-wrap: wrap;

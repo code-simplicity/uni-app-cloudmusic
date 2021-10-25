@@ -60,3 +60,22 @@ export const getMsgPrivate = () => api.get(`/msg/private`, {})
  * 获取通知
  */
 export const getMsgNotices = (limit) => api.get(`/msg/notices?limit=${limit}`, {})
+
+/**
+ * at我
+ */
+export const getMsgForwards = (limit) => api.get(`/msg/forwards?limit=${limit}`, {})
+
+/**
+ * 评论通知
+ */
+export const getMsgComments = params => api.get(`/msg/comments`, {
+	params
+})
+
+/**
+ * 用户粉丝列表
+ */
+export const getUserFolloweds = params => api.get(`/user/followeds`, {
+	params
+})

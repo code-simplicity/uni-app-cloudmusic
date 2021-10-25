@@ -1,24 +1,22 @@
 <template>
 	<view class="play-list">
-		<play-list-navbar></play-list-navbar>
+		<play-list-navbar :titleHeader="titleHeader"></play-list-navbar>
 		<view class="play-list-box">
-			<u-sticky offset-top="0">
-				<view class="wrap">
-					<view class="left">
-						<u-tabs-swiper
-							ref="uTabs"
-							:list="playList"
-							:current="currentTab"
-							@change="tabChange"
-							:is-scroll="true"
-							active-color="#e51419"
-						></u-tabs-swiper>
-					</view>
-					<view class="right" @click="toPlayListBox">
-						<u-icon name="grid" size="50" color="#626262"></u-icon>
-					</view>
+			<view class="wrap">
+				<view class="left">
+					<u-tabs-swiper
+						ref="uTabs"
+						:list="playList"
+						:current="currentTab"
+						@change="tabChange"
+						:is-scroll="true"
+						active-color="#e51419"
+					></u-tabs-swiper>
 				</view>
-			</u-sticky>
+				<view class="right" @click="toPlayListBox">
+					<u-icon name="grid" size="50" color="#626262"></u-icon>
+				</view>
+			</view>
 		</view>
 
 		<swiper
@@ -61,31 +59,31 @@
 			<!-- 流行 -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
-					<play-list-box ref="ref1"></play-list-box>
+					<play-list-box ref="ref1" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 摇滚 -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
-					<play-list-box ref="ref2"></play-list-box>
+					<play-list-box ref="ref2" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 民谣 -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
-					<play-list-box ref="ref3"></play-list-box>
+					<play-list-box ref="ref3" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 电子 -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
-					<play-list-box ref="ref4"></play-list-box>
+					<play-list-box ref="ref4" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 另类 -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
-					<play-list-box ref="ref5"></play-list-box>
+					<play-list-box ref="ref5" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 轻音乐 -->
@@ -97,19 +95,19 @@
 			<!-- 综艺 -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
-					<play-list-box ref="ref7"></play-list-box>
+					<play-list-box ref="ref7" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- 影视原声 -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
-					<play-list-box ref="ref8"></play-list-box>
+					<play-list-box ref="ref8" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 			<!-- ACG -->
 			<swiper-item class="swiper-item">
 				<scroll-view scroll-y="true" style="height: 100%;" @scrolltolower="onreachBottom">
-					<play-list-box ref="ref9"></play-list-box>
+					<play-list-box ref="ref9" @getStatus="getStatus"></play-list-box>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -157,7 +155,9 @@ export default {
 			hasmore: true,
 			status: '',
 			// 偏移量
-			offset: 0
+			offset: 0,
+			// 顶部title
+			titleHeader: '歌单广场'
 		};
 	},
 	component: {},
@@ -290,6 +290,9 @@ export default {
 			let current = e.detail.current;
 			this.$refs.uTabs.setFinishCurrent(current);
 			this.swiperCurrent = current;
+			if (this.currentTab !== current) {
+				this.getPlayList(this.playLists, current - 1, this.offset);
+			}
 			this.currentTab = current;
 		},
 
@@ -319,13 +322,19 @@ export default {
 <style lang="scss" scoped>
 .play-list {
 	width: 100%;
+	height: 100%;
 	padding-bottom: 40rpx;
+	background-color: #ffffff;
 	.play-list-box {
 		width: 100%;
+		position: sticky;
+		top: 70rpx;
+		left: 0;
+		right: 0;
+		z-index: 99;
 		.wrap {
 			width: 100%;
 			position: relative;
-			display: flex;
 			background-color: #ffffff;
 			.left {
 				width: 90%;
@@ -340,14 +349,13 @@ export default {
 		}
 	}
 	.search-swiper {
-		position: relative;
+		flex: 1;
 		.swiper-item {
 			flex: 1;
 			.play-board {
 				display: flex;
 				flex-direction: column;
 				position: relative;
-				background-color: #fdfdfd;
 				padding: 20rpx;
 				border-radius: 16rpx;
 				margin-bottom: 16rpx;

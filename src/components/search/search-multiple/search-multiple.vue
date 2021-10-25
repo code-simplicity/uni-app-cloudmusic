@@ -438,7 +438,7 @@ export default {
 <style lang="scss" scoped>
 .search-multiple {
 	width: 100%;
-	height: 100%;
+	padding-bottom: 15%;
 	.search-cell-group {
 		margin: 0 20rpx;
 		width: auto;
@@ -449,15 +449,32 @@ export default {
 		background-color: #ffffff;
 		.singer-image {
 			margin-right: 20rpx;
-			.singer-title {
-				.singer-name {
-					font-size: 32rpx;
-					color: #000000;
-				}
-				.singer-num {
-					font-size: 22rpx;
-					color: #999;
-				}
+		}
+		.singer-title {
+			.singer-name {
+				-webkit-line-clamp: 1;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				font-size: 28rpx;
+			}
+			.singer-num {
+				font-size: 22rpx;
+				color: #999;
+				-webkit-line-clamp: 1;
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
+		}
+		.focus {
+			border: 1rpx solid #c7c7c7;
+			padding: 6rpx 16rpx;
+			border-radius: 16rpx;
+			&:active {
+				background-color: #e0dee1;
 			}
 		}
 		.header-title {
@@ -479,14 +496,15 @@ export default {
 		.singer-word {
 			display: flex;
 			flex-direction: row;
+			flex-wrap: wrap;
 			.singer-name {
 				margin-left: 20rpx;
 				margin-bottom: 16rpx;
 				border-radius: 16rpx;
-				padding: 5rpx 8rpx;
+				padding: 5rpx 16rpx;
 				display: flex;
 				flex-direction: row;
-				background-color: #f0f0f0;
+				background-color: #f7f7f7;
 			}
 		}
 		.u-cell {

@@ -12,8 +12,8 @@
 					></u-image>
 				</view>
 				<view slot="title" class="singer-title">
-					<view class="singer-name">{{ item.name }} {{ item.alias[0] }}</view>
-					<view class="singer-num">
+					<view class="singer-name box-line1">{{ item.name }} {{ item.alias[0] }}</view>
+					<view class="singer-num box-line1">
 						<text>专辑：{{ item.albumSize }}首</text>
 					</view>
 				</view>
@@ -81,15 +81,22 @@ export default {
 		background-color: #ffffff;
 		.singer-image {
 			margin-right: 20rpx;
-			.singer-title {
-				.singer-name {
-					font-size: 32rpx;
-					color: #000000;
-				}
-				.singer-num {
-					font-size: 22rpx;
-					color: #999;
-				}
+		}
+		.singer-title {
+			.singer-name {
+				font-size: 28rpx;
+			}
+			.singer-num {
+				font-size: 22rpx;
+				color: #999;
+			}
+		}
+		.focus {
+			border: 1rpx solid #c7c7c7;
+			padding: 6rpx 16rpx;
+			border-radius: 16rpx;
+			&:active {
+				background-color: #e0dee1;
 			}
 		}
 		.u-cell {

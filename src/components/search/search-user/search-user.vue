@@ -12,16 +12,14 @@
 					></u-image>
 				</view>
 				<view slot="title" class="singer-title">
-					<view class="singer-name">{{ item.nickname }}</view>
-					<view class="singer-num">
-						<!-- <text>{{ item.albumSize }}人关注</text> -->
-					</view>
+					<view class="singer-name box-line1">{{ item.nickname }}</view>
+					<view class="singer-num box-line1"><!-- <text>{{ item.albumSize }}人关注</text> --></view>
 				</view>
 				<view slot="right-icon">
 					<u-icon
 						class="focus"
 						name="plus"
-						size="30"
+						size="26"
 						label="关注"
 						label-size="26"
 						color="#ff0000"
@@ -73,27 +71,33 @@ export default {
 <style lang="scss" scoped>
 .search-user {
 	width: 100%;
-	height: 100%;
 	.search-cell-group {
 		width: auto;
 		padding: 10rpx;
 		box-sizing: border-box;
 		background-color: #ffffff;
-		.singer-image {
-			margin-right: 20rpx;
+		.u-cell {
+			padding: 18rpx 16rpx;
+			.singer-image {
+				margin-right: 20rpx;
+			}
 			.singer-title {
 				.singer-name {
-					font-size: 32rpx;
-					color: #000000;
+					font-size: 28rpx;
 				}
 				.singer-num {
 					font-size: 22rpx;
 					color: #999;
 				}
 			}
-		}
-		.u-cell {
-			padding: 18rpx 16rpx;
+			.focus {
+				border: 1rpx solid #c7c7c7;
+				padding: 6rpx 16rpx;
+				border-radius: 16rpx;
+				&:active {
+					background-color: #e0dee1;
+				}
+			}
 		}
 	}
 }

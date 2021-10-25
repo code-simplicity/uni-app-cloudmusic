@@ -5,15 +5,15 @@
 				<view slot="icon" class="singer-image">
 					<u-image
 						border-radius="16rpx"
-						width="280rpx"
-						height="160rpx"
+						width="240rpx"
+						height="140rpx"
 						:src="item.coverUrl"
 						mode="aspectFill"
 					></u-image>
 				</view>
 				<view slot="title" class="singer-title">
-					<view class="singer-name">{{ item.title }}</view>
-					<view class="singer-num">
+					<view class="singer-name box-line1">{{ item.title }}</view>
+					<view class="singer-num box-line1">
 						<text>来自：{{ item.creator[0].userName }}</text>
 					</view>
 				</view>
@@ -73,15 +73,14 @@ export default {
 		background-color: #ffffff;
 		.singer-image {
 			margin-right: 20rpx;
-			.singer-title {
-				.singer-name {
-					font-size: 32rpx;
-					color: #000000;
-				}
-				.singer-num {
-					font-size: 22rpx;
-					color: #999;
-				}
+		}
+		.singer-title {
+			.singer-name {
+				font-size: 28rpx;
+			}
+			.singer-num {
+				font-size: 22rpx;
+				color: #999;
 			}
 		}
 		.slot-right {
@@ -91,7 +90,7 @@ export default {
 		}
 
 		.u-cell {
-			padding: 18rpx 16rpx
+			padding: 18rpx 16rpx;
 		}
 	}
 }

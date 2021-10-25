@@ -1,33 +1,31 @@
 <template>
 	<view class="leader-board">
-		<play-list-navbar></play-list-navbar>
+		<play-list-navbar :titleHeader="titleHeader"></play-list-navbar>
 		<view class="leader-board-wrap">
-			<view class="tabs">
-				<u-sticky>
-					<u-tabs
-						:list="listTabs"
-						gutter="46"
-						:current="currentIndex"
-						@change="changeTabs"
-						:is-scroll="false"
-					></u-tabs>
-				</u-sticky>
-			</view>
-			<view class="content-wrap">
-				<scroll-view
-					scroll-y="true"
-					class="scroll-Y"
-					:style="{ height: screenHeight + 'px' }"
-					@scroll="scroll"
-					:scroll-into-view="tabId"
-					scroll-with-animation
-				>
-					<!-- 官方歌单 -->
-					<view class="leader-list list" :id="'list' + 0">
-						<view class="header">
-							<u-icon name="kefu-ermai" size="40" color="#ff060a"></u-icon>
-							官方榜
-						</view>
+			<u-tabs
+				:list="listTabs"
+				gutter="46"
+				:current="currentIndex"
+				@change="changeTabs"
+				:is-scroll="false"
+			></u-tabs>
+		</view>
+		<view class="content-wrap">
+			<scroll-view
+				scroll-y="true"
+				class="scroll-Y"
+				:style="{ height: screenHeight + 'px' }"
+				@scroll="scroll"
+				:scroll-into-view="tabId"
+				scroll-with-animation
+			>
+				<!-- 官方歌单 -->
+				<view class="leader-list ">
+					<view class="header ">
+						<u-icon name="kefu-ermai" size="40" color="#ff060a"></u-icon>
+						官方榜
+					</view>
+					<view class="list" :id="'list' + 0">
 						<leader-list
 							v-for="(item, index) in leaderList"
 							:key="index"
@@ -35,36 +33,36 @@
 							:indexs="index"
 						></leader-list>
 					</view>
-					<!-- 精选榜 -->
-					<leader-recomd
-						class="list"
-						:id="'list' + 1"
-						:featuredLeaderList="featuredLeaderList"
-						:title="featuredTitle"
-					></leader-recomd>
-					<!-- 曲风榜 -->
-					<leader-recomd
-						class="list"
-						:id="'list' + 2"
-						:featuredLeaderList="genreList"
-						:title="genreLTitle"
-					></leader-recomd>
-					<!-- 全球榜 -->
-					<leader-recomd
-						class="list"
-						:id="'list' + 3"
-						:featuredLeaderList="worldList"
-						:title="worldTitle"
-					></leader-recomd>
-					<!-- 特色榜 -->
-					<leader-recomd
-						class="list"
-						:id="'list' + 4"
-						:featuredLeaderList="traitList"
-						:title="traitTitle"
-					></leader-recomd>
-				</scroll-view>
-			</view>
+				</view>
+				<!-- 精选榜 -->
+				<leader-recomd
+					class="list"
+					:id="'list' + 1"
+					:featuredLeaderList="featuredLeaderList"
+					:title="featuredTitle"
+				></leader-recomd>
+				<!-- 曲风榜 -->
+				<leader-recomd
+					class="list"
+					:id="'list' + 2"
+					:featuredLeaderList="genreList"
+					:title="genreLTitle"
+				></leader-recomd>
+				<!-- 全球榜 -->
+				<leader-recomd
+					class="list"
+					:id="'list' + 3"
+					:featuredLeaderList="worldList"
+					:title="worldTitle"
+				></leader-recomd>
+				<!-- 特色榜 -->
+				<leader-recomd
+					class="list"
+					:id="'list' + 4"
+					:featuredLeaderList="traitList"
+					:title="traitTitle"
+				></leader-recomd>
+			</scroll-view>
 		</view>
 		<music-player></music-player>
 	</view>
@@ -126,7 +124,9 @@ export default {
 			scrollTop: 0,
 			topList: [],
 			// 屏幕高度
-			screenHeight: 0
+			screenHeight: 0,
+			// 顶部title
+			titleHeader: '排行榜'
 		};
 	},
 	component: {},
@@ -214,20 +214,23 @@ export default {
 <style lang="scss" scoped>
 .leader-board {
 	width: 100%;
-	padding-bottom: 90rpx;
+	padding-bottom: 100rpx;
 	.leader-board-wrap {
 		width: 100%;
+		position: fixed;
+		z-index: 999;
+	}
+	.content-wrap {
+		margin-top: 80rpx;
 		position: relative;
-		.content-wrap {
-			.scroll-Y {
-				height: 100%;
-				width: 100%;
-				.leader-list {
-					.header {
-						padding: 20rpx 30rpx 10rpx;
-						font-size: 38rpx;
-						font-weight: 600;
-					}
+		.scroll-Y {
+			height: 100%;
+			width: 100%;
+			.leader-list {
+				.header {
+					padding: 20rpx 30rpx 10rpx;
+					font-size: 38rpx;
+					font-weight: 600;
 				}
 			}
 		}
